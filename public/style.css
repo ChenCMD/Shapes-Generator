@@ -1,0 +1,174 @@
+body {
+    background-color: rgb(0, 0, 0);
+}
+
+:root {
+    --foreground-color: rgb(212, 212, 212);
+    --background-color: rgb(16, 16, 16);
+    --border-color: rgb(110, 110, 110);
+    --hover-highlight: rgb(45, 45, 45);
+    --select-highlight: rgb(80, 80, 80);
+}
+
+.col-previewer {
+    padding-right: 8px !important;
+}
+
+.previewer-window {
+    background-color: var(--background-color);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border-color);
+}
+
+.col-user-interface {
+    padding-left: 8px !important;
+}
+
+.col-shape-list {
+    padding-right: 8px !important;
+}
+
+.col-menu {
+    padding-left: 8px !important;
+}
+
+.user-interface {
+    padding: 0 0 !important;
+}
+
+.inspector {
+    background-color: var(--background-color);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border-color);
+    min-height: 457px;
+    margin-bottom: 15px;
+}
+
+.shape-list {
+    height: 426px;
+}
+
+.shape-list-window {
+    background-color: var(--background-color);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border-color);
+    min-height: 457px;
+    max-height: 457px;
+    height: 457px;
+}
+
+.shape-list-menu {
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-bottom-color: var(--border-color);
+}
+
+.shape-list-menu-pulldown {
+    color: var(--foreground-color);
+    padding-left: 2px;
+    width: 80%;
+    border: none;
+    background: none;
+}
+
+.shape-list-menu-pulldown:hover {
+    background-color: var(--hover-highlight);
+}
+
+.shape-list-menu-pulldown:focus {
+    outline: none;
+}
+
+.shape-list-menu-pulldown-option {
+    color: var(--foreground-color);
+    background-color: var(--background-color);
+    padding-left: 2px;
+    width: 80%;
+    border: none;
+}
+
+.shape-list-menu-pulldown-option:hover {
+    background-color: var(--hover-highlight);
+}
+
+.shape-list-menu-pulldown-option:focus {
+    outline: none;
+    background: none;
+}
+
+.shape-list-menu-add {
+    color: var(--foreground-color);
+    width: 20%;
+    border-width: 0 0 0 1px;
+    border-left-color: var(--border-color);
+    background: none;
+}
+
+.shape-list-menu-add:hover {
+    background-color: var(--hover-highlight);
+}
+
+.shape-list-menu-add:focus {
+    outline: none;
+    /* background-color: rgba(212, 212, 212, 0.6); */
+}
+
+.shape-list-item {
+    width: 100%;
+    border-radius: unset !important;
+    color: var(--foreground-color);
+    padding: 2px 0 2px 0;
+    background-color: var(--background-color);
+    outline: 1px solid var(--border-color);
+    line-height: normal;
+    /* outline-offset: 1px; */
+}
+
+.shape-list-item:hover {
+    color: var(--foreground-color);
+    background-color: var(--hover-highlight);
+}
+
+.shape-list-item:focus {
+    z-index: 0;
+    outline: 1px solid var(--border-color);
+    color: var(--foreground-color);
+    background-color: var(--background-color);
+}
+
+.shape-list-item-active {
+    background-color: var(--select-highlight) !important;
+    border-color: var(--select-highlight) !important;
+    z-index: unset;
+}
+
+.shape-list-item-text {
+    width: 100%;
+    line-height: 1.5;
+    padding: 0 0 0 2px;
+}
+
+.shape-list-item-input {
+    width: 100%;
+    line-height: 1.5;
+    padding: 0 0 0 2px;
+    color: var(--foreground-color);
+    border: 0;
+    background-color: var(--background-color);
+}
+
+.shape-list-item-input:focus {
+    outline: none;
+    border: none !important;
+}
+
+.menu {
+    background-color: var(--background-color);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border-color);
+    min-height: 457px;
+}
