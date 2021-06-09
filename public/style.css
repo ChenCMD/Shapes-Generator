@@ -67,11 +67,11 @@ body {
 }
 
 .shape-list-menu-pulldown {
+    background: none;
     color: var(--foreground-color);
     padding-left: 2px;
     width: 80%;
     border: none;
-    background: none;
 }
 
 .shape-list-menu-pulldown:hover {
@@ -83,8 +83,8 @@ body {
 }
 
 .shape-list-menu-pulldown-option {
-    color: var(--foreground-color);
     background-color: var(--background-color);
+    color: var(--foreground-color);
     padding-left: 2px;
     width: 80%;
     border: none;
@@ -95,16 +95,16 @@ body {
 }
 
 .shape-list-menu-pulldown-option:focus {
-    outline: none;
     background: none;
+    outline: none;
 }
 
 .shape-list-menu-add {
+    background: none;
     color: var(--foreground-color);
     width: 20%;
     border-width: 0 0 0 1px;
     border-left-color: var(--border-color);
-    background: none;
 }
 
 .shape-list-menu-add:hover {
@@ -117,44 +117,51 @@ body {
 }
 
 .shape-list-item {
+    background-color: var(--background-color);
+    color: var(--foreground-color);
     width: 100%;
     border-radius: unset !important;
-    color: var(--foreground-color);
-    padding: 2px 0 2px 0;
-    background-color: var(--background-color);
+    /* margin: 1px 0 1px 0; */
+    padding: 0;
+    border-width: 1px !important;
     outline: 1px solid var(--border-color);
-    line-height: normal;
     /* outline-offset: 1px; */
+    line-height: normal;
+    z-index: 0;
 }
 
 .shape-list-item:hover {
-    color: var(--foreground-color);
     background-color: var(--hover-highlight);
+    color: var(--foreground-color);
+    z-index: 0;
 }
 
 .shape-list-item:focus {
-    z-index: 0;
-    outline: 1px solid var(--border-color);
-    color: var(--foreground-color);
     background-color: var(--background-color);
+    color: var(--foreground-color);
+    outline: 1px solid var(--border-color);
+    z-index: 0;
 }
 
 .shape-list-item-active {
     background-color: var(--select-highlight) !important;
+    margin-top: 0 !important;
+    border-width: 1px !important;
+    outline: 1px solid var(--border-color) !important;
     border-color: var(--select-highlight) !important;
-    z-index: unset;
+    z-index: 0 !important;
 }
 
 .shape-list-item-text {
     width: 100%;
     line-height: 1.5;
-    padding: 0 0 0 2px;
+    padding: 2px 0 2px 2px;
 }
 
 .shape-list-item-input {
     width: 100%;
     line-height: 1.5;
-    padding: 0 0 0 2px;
+    padding: 2px 0 2px 2px;
     color: var(--foreground-color);
     border: 0;
     background-color: var(--background-color);
