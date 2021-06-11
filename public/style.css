@@ -10,8 +10,12 @@ body {
     --select-highlight: rgb(80, 80, 80);
 }
 
+.shapes-generator {
+    padding: 7px
+}
+
 .col-previewer {
-    padding-right: 8px !important;
+    padding: 8px !important;
 }
 
 .previewer-window {
@@ -22,7 +26,7 @@ body {
 }
 
 .col-user-interface {
-    padding-left: 8px !important;
+    padding: 8px !important;
 }
 
 .col-shape-list {
@@ -70,7 +74,7 @@ body {
     background: none;
     color: var(--foreground-color);
     padding-left: 2px;
-    width: 80%;
+    width: 60%;
     border: none;
 }
 
@@ -86,7 +90,6 @@ body {
     background-color: var(--background-color);
     color: var(--foreground-color);
     padding-left: 2px;
-    width: 80%;
     border: none;
 }
 
@@ -102,7 +105,7 @@ body {
 .shape-list-menu-add {
     background: none;
     color: var(--foreground-color);
-    width: 20%;
+    width: 40%;
     border-width: 0 0 0 1px;
     border-left-color: var(--border-color);
 }
