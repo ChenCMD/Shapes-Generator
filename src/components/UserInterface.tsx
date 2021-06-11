@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Shape } from '../types/Shape';
 import Inspector from './Inspector';
@@ -8,29 +8,34 @@ import ShapeList from './ShapeList';
 interface UserInterfaceProps {
     shapes: Shape[]
     setShapes: (shapes: Shape[]) => void
+    selectedShapes: Shape[],
+    setSelectedShapes: (shapes: Shape[]) => void
 }
 
-const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes }) => {
-    const [selectedShapes, setSelectedShapes] = useState<Shape[]>([]);
-
-    return (
-        <Container fluid className="user-interface">
-            <Row>
-                <Col><Inspector selectedShapes={selectedShapes} /></Col>
-            </ Row>
-            <Row>
-                <Col xl={4} lg={4} md={4} sm={4} xs={4} className="col-shape-list">
-                    <ShapeList
-                        shapes={shapes}
-                        setShapes={setShapes}
-                        selectedShapes={selectedShapes}
-                        setSelectedShapes={setSelectedShapes}
-                    />
-                </ Col>
-                <Col xl={8} lg={8} md={8} sm={8} xs={8} className="col-menu"><Menu /></ Col>
-            </ Row>
-        </Container>
-    );
-};
+const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes }) => (
+    <Container fluid className="user-interface">
+        <Row>
+            <Col>
+                <Inspector
+                    selectedShapes={selectedShapes}
+                    setSelectedShapes={setSelectedShapes}
+                    shapes={shapes}
+                    setShapes={setShapes}
+                />
+            </Col>
+        </ Row>
+        <Row>
+            <Col xl={5} lg={5} md={5} sm={5} xs={5} className="col-shape-list">
+                <ShapeList
+                    shapes={shapes}
+                    setShapes={setShapes}
+                    selectedShapes={selectedShapes}
+                    setSelectedShapes={setSelectedShapes}
+                />
+            </ Col>
+            <Col xl={7} lg={7} md={7} sm={7} xs={7} className="col-menu"><Menu /></ Col>
+        </ Row>
+    </Container>
+);
 
 export default UserInterface;

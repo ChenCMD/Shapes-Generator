@@ -50,6 +50,46 @@ body {
     margin-bottom: 15px;
 }
 
+.inspector-param-box-container {
+    margin: 10px 0 0 0;
+}
+
+.inspector-param-box {
+    margin: 10px 0 10px 0;
+    width: 100%;
+    border-width: 1px;
+    border: 1px solid var(--border-color);
+}
+
+.inspector-param-box-name {
+    color: var(--foreground-color)
+}
+
+.inspector-param-box-input {
+    text-align: end;
+    width: 100%;
+    line-height: 1.5;
+    padding: 0 2px 0 0;
+    color: var(--foreground-color);
+    border: none;
+    outline: 1px solid var(--border-color);
+    background-color: var(--background-color);
+}
+
+.inspector-double-param-box-col {
+    padding: 0;
+}
+
+.inspector-double-param-box-inputs {
+    border: none;
+    outline: 1px solid var(--border-color);
+}
+
+.inspector-double-param-box-sub-name {
+    text-align: center;
+    color: var(--foreground-color)
+}
+
 .shape-list {
     height: 426px;
 }
