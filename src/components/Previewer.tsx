@@ -5,16 +5,22 @@ import Measure from 'react-measure';
 
 interface PreviewerProps {
     shapePoints: Point[][]
+    selectedIDs: string[]
 }
 
-const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
+const Previewer: React.FC<PreviewerProps> = ({ shapePoints, selectedIDs }) => {
     const [size, setSize] = useState<number>(100);
 
-    const points: JSX.Element[] = [];
-    for (const shape of shapePoints) {
-        for (const { id, x, y } of shape)
-            points.push(<Circle x={x + size / 2} y={y + size / 2} radius={3} fill="white" key={id} />);
-    }
+    const points: JSX.Element[] = shapePoints.map(shape =>
+        shape.map(({ id, x, y }) => (
+            <Circle
+                x={x + size / 2} y={y + size / 2}
+                radius={3}
+                fill={selectedIDs.some(v => v.startsWith(id)) ? 'yellow' : 'white'}
+                key={id}
+            />
+        ))
+    ).flat();
 
     return (
         <div className="previewer-window rounded">

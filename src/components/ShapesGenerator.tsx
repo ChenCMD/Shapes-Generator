@@ -16,11 +16,18 @@ import UserInterface from './UserInterface';
 
 const ShapesGenerator: React.FC = () => {
     const [shapes, setShapes] = useState<Shape[]>([]);
+    const [selectedShapes, setSelectedShapes] = useState<Shape[]>([]);
+    console.log(shapes);
+    console.log(selectedShapes);
     return (
         <div className="shapes-generator">
             <Container fluid>
                 <Row>
-                    <Col xl={6} lg={6} md={6} sm={12} xs={12} className="col-previewer"><Previewer shapePoints={shapes.map(v => v.pointSet)} /></Col>
+                    <Col xl={6} lg={6} md={6} sm={12} xs={12} className="col-previewer">
+                        <Previewer
+                            shapePoints={shapes.map(v => v.pointSet)}
+                            selectedIDs={selectedShapes.map(v => v.id)}
+                        /></Col>
                     <Col xl={6} lg={6} md={6} sm={12} xs={12} className="col-user-interface">
                         <UserInterface
                             shapes={shapes}
