@@ -46,7 +46,8 @@ body {
     border-style: solid;
     border-width: 1px;
     border-color: var(--border-color);
-    min-height: 457px;
+    min-height: 250px;
+    max-height: 430px;
     margin-bottom: 15px;
 }
 
@@ -62,14 +63,15 @@ body {
 }
 
 .inspector-param-box-name {
-    color: var(--foreground-color)
+    color: var(--foreground-color);
+    line-height: 1.5;
+    padding: 2px 0 2px 2px;
 }
 
 .inspector-param-box-input {
-    text-align: end;
     width: 100%;
     line-height: 1.5;
-    padding: 0 2px 0 0;
+    padding: 2px 0 2px 2px;
     color: var(--foreground-color);
     border: none;
     outline: 1px solid var(--border-color);
@@ -91,7 +93,9 @@ body {
 }
 
 .shape-list {
-    height: 426px;
+    max-height: 420px;
+    padding-bottom: 1px;
+    margin-bottom: 5px;
 }
 
 .shape-list-window {
@@ -99,21 +103,24 @@ body {
     border-style: solid;
     border-width: 1px;
     border-color: var(--border-color);
-    min-height: 457px;
+    min-height: 250px;
     max-height: 457px;
-    height: 457px;
+    margin-bottom: 5px;
 }
 
 .shape-list-menu {
+    height: 30px;
     border-style: solid;
     border-width: 0 0 1px 0;
     border-bottom-color: var(--border-color);
 }
 
 .shape-list-menu-pulldown {
+    height: 100%;
     background: none;
     color: var(--foreground-color);
-    padding-left: 2px;
+    line-height: 1.5;
+    padding: 2px 0 2px 2px;
     width: 60%;
     border: none;
 }
@@ -143,6 +150,7 @@ body {
 }
 
 .shape-list-menu-add {
+    height: 100%;
     background: none;
     color: var(--foreground-color);
     width: 40%;
@@ -151,6 +159,9 @@ body {
 }
 
 .shape-list-menu-add:hover {
+    border-style: solid;
+    border-width: 0 0 1px 1px;
+    border-bottom-color: var(--border-color);
     background-color: var(--hover-highlight);
 }
 
@@ -161,7 +172,6 @@ body {
 
 .shape-list-item {
     background-color: var(--background-color);
-    color: var(--foreground-color);
     width: 100%;
     border-radius: unset !important;
     /* margin: 1px 0 1px 0; */
@@ -181,7 +191,6 @@ body {
 
 .shape-list-item:focus {
     background-color: var(--background-color);
-    color: var(--foreground-color);
     outline: 1px solid var(--border-color);
     z-index: 0;
 }
@@ -199,6 +208,7 @@ body {
     width: 100%;
     line-height: 1.5;
     padding: 2px 0 2px 2px;
+    color: var(--foreground-color);
 }
 
 .shape-list-item-input {
