@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { Shape } from '../types/Shape';
+import styles from '../styles/ShapeListItem.module.scss';
 
 interface ShapeListItemProps {
     id: string
@@ -35,12 +36,12 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ selectedShapes, id, onSel
 
     useEffect(() => inputElemRef.current?.focus(), [renameMode]);
 
-    const renameElem = (<input className="shape-list-item-input" ref={inputElemRef} onBlur={() => onExitRename()} onKeyDown={e => onKeyDown(e)} />);
-    const textElem = (<div className="shape-list-item-text" onClick={e => onClick(e)} onDoubleClick={() => setRenameMode(true)}>{id}</div>);
+    const renameElem = (<input className={styles['shape-list-item-input']} ref={inputElemRef} onBlur={() => onExitRename()} onKeyDown={e => onKeyDown(e)} />);
+    const textElem = (<div className={styles['shape-list-item-text']} onClick={e => onClick(e)} onDoubleClick={() => setRenameMode(true)}>{id}</div>);
 
     return (
         <ListGroup.Item
-            className={`shape-list-item ${selected ? 'shape-list-item-active' : ''}`}
+            className={`${styles['shape-list-item']} ${selected ? styles['shape-list-item-active'] : ''}`}
             action
             active={selected}
         >

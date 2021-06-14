@@ -4,7 +4,7 @@
 		{
 			"type": "npm",
 			"script": "start",
-			"label": "npm: start",
+			"label": "yarn: start",
 			"detail": "react-scripts start",
 			"group": {
 				"kind": "test",

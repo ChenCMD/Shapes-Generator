@@ -1,0 +1,12 @@
+.inspector {
+    background-color: var(--background-color);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border-color);
+    min-height: 250px;
+    max-height: 430px;
+}
+
+.inspector-param-box-container {
+    margin: 5px auto 5px auto;
+}

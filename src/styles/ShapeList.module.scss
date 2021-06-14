@@ -1,0 +1,26 @@
+.shape-list-window {
+    background-color: var(--background-color);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border-color);
+    min-height: 250px;
+    max-height: 457px;
+    margin-bottom: 5px;
+}
+
+.shape-list {
+    max-height: 420px;
+    padding-bottom: 1px;
+    margin-bottom: 5px;
+    scrollbar-width: thin;
+    &::-webkit-scrollbar {
+        width: 4px;
+        border-radius: 0.25rem !important;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: rgba(75, 75, 75, 0.5);
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(128, 128, 128);
+    }
+}

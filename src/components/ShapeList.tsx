@@ -3,6 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 import { Shape } from '../types/Shape';
 import ShapeListItem from './ShapeListItem';
 import ShapeListMenu from './ShapeListMenu';
+import styles from '../styles/ShapeList.module.scss';
 
 interface ShapeListProps {
     shapes: Shape[]
@@ -33,9 +34,9 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
     };
 
     return (
-        <div className="shape-list-window rounded">
+        <div className={`${styles['shape-list-window']} rounded`}>
             <ShapeListMenu setShapes={(shape: Shape) => setShapes([...shapes, shape])} />
-            <div id="scroll-bar" className="overflow-auto shape-list">
+            <div id="scroll-bar" className={`${styles['shape-list']} overflow-auto`}>
                 <ListGroup>
                     {shapes.map(shape => (
                         <ShapeListItem

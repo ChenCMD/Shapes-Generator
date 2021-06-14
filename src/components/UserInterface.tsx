@@ -4,6 +4,7 @@ import { Shape } from '../types/Shape';
 import Inspector from './Inspector';
 import Menu from './Menu';
 import ShapeList from './ShapeList';
+import styles from '../styles/UserInterface.module.scss';
 
 interface UserInterfaceProps {
     shapes: Shape[]
@@ -13,9 +14,9 @@ interface UserInterfaceProps {
 }
 
 const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes }) => (
-    <Container fluid className="user-interface">
+    <Container fluid className={styles['user-interface']}>
         <Row>
-            <Col className="col-inspector">
+            <Col className={styles['col-inspector']}>
                 <Inspector
                     selectedShapes={selectedShapes}
                     setSelectedShapes={setSelectedShapes}
@@ -25,7 +26,7 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
             </Col>
         </ Row>
         <Row>
-            <Col xl={5} lg={5} md={12} sm={5} xs={12} className="col-shape-list">
+            <Col xl={5} lg={5} md={12} sm={5} xs={12} className={styles['col-shape-list']}>
                 <ShapeList
                     shapes={shapes}
                     setShapes={setShapes}
@@ -33,7 +34,7 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
                     setSelectedShapes={setSelectedShapes}
                 />
             </ Col>
-            <Col xl={7} lg={7} md={12} sm={7} xs={12} className="col-menu"><Menu /></ Col>
+            <Col xl={7} lg={7} md={12} sm={7} xs={12} className={styles['col-menu']}><Menu /></ Col>
         </ Row>
     </Container>
 );

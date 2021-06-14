@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { changeParam, getArgumentMetaData, getParam, Pos, Shape } from '../types/Shape';
 import PosParameterBox from './PosParameterBox';
 import ParameterBox from './ParameterBox';
+import styles from '../styles/Inspector.module.scss';
 
 interface InspectorProps {
     selectedShapes: Shape[]
@@ -32,8 +33,8 @@ const Inspector: React.FC<InspectorProps> = ({ selectedShapes, setSelectedShapes
     )).flat();
 
     return (
-        <div className="inspector rounded">
-            <Container fluid className="inspector-param-box-container">
+        <div className={`${styles['inspector']} rounded`}>
+            <Container fluid className={styles['inspector-param-box-container']}>
                 <Row>
                     {paramBoxes}
                 </Row>

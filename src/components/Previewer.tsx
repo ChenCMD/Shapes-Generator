@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Stage, Layer, Rect, Circle } from 'react-konva';
 import { Point } from '../types/Shape';
 import Measure from 'react-measure';
+import styles from '../styles/Previewer.module.scss';
 
 interface PreviewerProps {
     shapePoints: Point[][]
@@ -14,16 +15,16 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints, selectedIDs }) => {
     const points: JSX.Element[] = shapePoints.map(shape =>
         shape.map(({ id, x, y }) => (
             <Circle
-                x={x + size / 2} y={y + size / 2}
+                x={x * 25 + size / 2} y={y * 25 + size / 2}
                 radius={3}
-                fill={selectedIDs.some(v => v.startsWith(id)) ? 'yellow' : 'white'}
+                fill={selectedIDs.some(v => id.startsWith(v)) ? 'rgb(120, 120, 180)' : 'rgb(212, 212, 212)'}
                 key={id}
             />
         ))
     ).flat();
 
     return (
-        <div className="previewer-window rounded">
+        <div className={`${styles['previewer-window']} rounded`}>
             <Measure bounds onResize={contentRect => setSize(contentRect.bounds?.width ?? 100)}>
                 {({ measureRef }) => (
                     <div ref={measureRef}>

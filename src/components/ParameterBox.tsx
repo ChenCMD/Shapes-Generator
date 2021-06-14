@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from '../styles/ParameterBox.module.scss';
 
 interface ParameterBoxProps {
     name: string
@@ -15,9 +16,9 @@ const ParameterBox: React.FC<ParameterBoxProps> = ({ name, description, updatePa
     };
 
     return (
-        <div className="inspector-param-box" title={description}>
-            <div className="inspector-param-box-name">{name}</div>
-            <input className="inspector-param-box-input" onChange={e => onChange(e.target.value)} value={argValue} />
+        <div className={styles['param-box']} title={description}>
+            <div className={styles['param-box-name']}>{name}</div>
+            <input className={styles['param-box-input']} onChange={e => onChange(e.target.value)} value={argValue} />
         </div>
     );
 };
