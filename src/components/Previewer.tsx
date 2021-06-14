@@ -27,9 +27,9 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints, selectedIDs }) => {
             <Measure bounds onResize={contentRect => setSize(contentRect.bounds?.width ?? 100)}>
                 {({ measureRef }) => (
                     <div ref={measureRef}>
-                        <Stage width={size} height={size - 7}>
+                        <Stage width={size} height={size - 32}>
                             <Layer>
-                                <Rect x={5} y={5} width={size - 10} height={size - 17} fill="rgb(16, 16, 16)" />
+                                <Rect x={5} y={5} width={size - 10} height={size - 42} fill="rgb(16, 16, 16)" />
                                 {points}
                             </Layer>
                         </Stage>

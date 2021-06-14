@@ -15,7 +15,7 @@ interface UserInterfaceProps {
 const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes }) => (
     <Container fluid className="user-interface">
         <Row>
-            <Col>
+            <Col className="col-inspector">
                 <Inspector
                     selectedShapes={selectedShapes}
                     setSelectedShapes={setSelectedShapes}
@@ -25,7 +25,7 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
             </Col>
         </ Row>
         <Row>
-            <Col xl={5} lg={5} md={5} sm={5} xs={5} className="col-shape-list">
+            <Col xl={5} lg={5} md={12} sm={5} xs={12} className="col-shape-list">
                 <ShapeList
                     shapes={shapes}
                     setShapes={setShapes}
@@ -33,7 +33,7 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
                     setSelectedShapes={setSelectedShapes}
                 />
             </ Col>
-            <Col xl={7} lg={7} md={7} sm={7} xs={7} className="col-menu"><Menu /></ Col>
+            <Col xl={7} lg={7} md={12} sm={7} xs={12} className="col-menu"><Menu /></ Col>
         </ Row>
     </Container>
 );

@@ -26,19 +26,23 @@ body {
 }
 
 .col-user-interface {
-    padding: 8px !important;
+    padding: 0 8px 8px 8px !important;
+}
+
+.col-inspector {
+    padding: 0 8px 8px 8px !important;
 }
 
 .col-shape-list {
-    padding-right: 8px !important;
+    padding: 8px !important;
 }
 
 .col-menu {
-    padding-left: 8px !important;
+    padding: 8px !important;
 }
 
 .user-interface {
-    padding: 0 0 !important;
+    padding: 7px !important;
 }
 
 .inspector {
@@ -48,7 +52,6 @@ body {
     border-color: var(--border-color);
     min-height: 250px;
     max-height: 430px;
-    margin-bottom: 15px;
 }
 
 .inspector-param-box-container {
@@ -121,7 +124,7 @@ body {
     color: var(--foreground-color);
     line-height: 1.5;
     padding: 2px 0 2px 2px;
-    width: 60%;
+    width: 70%;
     border: none;
 }
 
@@ -153,7 +156,7 @@ body {
     height: 100%;
     background: none;
     color: var(--foreground-color);
-    width: 40%;
+    width: 30%;
     border-width: 0 0 0 1px;
     border-left-color: var(--border-color);
 }
