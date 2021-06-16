@@ -22,11 +22,12 @@
       {
         "name": "typescript-plugin-css-modules"
       }
-    ]
+    ],
+    "noEmit": true
   },
   "include": [
     "src"
-, "styles.d.ts"  ],
+  ],
   "exclude": [
     "node_modules"
   ]
