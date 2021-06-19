@@ -16,8 +16,10 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints, selectedIDs }) => {
         shape.map(({ id, x, y }) => (
             <Circle
                 x={x * 25 + size / 2} y={y * 25 + size / 2}
-                radius={3}
-                fill={selectedIDs.some(v => id.startsWith(v)) ? 'rgb(120, 120, 180)' : 'rgb(212, 212, 212)'}
+                radius={4}
+                fill='rgb(212, 212, 212)'
+                strokeWidth={2}
+                stroke={selectedIDs.some(v => id.startsWith(v)) ? '#007bff' : ''}
                 key={id}
             />
         ))
