@@ -15,33 +15,44 @@ interface ShapeListProps {
 const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes }) => {
     useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapes]);
 
-    const onClick = (targetID: string, isPushCtrl: boolean) => {
-        if (isPushCtrl && selectedShapes.some(v => v.name === targetID)) return setSelectedShapes(selectedShapes.filter(v => v.name !== targetID));
+    const items = shapes.map(shape => {
+        const onBlur = (e: { preventDefault: () => void }, newID: string) => {
+            if (!shape.setName(newID)) return e.preventDefault();
+            setSelectedShapes([...selectedShapes]);
+            setShapes([...shapes]);
+        };
+        const onClick = (isPushCtrl: boolean) => {
+            if (isPushCtrl) {
+                if (selectedShapes.includes(shape))
+                    setSelectedShapes(selectedShapes.filter(v => v !== shape));
+                else
+                    setSelectedShapes([...selectedShapes, shape]);
+            } else {
+                setSelectedShapes([shape]);
+            }
+        };
+        const onDelete = () => {
+            setSelectedShapes(selectedShapes.filter(v => !selectedShapes.includes(v)));
+            setShapes(shapes.filter(v => !selectedShapes.includes(v)));
+        };
 
-        const selected = shapes.filter(v => v.name === targetID);
-        return setSelectedShapes(isPushCtrl ? [...selectedShapes, ...selected] : selected);
-    };
-
-    const onBlur = (e: { preventDefault: () => void }, targetID: string, newID: string) => {
-        if (!shapes.filter(v => v.name === targetID).every(v => v.setName(newID)))
-            return e.preventDefault();
-        setSelectedShapes([...selectedShapes]);
-        setShapes([...shapes]);
-    };
+        return (
+            <ShapeListItem
+                key={shape.name} name={shape.name}
+                selectedShapes={selectedShapes}
+                onExitFocus={onBlur}
+                onSelect={onClick}
+                onDelete={onDelete}
+            />
+        );
+    });
 
     return (
         <div className={`${styles['shape-list-window']} rounded`}>
             <ShapeListMenu setShapes={(shape: Shape) => setShapes([...shapes, shape])} />
             <div id="scroll-bar" className={`${styles['shape-list']} overflow-auto`}>
                 <ListGroup>
-                    {shapes.map(shape => (
-                        <ShapeListItem
-                            key={shape.name} id={shape.name}
-                            selectedShapes={selectedShapes}
-                            onExitFocus={onBlur}
-                            onSelect={onClick}
-                        />
-                    ))}
+                    {items}
                 </ListGroup>
             </ div>
         </ div>
