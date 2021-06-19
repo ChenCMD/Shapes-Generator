@@ -1,7 +1,7 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData, Point } from '../types/AbstractNode';
 
-type Args =
+type PolygonParams =
     | 'center_x'
     | 'center_y'
     | 'count'
@@ -14,7 +14,7 @@ type Args =
     | 'jump'
     | 'vezier';
 
-const defaultParams: Record<Args, string> = {
+const defaultParams: Record<PolygonParams, string> = {
     corner: '5',
     jump: '2',
     count: '5',
@@ -28,7 +28,7 @@ const defaultParams: Record<Args, string> = {
     vezier: '0'
 };
 
-const paramMetaData: Record<Args, ParameterMetaData> = {
+const paramMetaData: Record<PolygonParams, ParameterMetaData> = {
     center_x: { name: '中心点', description: '円の中心点' },
     center_y: { name: '中心点', description: '円の中心点' },
     count: { name: '生成数', description: 'いくつの点で生成するか' },
@@ -42,12 +42,12 @@ const paramMetaData: Record<Args, ParameterMetaData> = {
     vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
 };
 
-export class PolygonShape extends AbstractShapeNode<Args> {
+export class PolygonShape extends AbstractShapeNode<PolygonParams> {
     public constructor(name: string, nameSet: Set<string>) {
         super(name, rfdc()(defaultParams), paramMetaData, nameSet);
     }
 
-    protected updatePointSet(): void {
+    protected updatePointSet(params: Record<PolygonParams, number>): void {
         const points: Point[] = [];
         const addPoint = (x: number, y: number) => points.push({ id: `${this.name}-${x}-${y}`, x, y });
 

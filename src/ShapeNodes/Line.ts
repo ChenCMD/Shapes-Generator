@@ -1,7 +1,7 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData, Point } from '../types/AbstractNode';
 
-type Args =
+type LineParams =
     | 'count'
     | 'from_x'
     | 'from_y'
@@ -9,7 +9,7 @@ type Args =
     | 'to_y'
     | 'vezier';
 
-const defaultParams: Record<Args, string> = {
+const defaultParams: Record<LineParams, string> = {
     count: '10',
     from_x: '0',
     from_y: '0',
@@ -18,7 +18,7 @@ const defaultParams: Record<Args, string> = {
     vezier: '0'
 };
 
-const paramMetaData: Record<Args, ParameterMetaData> = {
+const paramMetaData: Record<LineParams, ParameterMetaData> = {
     from_x: { name: '始点', description: '線の始点' },
     from_y: { name: '始点', description: '線の始点' },
     to_x: { name: '終点', description: '線の終点' },
@@ -27,12 +27,12 @@ const paramMetaData: Record<Args, ParameterMetaData> = {
     vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
 };
 
-export class LineShape extends AbstractShapeNode<Args> {
+export class LineShape extends AbstractShapeNode<LineParams> {
     public constructor(name: string, nameSet: Set<string>) {
         super(name, rfdc()(defaultParams), paramMetaData, nameSet);
     }
 
-    protected updatePointSet(params: Record<Args, number>): void {
+    protected updatePointSet(params: Record<LineParams, number>): void {
         const points: Point[] = [];
         const addPoint = (x: number, y: number) => points.push({ id: `${this.name}-${x}-${y}`, x, y });
 

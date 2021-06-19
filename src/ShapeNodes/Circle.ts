@@ -2,7 +2,7 @@ import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData, Point } from '../types/AbstractNode';
 import { toRadians } from '../utils/common';
 
-type Args =
+type CircleParams =
     | 'count'
     | 'center_x'
     | 'center_y'
@@ -12,7 +12,7 @@ type Args =
     | 'ellipse'
     | 'rotate';
 
-const defaultParams: Record<Args, string> = {
+const defaultParams: Record<CircleParams, string> = {
     count: '12',
     center_x: '0',
     center_y: '0',
@@ -23,7 +23,7 @@ const defaultParams: Record<Args, string> = {
     rotate: '0'
 };
 
-const paramMetaData: Record<Args, ParameterMetaData> = {
+const paramMetaData: Record<CircleParams, ParameterMetaData> = {
     center_x: { name: '中心点', description: '円の中心点' },
     center_y: { name: '中心点', description: '円の中心点' },
     count: { name: '生成数', description: 'いくつの点で生成するか' },
@@ -34,12 +34,12 @@ const paramMetaData: Record<Args, ParameterMetaData> = {
     rotate: { name: '角度', description: '開始/終了角には影響は与えません' }
 };
 
-export class CircleShape extends AbstractShapeNode<Args> {
+export class CircleShape extends AbstractShapeNode<CircleParams> {
     public constructor(name: string, nameSet: Set<string>) {
         super(name, rfdc()(defaultParams), paramMetaData, nameSet);
     }
 
-    protected updatePointSet(params: Record<Args, number>): void {
+    protected updatePointSet(params: Record<CircleParams, number>): void {
         const points: Point[] = [];
         const addPoint = (x: number, y: number) => points.push({ id: `${this.name}-${x}-${y}`, x, y });
 
