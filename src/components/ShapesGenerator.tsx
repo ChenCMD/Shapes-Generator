@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Previewer from './Previewer';
-import { Shape } from '../types/Shape';
 import { Container, Row, Col } from 'react-bootstrap';
 import UserInterface from './UserInterface';
 import styles from '../styles/ShapesGenerator.module.scss';
+import { Shape } from '../ShapeNodes';
 
 const ShapesGenerator: React.FC = () => {
     const [shapes, setShapes] = useState<Shape[]>([]);
@@ -17,7 +17,7 @@ const ShapesGenerator: React.FC = () => {
                     <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-previewer']}>
                         <Previewer
                             shapePoints={shapes.map(v => v.pointSet)}
-                            selectedIDs={selectedShapes.map(v => v.id)}
+                            selectedIDs={selectedShapes.map(v => v.name)}
                         /></Col>
                     <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-user-interface']}>
                         <UserInterface

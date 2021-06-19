@@ -1,9 +1,8 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { changeParam, getArgumentMetaData, getParam, Pos, Shape } from '../types/Shape';
-import PosParameterBox from './PosParameterBox';
 import ParameterBox from './ParameterBox';
 import styles from '../styles/Inspector.module.scss';
+import { Shape } from '../ShapeNodes';
 
 interface InspectorProps {
     selectedShapes: Shape[]
@@ -13,24 +12,21 @@ interface InspectorProps {
 }
 
 const Inspector: React.FC<InspectorProps> = ({ selectedShapes, setSelectedShapes, shapes, setShapes }) => {
-    const paramBoxes = selectedShapes.map(shape => (
-        Object.keys(shape.arguments).map(arg => {
-            const { name, description } = getArgumentMetaData(shape.type, arg);
-            const updateParam = (newParam: string | Pos) => {
-                const updater = (v: Shape) => v.id === shape.id ? changeParam(v, newParam, arg) : v;
-                setSelectedShapes(selectedShapes.map(updater));
-                setShapes(shapes.map(updater));
+    const paramBoxes = selectedShapes.map(shape =>
+        shape.getParameterList().map(({ argID, value, name, description }) => {
+            const updateParam = (newParam: string) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                shape.setParameter(argID as any, newParam);
+                setSelectedShapes([...selectedShapes]);
+                setShapes([...shapes]);
             };
-            const param = getParam(shape, arg);
             return (
-                <Col key={`${shape.id}-${arg}`} xl={3} lg={4} md={6} sm={4} xs={6} >
-                    {typeof param === 'string'
-                        ? (<ParameterBox name={name} description={description} updateParam={updateParam} value={param} />)
-                        : (<PosParameterBox name={name} description={description} updateParam={updateParam} value={param} />)}
+                <Col key={`${shape.name}-${argID}`} xl={3} lg={4} md={6} sm={4} xs={6} >
+                    <ParameterBox name={name} description={description} updateParam={updateParam} value={value} />
                 </Col>
             );
         })
-    )).flat();
+    ).flat();
 
     return (
         <div className={`${styles['inspector']} rounded`}>

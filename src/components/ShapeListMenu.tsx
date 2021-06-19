@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getShape, Shape, ShapeType } from '../types/Shape';
+import { getShape, Shape, ShapeType } from '../ShapeNodes';
 import styles from '../styles/ShapeListMenu.module.scss';
 
 interface ShapeListMenuProps {

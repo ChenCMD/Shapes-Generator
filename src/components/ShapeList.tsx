@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { Shape } from '../types/Shape';
 import ShapeListItem from './ShapeListItem';
 import ShapeListMenu from './ShapeListMenu';
 import styles from '../styles/ShapeList.module.scss';
+import { Shape } from '../ShapeNodes';
 
 interface ShapeListProps {
     shapes: Shape[]
@@ -16,21 +16,17 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
     useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapes]);
 
     const onClick = (targetID: string, isPushCtrl: boolean) => {
-        if (isPushCtrl && selectedShapes.some(v => v.id === targetID)) return setSelectedShapes(selectedShapes.filter(v => v.id !== targetID));
+        if (isPushCtrl && selectedShapes.some(v => v.name === targetID)) return setSelectedShapes(selectedShapes.filter(v => v.name !== targetID));
 
-        const selected = shapes.filter(v => v.id === targetID);
+        const selected = shapes.filter(v => v.name === targetID);
         return setSelectedShapes(isPushCtrl ? [...selectedShapes, ...selected] : selected);
     };
 
-    const onBlur = (targetID: string, newID: string) => {
-        const changeID = (shape: Shape, id: string) => {
-            console.log(`updated id: ${shape.id} => ${id}`);
-            shape.id = id;
-            return shape;
-        };
-        setSelectedShapes(selectedShapes.map(v => v.id === targetID ? changeID(v, newID) : v));
-        setShapes(shapes.map(v => v.id === targetID ? changeID(v, newID) : v));
-        return;
+    const onBlur = (e: { preventDefault: () => void }, targetID: string, newID: string) => {
+        if (!shapes.filter(v => v.name === targetID).every(v => v.setName(newID)))
+            return e.preventDefault();
+        setSelectedShapes([...selectedShapes]);
+        setShapes([...shapes]);
     };
 
     return (
@@ -40,7 +36,7 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
                 <ListGroup>
                     {shapes.map(shape => (
                         <ShapeListItem
-                            key={shape.id} id={shape.id}
+                            key={shape.name} id={shape.name}
                             selectedShapes={selectedShapes}
                             onExitFocus={onBlur}
                             onSelect={onClick}

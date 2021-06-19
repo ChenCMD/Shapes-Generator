@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Stage, Layer, Rect, Circle } from 'react-konva';
-import { Point } from '../types/Shape';
 import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
+import { Point } from '../types/AbstractNode';
 
 interface PreviewerProps {
     shapePoints: Point[][]

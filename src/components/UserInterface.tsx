@@ -1,10 +1,10 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { Shape } from '../types/Shape';
 import Inspector from './Inspector';
 import Menu from './Menu';
 import ShapeList from './ShapeList';
 import styles from '../styles/UserInterface.module.scss';
+import { Shape } from '../ShapeNodes';
 
 interface UserInterfaceProps {
     shapes: Shape[]
