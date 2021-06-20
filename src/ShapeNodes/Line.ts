@@ -1,5 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData, Point } from '../types/AbstractNode';
+import { round } from '../utils/common';
 
 type LineParams =
     | 'count'
@@ -11,9 +12,9 @@ type LineParams =
 
 const defaultParams: Record<LineParams, string> = {
     count: '10',
-    from_x: '0',
+    from_x: '1',
     from_y: '0',
-    to_x: '0',
+    to_x: '-1',
     to_y: '0',
     vezier: '0'
 };
@@ -33,8 +34,14 @@ export class LineShape extends AbstractShapeNode<LineParams> {
     }
 
     protected updatePointSet(params: Record<LineParams, number>): void {
+        const idSet = new Set<string>();
         const points: Point[] = [];
-        const addPoint = (x: number, y: number) => points.push({ id: `${this.name}-${x}-${y}`, x, y });
+        const addPoint = (x: number, y: number) => {
+            const id = `${this.name}-${round(x, 4)}-${round(y, 4)}`;
+            if (idSet.has(id)) return;
+            idSet.add(id);
+            points.push({ id, x, y });
+        };
 
         const distanceX = params.to_x - params.from_x;
         const distanceY = params.to_y - params.from_y;
