@@ -19,8 +19,8 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
     useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapes]);
 
     const items = shapes.map((shape, i) => {
-        const onBlur = (e: { preventDefault: () => void }, newID: string) => {
-            if (!shape.setName(newID)) return e.preventDefault();
+        const onBlur = (newID: string) => {
+            shape.name = newID;
             setSelectedShapes([...selectedShapes]);
             setShapes([...shapes]);
         };
@@ -48,9 +48,9 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
         return (
             <ShapeListItem
                 index={i}
-                key={shape.name}
+                key={shape.uuid}
+                isSelected={selectedShapes.includes(shape)}
                 name={shape.name}
-                selectedShapes={selectedShapes}
                 onExitFocus={onBlur}
                 onSelect={onClick}
                 onDelete={onDelete}

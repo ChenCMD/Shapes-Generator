@@ -12,8 +12,6 @@ const shapes: Record<ShapeType, ShapeConstructor> = {
     polygon: PolygonShape
 };
 
-const nameSet = new Set<string>();
-
 export function getShape(id: string, type: ShapeType): Shape {
-    return new shapes[type](id, nameSet);
+    return new shapes[type](id);
 }

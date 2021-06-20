@@ -1,3 +1,5 @@
+import uuid from 'uuidjs';
+
 export interface ParameterMetaData {
     name: string
     description: string
@@ -12,30 +14,25 @@ export interface Point {
 }
 
 export abstract class AbstractShapeNode<T extends string> {
+    private _uuid: string;
     private _pointSet: Point[] = [];
+    public name: string;
 
     public constructor(
-        private _name: string,
+        id: string,
         private _params: Record<T, string>,
-        private readonly paramMetaData: Record<T, ParameterMetaData>,
-        private readonly nameSet: Set<string>
+        private readonly paramMetaData: Record<T, ParameterMetaData>
     ) {
+        this._uuid = uuid.generate();
+        this.name = id;
         const params: Partial<Record<T, number>> = {};
         for (const key of Object.keys(this.params) as T[]) params[key] = parseFloat(this.params[key]);
 
         this.updatePointSet(params as Record<T, number>);
     }
 
-    public get name(): string {
-        return this._name;
-    }
-
-    public setName(name: string): boolean {
-        if (this.nameSet.has(name)) return false;
-        this.nameSet.delete(this.name);
-        this.nameSet.add(name);
-        this._name = name;
-        return true;
+    public get uuid(): string {
+        return this._uuid;
     }
 
     protected get params(): Record<T, string> {
@@ -68,6 +65,10 @@ export abstract class AbstractShapeNode<T extends string> {
             params.push({ argID, value, name, description });
         }
         return params;
+    }
+
+    protected getPointID(): string {
+        return `${this.uuid}-${uuid.generate()}`;
     }
 
     protected abstract updatePointSet(params: Record<T, number>): void;

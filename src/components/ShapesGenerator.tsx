@@ -16,8 +16,7 @@ const ShapesGenerator: React.FC = () => {
                 <Row>
                     <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-previewer']}>
                         <Previewer
-                            shapePoints={shapes.map(v => v.pointSet)}
-                            selectedIDs={selectedShapes.map(v => v.name)}
+                            shapePoints={shapes.map(shape => ({ selected: selectedShapes.includes(shape), points: shape.pointSet }))}
                         /></Col>
                     <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-user-interface']}>
                         <UserInterface

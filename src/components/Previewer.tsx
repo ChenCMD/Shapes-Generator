@@ -5,22 +5,21 @@ import styles from '../styles/Previewer.module.scss';
 import { Point } from '../types/AbstractNode';
 
 interface PreviewerProps {
-    shapePoints: Point[][]
-    selectedIDs: string[]
+    shapePoints: { selected: boolean, points: Point[] }[]
 }
 
-const Previewer: React.FC<PreviewerProps> = ({ shapePoints, selectedIDs }) => {
+const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
     const [size, setSize] = useState<number>(100);
 
     const points: JSX.Element[] = shapePoints.map(shape =>
-        shape.map(({ id, x, y }) => (
+        shape.points.map(point => (
             <Circle
-                x={x * 25 + size / 2} y={y * 25 + size / 2}
+                x={point.x * 25 + size / 2} y={point.y * 25 + size / 2}
                 radius={4}
                 fill='rgb(212, 212, 212)'
                 strokeWidth={2}
-                stroke={selectedIDs.some(v => id.startsWith(v)) ? '#007bff' : ''}
-                key={id}
+                stroke={shape.selected ? '#007bff' : ''}
+                key={point.id}
             />
         ))
     ).flat();

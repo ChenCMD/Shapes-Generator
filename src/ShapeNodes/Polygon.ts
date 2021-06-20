@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData, Point } from '../types/AbstractNode';
-import { mod, round, toRadians } from '../utils/common';
+import { mod, toRadians } from '../utils/common';
 
 type PolygonParams =
     | 'center_x'
@@ -41,17 +41,14 @@ const paramMetaData: Record<PolygonParams, ParameterMetaData> = {
 };
 
 export class PolygonShape extends AbstractShapeNode<PolygonParams> {
-    public constructor(name: string, nameSet: Set<string>) {
-        super(name, rfdc()(defaultParams), paramMetaData, nameSet);
+    public constructor(id: string) {
+        super(id, rfdc()(defaultParams), paramMetaData);
     }
 
     protected updatePointSet(params: Record<PolygonParams, number>): void {
-        const idSet = new Set<string>();
         const points: Point[] = [];
         const addPoint = (x: number, y: number) => {
-            const id = `${this.name}-${round(x, 4)}-${round(y, 4)}`;
-            if (idSet.has(id)) return;
-            idSet.add(id);
+            const id = this.getPointID();
             points.push({ id, x, y });
         };
 

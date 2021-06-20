@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData, Point } from '../types/AbstractNode';
-import { round, toRadians } from '../utils/common';
+import { toRadians } from '../utils/common';
 
 type CircleParams =
     | 'count'
@@ -32,17 +32,14 @@ const paramMetaData: Record<CircleParams, ParameterMetaData> = {
 };
 
 export class CircleShape extends AbstractShapeNode<CircleParams> {
-    public constructor(name: string, nameSet: Set<string>) {
-        super(name, rfdc()(defaultParams), paramMetaData, nameSet);
+    public constructor(id: string) {
+        super(id, rfdc()(defaultParams), paramMetaData);
     }
 
     protected updatePointSet(params: Record<CircleParams, number>): void {
-        const idSet = new Set<string>();
         const points: Point[] = [];
         const addPoint = (x: number, y: number) => {
-            const id = `${this.name}-${round(x, 4)}-${round(y, 4)}`;
-            if (idSet.has(id)) return;
-            idSet.add(id);
+            const id = this.getPointID();
             points.push({ id, x, y });
         };
 
