@@ -23,7 +23,6 @@
         "name": "typescript-plugin-css-modules"
       }
     ],
-    "noEmit": true,
     "downlevelIteration": true
   },
   "include": [
