@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "react-scripts start"
+    "start": "webpack-dev-server"
   },
   "eslintConfig": {
     "extends": [
