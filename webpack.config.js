@@ -28,7 +28,17 @@ module.exports = {
             {
                 test: [/\.css$/, /\.scss$/],
                 exclude: /node_modules/,
-                loader: [MiniCssExtractPlugin.loader, 'css-loader?modules', 'postcss-loader', 'sass-loader'],
+                loader: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader?modules',
+                    'postcss-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            implementation: require('sass')
+                        }
+                    }
+                ],
             },
             // js,ts,tsxのローダ設定
             {
