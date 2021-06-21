@@ -1,4 +1,5 @@
 import uuid from 'uuidjs';
+import { Point } from './Point';
 
 export interface ParameterMetaData {
     name: string
@@ -6,12 +7,6 @@ export interface ParameterMetaData {
 }
 
 export type Parameter<T extends string> = { argID: T, value: string } & ParameterMetaData;
-
-export interface Point {
-    id: string
-    x: number
-    y: number
-}
 
 export abstract class AbstractShapeNode<T extends string> {
     private _uuid: string;
@@ -65,10 +60,6 @@ export abstract class AbstractShapeNode<T extends string> {
             params.push({ argID, value, name, description });
         }
         return params;
-    }
-
-    protected getPointID(): string {
-        return `${this.uuid}-${uuid.generate()}`;
     }
 
     protected abstract updatePointSet(params: Record<T, number>): void;

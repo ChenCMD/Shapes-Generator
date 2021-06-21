@@ -1,5 +1,6 @@
 import rfdc from 'rfdc';
-import { AbstractShapeNode, ParameterMetaData, Point } from '../types/AbstractNode';
+import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractNode';
+import { createPoint, Point } from '../types/Point';
 import { mod, toRadians } from '../utils/common';
 
 type PolygonParams =
@@ -47,10 +48,7 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams> {
 
     protected updatePointSet(params: Record<PolygonParams, number>): void {
         const points: Point[] = [];
-        const addPoint = (x: number, y: number) => {
-            const id = this.getPointID();
-            points.push({ id, x, y });
-        };
+        const addPoint = (x: number, y: number) => points.push(createPoint(this.uuid, x, y));
 
         const drawLine = (from: { x: number, y: number }, to: { x: number, y: number }) => {
             const distanceX = to.x - from.x;
