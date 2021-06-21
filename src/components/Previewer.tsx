@@ -11,15 +11,26 @@ interface PreviewerProps {
 const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
     const [size, setSize] = useState<number>(100);
 
+    const maxBounds = Math.max(
+        ...shapePoints
+            .flatMap(v => v.points)
+            .flatMap(v => [v.x, v.y])
+            .map(Math.abs)
+    );
+    const padding = 24;
+    const posMultiple = (size - padding * 2) / 2 / maxBounds;
+    const centerModifier = size / 2;
+
     const points: JSX.Element[] = shapePoints.map(shape =>
-        shape.points.map(point => (
+        shape.points.map(({ x, y, id }) => (
             <Circle
-                x={point.x * 25 + size / 2} y={point.y * 25 + size / 2}
+                x={x * posMultiple + centerModifier}
+                y={y * posMultiple + centerModifier}
                 radius={4}
                 fill='rgb(212, 212, 212)'
                 strokeWidth={2}
                 stroke={shape.selected ? '#007bff' : ''}
-                key={point.id}
+                key={id}
             />
         ))
     ).flat();
@@ -29,9 +40,13 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
             <Measure bounds onResize={contentRect => setSize(contentRect.bounds?.width ?? 100)}>
                 {({ measureRef }) => (
                     <div ref={measureRef}>
-                        <Stage width={size} height={size - 32}>
+                        <Stage width={size} height={size}>
                             <Layer>
-                                <Rect x={5} y={5} width={size - 10} height={size - 42} fill="rgb(16, 16, 16)" />
+                                <Rect
+                                    x={padding} y={padding}
+                                    width={size - padding * 2} height={size - padding * 2}
+                                    fill="rgb(16, 16, 16)"
+                                />
                                 {points}
                             </Layer>
                         </Stage>
