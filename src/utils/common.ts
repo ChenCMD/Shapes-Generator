@@ -20,3 +20,11 @@ export function floor(n: number, places = 0): number {
     const base = 10 ** places;
     return Math.floor(n * base) / base;
 }
+
+export function lessOr(n: number, m: number): number {
+    return n < m ? m : n;
+}
+
+export function greaterOr(n: number, m: number): number {
+    return n > m ? m : n;
+}
