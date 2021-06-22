@@ -47,7 +47,7 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
         }
     }
 
-    return (<>
+    return (
         <div className={`${styles['previewer-window']} rounded`}>
             <Measure bounds onResize={contentRect => setSize(contentRect.bounds?.width ?? 100)}>
                 {({ measureRef }) => (
@@ -67,8 +67,6 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
                 )}
             </Measure>
         </div>
-        size: {size} | posMultiple: {posMultiple}
-    </>
     );
 };
 
