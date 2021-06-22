@@ -3,7 +3,7 @@ import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
 import { Point } from '../types/Point';
-import { greaterOr, lessOr } from '../utils/common';
+import { greaterOr } from '../utils/common';
 
 interface PreviewerProps {
     shapePoints: { selected: boolean, points: Point[] }[]
