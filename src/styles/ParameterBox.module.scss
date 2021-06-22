@@ -9,6 +9,9 @@
     color: var(--foreground-color);
     line-height: 1.5;
     padding: 2px 0 2px 2px;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: var(--border-color);
 }
 
 .param-box-input {
@@ -17,6 +20,6 @@
     padding: 2px 0 2px 2px;
     color: var(--foreground-color);
     border: none;
-    outline: 1px solid var(--border-color);
+    outline: none;
     background-color: var(--background-color);
 }
