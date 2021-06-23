@@ -12,7 +12,7 @@ const ParameterBox: React.FC<ParameterBoxProps> = ({ name, description, updatePa
     const [argValue, setArgValue] = useState(value);
     const onChange = (newValue: string) => {
         setArgValue(newValue);
-        if (newValue === '' || Number.isNaN(newValue)) return;
+        if (!(/^[+,-]?(?:[1-9]\d*|0)(?:\.\d+)?$/.test(newValue))) return;
         updateParam(newValue);
     };
 
