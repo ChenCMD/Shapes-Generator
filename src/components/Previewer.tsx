@@ -18,7 +18,7 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
             .flatMap(v => [v.x, v.y])
             .map(Math.abs)
     );
-    const padding = size / 8;
+    const padding = size / 5;
     const posMultiple = greaterOr((size - padding * 2) / 2 / maxBounds, size / 8);
     const centerModifier = size / 2;
     const points = shapePoints.map(shape =>
