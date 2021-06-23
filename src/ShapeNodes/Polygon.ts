@@ -4,9 +4,9 @@ import { createPoint, Point } from '../types/Point';
 import { mod, toRadians } from '../utils/common';
 
 type PolygonParams =
+    | 'count'
     | 'center_x'
     | 'center_y'
-    | 'count'
     | 'radius'
     | 'start'
     | 'ellipse'
@@ -16,15 +16,15 @@ type PolygonParams =
     | 'vezier';
 
 const defaultParams: Record<PolygonParams, string> = {
-    corner: '5',
-    jump: '2',
-    count: '5',
+    count: '10',
     center_x: '0',
     center_y: '0',
     radius: '5',
     start: '0',
     ellipse: '100',
     rotate: '0',
+    corner: '5',
+    jump: '2',
     vezier: '0'
 };
 

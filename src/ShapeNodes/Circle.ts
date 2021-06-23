@@ -13,7 +13,7 @@ type CircleParams =
     | 'rotate';
 
 const defaultParams: Record<CircleParams, string> = {
-    count: '12',
+    count: '20',
     center_x: '0',
     center_y: '0',
     radius: '5',

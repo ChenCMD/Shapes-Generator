@@ -54,7 +54,7 @@ export abstract class AbstractShapeNode<T extends string> {
     public getParameterList(): Parameter<T>[] {
         const params: Parameter<T>[] = [];
 
-        for (const argID of Object.keys(this.params) as T[]) {
+        for (const argID of Object.getOwnPropertyNames(this.params) as T[]) {
             const value = this.params[argID];
             const { name, description } = this.paramMetaData[argID] ?? { name: '', description: '' };
             params.push({ argID, value, name, description });
