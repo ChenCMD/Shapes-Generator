@@ -38,12 +38,23 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
     const grids: JSX.Element[] = [];
     if (posMultiple) {
         for (let i = 0; i * posMultiple < size / 2; i++) {
+            const drawGridLine = (axis: 'x' | 'y', offset: number) =>
+                grids.push(
+                    <Line
+                        key={`${axis}-${offset}`}
+                        points={axis === 'x'
+                            ? [0, offset + centerModifier, size, offset + centerModifier]
+                            : [offset + centerModifier, 0, offset + centerModifier, size]
+                        }
+                        stroke="rgb(48, 48, 48)" strokeWidth={1.5}
+                    />
+                );
             const linePos = i * posMultiple;
-            grids.push(<Line key={`x-${linePos}`} points={[0, linePos + centerModifier, size, linePos + centerModifier]} stroke="rbg(64, 64, 64)" strokeWidth={1.5} />);
-            grids.push(<Line key={`y-${linePos}`} points={[linePos + centerModifier, 0, linePos + centerModifier, size]} stroke="rbg(64, 64, 64)" strokeWidth={1.5} />);
+            drawGridLine('x', linePos);
+            drawGridLine('y', linePos);
             if (i === 0) continue;
-            grids.push(<Line key={`x-${-linePos}`} points={[0, -linePos + centerModifier, size, -linePos + centerModifier]} stroke="rbg(64, 64, 64)" strokeWidth={1.5} />);
-            grids.push(<Line key={`y-${-linePos}`} points={[-linePos + centerModifier, 0, -linePos + centerModifier, size]} stroke="rbg(64, 64, 64)" strokeWidth={1.5} />);
+            drawGridLine('x', -linePos);
+            drawGridLine('y', -linePos);
         }
     }
 
