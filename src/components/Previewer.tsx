@@ -26,7 +26,7 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
             <Circle
                 x={x * posMultiple + centerModifier}
                 y={y * posMultiple + centerModifier}
-                radius={4}
+                radius={0.25 * posMultiple}
                 fill='rgb(212, 212, 212)'
                 strokeWidth={2}
                 stroke={shape.selected ? '#007bff' : ''}
