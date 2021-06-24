@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
-import { Point } from '../types/Point';
+import { IdentifiedPoint } from '../types/Point';
 import { greaterOr } from '../utils/common';
 
 interface PreviewerProps {
-    shapePoints: { selected: boolean, points: Point[] }[]
+    shapePoints: { selected: boolean, points: IdentifiedPoint[] }[]
 }
 
 const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
@@ -26,7 +26,7 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
             <Circle
                 x={x * posMultiple + centerModifier}
                 y={y * posMultiple + centerModifier}
-                radius={0.25 * posMultiple}
+                radius={0.15 * posMultiple}
                 fill='rgb(212, 212, 212)'
                 strokeWidth={2}
                 stroke={shape.selected ? '#007bff' : ''}

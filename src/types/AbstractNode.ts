@@ -1,5 +1,5 @@
 import uuid from 'uuidjs';
-import { Point } from './Point';
+import { IdentifiedPoint } from './Point';
 
 export interface ParameterMetaData {
     name: string
@@ -10,7 +10,7 @@ export type Parameter<T extends string> = { argID: T, value: string } & Paramete
 
 export abstract class AbstractShapeNode<T extends string> {
     private _uuid: string;
-    private _pointSet: Point[] = [];
+    private _pointSet: IdentifiedPoint[] = [];
     public name: string;
 
     public constructor(
@@ -34,11 +34,11 @@ export abstract class AbstractShapeNode<T extends string> {
         return this._params;
     }
 
-    public get pointSet(): Point[] {
+    public get pointSet(): IdentifiedPoint[] {
         return this._pointSet;
     }
 
-    protected set pointSet(points: Point[]) {
+    protected set pointSet(points: IdentifiedPoint[]) {
         this._pointSet = points;
     }
 

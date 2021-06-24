@@ -1,11 +1,14 @@
 import uuid from 'uuidjs';
 
 export interface Point {
-    id: string
     x: number
     y: number
 }
 
-export function createPoint(parentID: string, x: number, y: number): Point {
+export interface IdentifiedPoint extends Point {
+    id: string
+}
+
+export function createIdentifiedPoint(parentID: string, x: number, y: number): IdentifiedPoint {
     return { id: `${parentID}-${uuid.generate()}`, x, y};
 }
