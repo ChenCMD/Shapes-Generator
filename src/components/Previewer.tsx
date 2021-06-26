@@ -19,24 +19,25 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
             .map(Math.abs)
     );
     const padding = size / 5;
-    const posMultiple = greaterOr((size - padding * 2) / 2 / maxBounds, size / 16);
     const centerModifier = size / 2;
-    const points = shapePoints.map(shape =>
-        shape.points.map(({ pos: [x, y], id }) => (
-            <Circle
-                x={x * posMultiple + centerModifier}
-                y={y * posMultiple + centerModifier}
-                radius={0.15 * posMultiple}
-                fill='rgb(212, 212, 212)'
-                strokeWidth={2}
-                stroke={shape.selected ? '#007bff' : ''}
-                key={id}
-            />
-        ))
-    ).flat();
+    const posMultiple = greaterOr((size - padding * 2) / 2 / maxBounds, size / 16);
 
-    const grids: JSX.Element[] = [];
-    if (posMultiple) {
+    const points: JSX.Element[] = [], grids: JSX.Element[] = [];
+    if (posMultiple && maxBounds < 250) {
+        points.push(...shapePoints.map(shape =>
+            shape.points.map(({ pos: [x, y], id }) => (
+                <Circle
+                    x={x * posMultiple + centerModifier}
+                    y={y * posMultiple + centerModifier}
+                    radius={0.15 * posMultiple}
+                    fill='rgb(212, 212, 212)'
+                    strokeWidth={2}
+                    stroke={shape.selected ? '#007bff' : ''}
+                    key={id}
+                />
+            ))
+        ).flat());
+
         for (let i = 0; i * posMultiple < size / 2; i++) {
             const drawGridLine = (axis: 'x' | 'y', offset: number) =>
                 grids.push(
