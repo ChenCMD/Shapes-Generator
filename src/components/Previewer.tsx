@@ -3,7 +3,6 @@ import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
 import { IdentifiedPoint } from '../types/Point';
-import { greaterOr } from '../utils/common';
 
 interface PreviewerProps {
     shapePoints: { selected: boolean, points: IdentifiedPoint[] }[]
@@ -20,7 +19,7 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
     );
     const padding = size / 5;
     const centerModifier = size / 2;
-    const posMultiple = greaterOr((size - padding * 2) / 2 / maxBounds, size / 16);
+    const posMultiple = Math.min((size - padding * 2) / 2 / maxBounds, size / 10);
 
     const points: JSX.Element[] = [], grids: JSX.Element[] = [];
     if (posMultiple && maxBounds < 250) {
