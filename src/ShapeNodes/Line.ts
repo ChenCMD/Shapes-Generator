@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractNode';
-import { createIdentifiedPoint, IdentifiedPoint } from '../types/Point';
+import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 
 type LineParams =
     | 'count'
@@ -35,13 +35,10 @@ export class LineShape extends AbstractShapeNode<LineParams> {
 
     protected updatePointSet(params: Record<LineParams, number>): void {
         const points: IdentifiedPoint[] = [];
-        const addPoint = (x: number, y: number) => points.push(createIdentifiedPoint(this.uuid, x, y));
+        const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
 
-        const distanceX = params.to_x - params.from_x;
-        const distanceY = params.to_y - params.from_y;
-        const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
-        for (let i = 0; i < distance; i += distance / params.count)
-            addPoint(params.from_x + distanceX * (i / distance), params.from_y + distanceY * (i / distance));
+        for (let t = 0; t < 1; t += 1 / params.count)
+            addPoint([(1 - t) * params.from_x + t * params.to_x, (1 - t) * params.from_y + t * params.to_y]);
 
         this.pointSet = points;
     }

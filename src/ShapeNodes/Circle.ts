@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractNode';
-import { createIdentifiedPoint, IdentifiedPoint } from '../types/Point';
+import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { toRadians } from '../utils/common';
 
 type CircleParams =
@@ -39,12 +39,13 @@ export class CircleShape extends AbstractShapeNode<CircleParams> {
 
     protected updatePointSet(params: Record<CircleParams, number>): void {
         const points: IdentifiedPoint[] = [];
-        const addPoint = (x: number, y: number) => points.push(createIdentifiedPoint(this.uuid, x, y));
+        const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
 
         for (let theta = params.start; theta < 360 + params.start; theta += 360 / params.count) {
-            const x = params.center_x + Math.sin(toRadians(theta)) * params.radius;
-            const y = params.center_y + -Math.cos(toRadians(theta)) * params.radius;
-            addPoint(x, y);
+            addPoint([
+                params.center_x + Math.sin(toRadians(theta)) * params.radius,
+                params.center_y + -Math.cos(toRadians(theta)) * params.radius
+            ]);
         }
 
         this.pointSet = points;

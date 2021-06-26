@@ -15,14 +15,14 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
     const maxBounds = Math.max(
         ...shapePoints
             .flatMap(v => v.points)
-            .flatMap(v => [v.x, v.y])
+            .flatMap(v => v.pos)
             .map(Math.abs)
     );
     const padding = size / 5;
-    const posMultiple = greaterOr((size - padding * 2) / 2 / maxBounds, size / 8);
+    const posMultiple = greaterOr((size - padding * 2) / 2 / maxBounds, size / 16);
     const centerModifier = size / 2;
     const points = shapePoints.map(shape =>
-        shape.points.map(({ x, y, id }) => (
+        shape.points.map(({ pos: [x, y], id }) => (
             <Circle
                 x={x * posMultiple + centerModifier}
                 y={y * posMultiple + centerModifier}
