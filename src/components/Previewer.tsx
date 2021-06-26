@@ -37,18 +37,19 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
             ))
         ).flat());
 
+        const drawGridLine = (axis: 'x' | 'y', offset: number) =>
+            grids.push(
+                <Line
+                    key={`${axis}-${offset}`}
+                    points={axis === 'x'
+                        ? [0, offset + centerModifier, size, offset + centerModifier]
+                        : [offset + centerModifier, 0, offset + centerModifier, size]
+                    }
+                    stroke={offset === 0 ? 'rgb(96,96,96)' : 'rgb(48, 48, 48)'}
+                    strokeWidth={1.5}
+                />
+            );
         for (let i = 0; i * posMultiple < size / 2; i++) {
-            const drawGridLine = (axis: 'x' | 'y', offset: number) =>
-                grids.push(
-                    <Line
-                        key={`${axis}-${offset}`}
-                        points={axis === 'x'
-                            ? [0, offset + centerModifier, size, offset + centerModifier]
-                            : [offset + centerModifier, 0, offset + centerModifier, size]
-                        }
-                        stroke="rgb(48, 48, 48)" strokeWidth={1.5}
-                    />
-                );
             const linePos = i * posMultiple;
             drawGridLine('x', linePos);
             drawGridLine('y', linePos);
