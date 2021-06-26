@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import ParameterBox from './ParameterBox';
 import styles from '../styles/Inspector.module.scss';
 import { Shape } from '../ShapeNodes';
-import { AbstractShapeNode } from '../types/AbstractNode';
+import { AbstractShapeNode } from '../types/AbstractShapeNode';
 
 interface InspectorProps {
     selectedShapes: Shape[]

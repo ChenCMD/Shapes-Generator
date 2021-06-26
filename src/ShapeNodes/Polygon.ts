@@ -1,5 +1,5 @@
 import rfdc from 'rfdc';
-import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractNode';
+import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { mod, toRadians } from '../utils/common';
 
