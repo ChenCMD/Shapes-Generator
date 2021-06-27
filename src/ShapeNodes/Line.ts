@@ -30,7 +30,7 @@ const paramMetaData: Record<LineParams, ParameterMetaData> = {
 
 export class LineShape extends AbstractShapeNode<LineParams> {
     public constructor(id: string) {
-        super(id, rfdc()(defaultParams), paramMetaData);
+        super('line', id, rfdc()(defaultParams), paramMetaData);
     }
 
     protected updatePointSet(params: Record<LineParams, number>): void {

@@ -43,7 +43,7 @@ const paramMetaData: Record<PolygonParams, ParameterMetaData> = {
 
 export class PolygonShape extends AbstractShapeNode<PolygonParams> {
     public constructor(id: string) {
-        super(id, rfdc()(defaultParams), paramMetaData);
+        super('polygon', id, rfdc()(defaultParams), paramMetaData);
     }
 
     protected updatePointSet(params: Record<PolygonParams, number>): void {

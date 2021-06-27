@@ -34,7 +34,7 @@ const paramMetaData: Record<CircleParams, ParameterMetaData> = {
 
 export class CircleShape extends AbstractShapeNode<CircleParams> {
     public constructor(id: string) {
-        super(id, rfdc()(defaultParams), paramMetaData);
+        super('circle', id, rfdc()(defaultParams), paramMetaData);
     }
 
     protected updatePointSet(params: Record<CircleParams, number>): void {
