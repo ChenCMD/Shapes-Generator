@@ -10,6 +10,7 @@ interface PreviewerProps {
 
 const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
     const [size, setSize] = useState<number>(100);
+    const centerModifier = size / 2;
 
     const maxBounds = Math.max(
         ...shapePoints
@@ -17,9 +18,8 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints }) => {
             .flatMap(v => v.pos)
             .map(Math.abs)
     );
-    const padding = size / 5;
-    const centerModifier = size / 2;
-    const posMultiple = Math.min((size - padding * 2) / 2 / maxBounds, size / 10);
+    const padding = size / 6;
+    const posMultiple = Math.min((size - padding * 2) / 2 / maxBounds, size / 12);
 
     const points: JSX.Element[] = [], grids: JSX.Element[] = [];
     if (posMultiple && maxBounds < 250) {
