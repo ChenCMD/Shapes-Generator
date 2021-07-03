@@ -18,10 +18,10 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
         <Row>
             <Col className={styles['col-inspector']}>
                 <Inspector
-                    selectedShapes={selectedShapes}
-                    setSelectedShapes={setSelectedShapes}
                     shapes={shapes}
                     setShapes={setShapes}
+                    selectedShapes={selectedShapes}
+                    setSelectedShapes={setSelectedShapes}
                 />
             </Col>
         </ Row>
@@ -34,7 +34,9 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
                     setSelectedShapes={setSelectedShapes}
                 />
             </ Col>
-            <Col xl={7} lg={7} md={12} sm={7} xs={12} className={styles['col-menu']}><Menu /></ Col>
+            <Col xl={7} lg={7} md={12} sm={7} xs={12} className={styles['col-menu']}>
+                <Menu />
+            </ Col>
         </ Row>
     </Container>
 );
