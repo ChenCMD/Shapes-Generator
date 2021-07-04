@@ -31,13 +31,18 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, 
     };
 
     const onKeyDown = (key: string) => {
-        console.log(`onKeyDown: ${key}`);
-        if (key === 'Enter' && renameMode) onExitRename();
-        if (key === 'Enter' && !renameMode) setRenameMode(true);
-        if (key === 'Escape') setRenameMode(false);
-        if (key === 'Delete') onDelete();
-        if (key === 'ArrowUp') onSelectMove(-1);
-        if (key === 'ArrowDown') onSelectMove(1);
+        switch (key) {
+            case 'Enter':
+                return renameMode ? onExitRename() : setRenameMode(true);
+            case 'Escape':
+                return setRenameMode(false);
+            case 'Delete':
+                return onDelete();
+            case 'ArrowUp':
+                return onSelectMove(-1);
+            case 'ArrowDown':
+                return onSelectMove(1);
+        }
     };
 
     useEffect(() => inputElemRef.current?.focus(), [renameMode]);
