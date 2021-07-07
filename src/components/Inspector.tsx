@@ -13,7 +13,7 @@ interface InspectorProps {
 }
 
 const Inspector: React.FC<InspectorProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes }) => {
-    const paramBoxes = selectedShapes.map(<T extends string, U extends AbstractShapeNode<T>>(shape: U) =>
+    const paramBoxes = selectedShapes.flatMap(<T extends string, U extends AbstractShapeNode<T>>(shape: U) =>
         shape.getParameterList().map(({ argID, value, name, description }) => {
             const updateParam = (newParam: string) => {
                 shape.setParameter(argID, newParam);
@@ -26,7 +26,7 @@ const Inspector: React.FC<InspectorProps> = ({ shapes, setShapes, selectedShapes
                 </Col>
             );
         })
-    ).flat();
+    );
 
     return (
         <div className={`${styles['inspector']} rounded`}>
