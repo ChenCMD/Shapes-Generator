@@ -4,7 +4,6 @@ import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
 import { GridMode } from '../types/GridMode';
 import { IdentifiedPoint, Point } from '../types/Point';
-import { toFracString } from '../utils/common';
 
 interface PreviewerProps {
     shapePoints: { selected: boolean, points: IdentifiedPoint[] }[]
@@ -29,13 +28,11 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints, gridMode, duplicated
     if (posMultiple && maxBounds < 250) {
         let latestPos: Point | undefined = undefined;
         points.push(...shapePoints
-            .flatMap((shape, i) => ({ parent: i, points: shape.points }))
-            .flatMap(shape => shape.points.map(v => ({ parent: shape.parent, point: v })))
+            .flatMap(({ points: p }, i) => p.map(v => ({ parent: i, point: v })))
             .sort(({ point: a }, { point: b }) => {
                 if (a.pos[0] < b.pos[0]) return 1;
                 if (a.pos[0] > b.pos[0]) return -1;
-                if (a.pos[1] <= b.pos[1]) return 1;
-                return -1;
+                return b.pos[1] - a.pos[1];
             })
             .filter(({ point: { pos: p } }) => {
                 if (!latestPos) {
@@ -44,11 +41,10 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints, gridMode, duplicated
                 }
                 const squaredDistance = (latestPos[0] - p[0]) * (latestPos[0] - p[0]) + (latestPos[1] - p[1]) * (latestPos[1] - p[1]);
                 const isDuplicated = squaredDistance < duplicatedPointRange * duplicatedPointRange;
-                if (isDuplicated) console.log('duplicated point detected');
                 if (!isDuplicated) latestPos = p;
                 return !isDuplicated;
             })
-            .sort(({parent: a}, {parent: b}) => {
+            .sort(({ parent: a }, { parent: b }) => {
                 if (shapePoints[a].selected === shapePoints[b].selected) return 0;
                 if (shapePoints[a].selected) return 1;
                 if (shapePoints[b].selected) return -1;
