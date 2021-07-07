@@ -3,10 +3,10 @@ import { getShape, Shape, ShapeType } from '../ShapeNodes';
 import styles from '../styles/ShapeListMenu.module.scss';
 
 interface ShapeListMenuProps {
-    setShapes: (shape: Shape) => void
+    addShape: (shape: Shape) => void
 }
 
-const ShapeListMenu: React.FC<ShapeListMenuProps> = ({ setShapes }) => {
+const ShapeListMenu: React.FC<ShapeListMenuProps> = ({ addShape }) => {
     const [shapePulldown, setShapePulldown] = useState<ShapeType>('line');
     const [addCount, setAddCount] = useState<Record<ShapeType, number>>({
         line: 0,
@@ -18,7 +18,7 @@ const ShapeListMenu: React.FC<ShapeListMenuProps> = ({ setShapes }) => {
         const cnt = addCount[shapePulldown] + 1;
 
         setAddCount({ ...addCount, [shapePulldown]: cnt });
-        setShapes(getShape(`${shapePulldown} ${cnt}`, shapePulldown));
+        addShape(getShape(`${shapePulldown} ${cnt}`, shapePulldown));
     };
     return (
         <div className={styles['shape-list-menu']}>

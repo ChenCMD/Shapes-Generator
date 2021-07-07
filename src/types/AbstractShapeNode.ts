@@ -14,6 +14,7 @@ export abstract class AbstractShapeNode<T extends string> {
     public name: string;
 
     public constructor(
+        private type: string,
         id: string,
         private _params: Record<T, string>,
         private readonly paramMetaData: Record<T, ParameterMetaData>
@@ -63,4 +64,12 @@ export abstract class AbstractShapeNode<T extends string> {
     }
 
     protected abstract updatePointSet(params: Record<T, number>): void;
+
+    public toExportObject(): string {
+        return JSON.stringify({
+            type: this.type,
+            name: this.name,
+            params: this.params
+        });
+    }
 }

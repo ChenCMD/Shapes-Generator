@@ -1,0 +1,16 @@
+.col-value {
+    padding: 0 10px 0 0;
+}
+
+.col-slider {
+    padding: 0 0 0 10px;
+}
+
+.value {
+    color: var(--foreground-color);
+    text-align: right;
+}
+
+.slider {
+    cursor: pointer;
+}

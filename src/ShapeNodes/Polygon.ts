@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
-import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractNode';
-import { createIdentifiedPoint, IdentifiedPoint } from '../types/Point';
+import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode';
+import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { mod, toRadians } from '../utils/common';
 
 type PolygonParams =
@@ -37,33 +37,41 @@ const paramMetaData: Record<PolygonParams, ParameterMetaData> = {
     ellipse: { name: '楕円', description: '楕円の歪みの強さ' },
     rotate: { name: '角度', description: '開始角には影響は与えません' },
     corner: { name: '角の数', description: '' },
-    jump: { name: '飛ばす角の数', description: '角をいくつ先の角と紐づけていくか<br>2以上で星などの複雑な図形を生成できます' },
+    jump: { name: '紐づける角の遠さ', description: '角をいくつ先の角と紐づけていくか 2以上で星などの複雑な図形を生成できます' },
     vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
 };
 
 export class PolygonShape extends AbstractShapeNode<PolygonParams> {
     public constructor(id: string) {
-        super(id, rfdc()(defaultParams), paramMetaData);
+        super('polygon', id, rfdc()(defaultParams), paramMetaData);
     }
 
     protected updatePointSet(params: Record<PolygonParams, number>): void {
         const points: IdentifiedPoint[] = [];
-        const addPoint = (x: number, y: number) => points.push(createIdentifiedPoint(this.uuid, x, y));
+        const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
 
-        const drawLine = (from: { x: number, y: number }, to: { x: number, y: number }) => {
-            const distanceX = to.x - from.x;
-            const distanceY = to.y - from.y;
-            const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
-            for (let i = 0; i < distance; i += distance / params.count)
-                addPoint(from.x + distanceX * (i / distance), from.y + distanceY * (i / distance));
+        const drawLine = (from: Point, to: Point) => {
+            const calcPoint = (fromPos: Point, toPos: Point, t: number): Point => [
+                (1 - t) * fromPos[0] + t * toPos[0],
+                (1 - t) * fromPos[1] + t * toPos[1]
+            ];
+            const vector = [to[0] - from[0], to[1] - from[1]];
+            const vecMagnitude = Math.sqrt(vector[0] ** 2 + vector[1] ** 2);
+            const normalizedVector = [vector[1] / vecMagnitude * params.vezier, -vector[0] / vecMagnitude * params.vezier];
+
+            const controlPoint: Point = [(from[0] + to[0]) / 2 + normalizedVector[0], (from[1] + to[1]) / 2 + normalizedVector[1]];
+            for (let i = 0; i < params.count; i++) {
+                const t = i / (params.count);
+                addPoint(calcPoint(calcPoint(from, controlPoint, t), calcPoint(controlPoint, to, t), t));
+            }
         };
 
-        const corners: { x: number, y: number }[] = [];
+        const corners: Point[] = [];
         for (let theta = params.start; theta < 360 + params.start; theta += 360 / params.corner) {
-            corners.push({
-                x: params.center_x + Math.sin(toRadians(theta)) * params.radius,
-                y: params.center_y + -Math.cos(toRadians(theta)) * params.radius
-            });
+            corners.push([
+                params.center_x + Math.sin(toRadians(theta)) * params.radius,
+                params.center_y + -Math.cos(toRadians(theta)) * params.radius
+            ]);
         }
         for (const [i, corner] of corners.entries()) drawLine(corner, corners[mod(i + params.jump, corners.length)]);
 

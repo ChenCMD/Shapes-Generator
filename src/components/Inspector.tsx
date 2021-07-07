@@ -3,16 +3,16 @@ import { Container, Row, Col } from 'react-bootstrap';
 import ParameterBox from './ParameterBox';
 import styles from '../styles/Inspector.module.scss';
 import { Shape } from '../ShapeNodes';
-import { AbstractShapeNode } from '../types/AbstractNode';
+import { AbstractShapeNode } from '../types/AbstractShapeNode';
 
 interface InspectorProps {
-    selectedShapes: Shape[]
-    setSelectedShapes: (shapes: Shape[]) => void
     shapes: Shape[]
     setShapes: (shapes: Shape[]) => void
+    selectedShapes: Shape[]
+    setSelectedShapes: (shapes: Shape[]) => void
 }
 
-const Inspector: React.FC<InspectorProps> = ({ selectedShapes, setSelectedShapes, shapes, setShapes }) => {
+const Inspector: React.FC<InspectorProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes }) => {
     const paramBoxes = selectedShapes.map(<T extends string, U extends AbstractShapeNode<T>>(shape: U) =>
         shape.getParameterList().map(({ argID, value, name, description }) => {
             const updateParam = (newParam: string) => {
