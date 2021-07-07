@@ -16,10 +16,10 @@ interface UserInterfaceProps {
     setGridMode: (mode: GridMode) => void
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
-    generateExportFile: () => string
+    openExportModal: () => void
 }
 
-const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, generateExportFile }) => (
+const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }) => (
     <Container fluid className={styles['user-interface']}>
         <Row>
             <Col className={styles['col-inspector']}>
@@ -42,11 +42,11 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
             </ Col>
             <Col xl={7} lg={7} md={12} sm={7} xs={12} className={styles['col-menu']}>
                 <Menu
-                    generateExportFile={generateExportFile}
                     gridMode={gridMode}
                     setGridMode={setGridMode}
                     duplicatedPointRange={duplicatedPointRange}
                     setDuplicatedPointRange={setDuplicatedPointRange}
+                    openExportModal={openExportModal}
                 />
             </ Col>
         </ Row>

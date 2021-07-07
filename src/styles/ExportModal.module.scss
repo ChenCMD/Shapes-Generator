@@ -1,0 +1,101 @@
+.overlay {
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0;
+    transition-property: background-color, opacity;
+    transition-duration: 400ms;
+    transition-timing-function: ease-in-out;
+    outline: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.after {
+        background-color: rgba(0, 0, 0, 0.6);
+        opacity: 1;
+    }
+    &.before {
+        background-color: rgba(0, 0, 0, 0);
+        opacity: 0;
+    }
+}
+
+.content {
+    position: relative;
+    margin: 0 auto;
+    border: 0;
+    outline: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0%;
+    width: 0%;
+    background-color: transparent;
+    transition-property: background-color, width, height;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+    &.after {
+        @media screen and (max-width: 575px) {
+            width: 70%;
+        }
+        @media screen and (min-width: 576px) {
+            width: 60%;
+        }
+        @media screen and (min-width: 768px) {
+            width: 50%;
+        }
+        @media screen and (min-width: 992px) {
+            width: 40%;
+        }
+        @media screen and (min-width: 1200px) {
+            width: 30%;
+        }
+    }
+    &.before {
+        width: 0%;
+        height: 0%;
+        background-color: transparent;
+    }
+}
+
+.container {
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    padding: 7px;
+    background-color: var(--background-color);
+}
+
+.col {
+    padding: 8px !important;
+}
+
+.line {
+    color: var(--border-color);
+    background-color: var(--border-color);
+    height: 1px;
+    margin: 5px 0 5px 0;
+}
+
+.text {
+    color: var(--foreground-color);
+    font-size: 1.15rem;
+    padding-bottom: 5px;
+}
+
+.input {
+    width: 100%;
+    line-height: 1.5;
+    padding: 2px 0 2px 2px;
+    color: var(--foreground-color);
+    border: none;
+    outline: none;
+    background-color: var(--input-bg-color);
+}
+
+.button {
+    display: inline-block;
+}

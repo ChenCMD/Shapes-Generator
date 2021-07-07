@@ -13,9 +13,16 @@ body {
 
 :global {
     .btn {
+        background-color: var(--background-color);
+        color: var(--foreground-color);
+        width: 100%;
+        margin: 0;
+        border-width: 1px;
+        border: 1px solid var(--border-color);
         &:hover {
             background-color: var(--hover-highlight);
             border-color: var(--border-color);
+            color: var(--foreground-color);
         }
         &:active,
         &.active,
@@ -24,6 +31,7 @@ body {
             color: var(--foreground-color) !important;
             border-color: var(--border-color) !important;
             box-shadow: none !important;
+            z-index: 0 !important;
         }
     }
 }

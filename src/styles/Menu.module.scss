@@ -25,15 +25,3 @@
     font-size: 1.15rem;
     padding-bottom: 5px;
 }
-
-.button {
-    background-color: var(--background-color);
-    color: var(--foreground-color);
-    width: 100%;
-    margin: 0;
-    border-width: 1px;
-    border: 1px solid var(--border-color);
-    &:hover {
-        color: var(--foreground-color);
-    }
-}
