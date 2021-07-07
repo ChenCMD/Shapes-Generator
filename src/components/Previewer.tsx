@@ -3,14 +3,16 @@ import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
 import { GridMode } from '../types/GridMode';
-import { IdentifiedPoint } from '../types/Point';
+import { IdentifiedPoint, Point } from '../types/Point';
+import { toFracString } from '../utils/common';
 
 interface PreviewerProps {
     shapePoints: { selected: boolean, points: IdentifiedPoint[] }[]
     gridMode: GridMode
+    duplicatedPointRange: number
 }
 
-const Previewer: React.FC<PreviewerProps> = ({ shapePoints, gridMode }) => {
+const Previewer: React.FC<PreviewerProps> = ({ shapePoints, gridMode, duplicatedPointRange }) => {
     const [size, setSize] = useState<number>(100);
     const centerModifier = size / 2;
 
@@ -25,24 +27,45 @@ const Previewer: React.FC<PreviewerProps> = ({ shapePoints, gridMode }) => {
 
     const points: JSX.Element[] = [], grids: JSX.Element[] = [];
     if (posMultiple && maxBounds < 250) {
-        points.push(...shapePoints.sort((a, b) => {
-            if (a.selected === b.selected) return 0;
-            if (a.selected) return 1;
-            if (b.selected) return -1;
-            return 0;
-        }).flatMap(shape =>
-            shape.points.map(({ pos: [x, y], id }) => (
+        let latestPos: Point | undefined = undefined;
+        points.push(...shapePoints
+            .flatMap((shape, i) => ({ parent: i, points: shape.points }))
+            .flatMap(shape => shape.points.map(v => ({ parent: shape.parent, point: v })))
+            .sort(({ point: a }, { point: b }) => {
+                if (a.pos[0] < b.pos[0]) return 1;
+                if (a.pos[0] > b.pos[0]) return -1;
+                if (a.pos[1] <= b.pos[1]) return 1;
+                return -1;
+            })
+            .filter(({ point: { pos: p } }) => {
+                if (!latestPos) {
+                    latestPos = p;
+                    return true;
+                }
+                const squaredDistance = (latestPos[0] - p[0]) * (latestPos[0] - p[0]) + (latestPos[1] - p[1]) * (latestPos[1] - p[1]);
+                const isDuplicated = squaredDistance < duplicatedPointRange * duplicatedPointRange;
+                if (isDuplicated) console.log('duplicated point detected');
+                if (!isDuplicated) latestPos = p;
+                return !isDuplicated;
+            })
+            .sort(({parent: a}, {parent: b}) => {
+                if (shapePoints[a].selected === shapePoints[b].selected) return 0;
+                if (shapePoints[a].selected) return 1;
+                if (shapePoints[b].selected) return -1;
+                return 0;
+            })
+            .map(({ parent, point: { pos: [x, y], id } }) => (
                 <Circle
                     x={x * posMultiple + centerModifier}
                     y={y * posMultiple + centerModifier}
                     radius={0.15 * posMultiple}
                     fill='rgb(212, 212, 212)'
                     strokeWidth={2}
-                    stroke={shape.selected ? '#007bff' : ''}
+                    stroke={shapePoints[parent].selected ? '#007bff' : ''}
                     key={id}
                 />
             ))
-        ));
+        );
 
         if (gridMode !== GridMode.off) {
             const drawGridLine = (axis: 'x' | 'y', offset: number) =>

@@ -1,0 +1,29 @@
+body {
+    background-color: rgb(0, 0, 0);
+}
+
+:root {
+    --foreground-color: rgb(212, 212, 212);
+    --background-color: rgb(16, 16, 16);
+    --input-bg-color: rgb(48, 48, 48);
+    --border-color: rgb(110, 110, 110);
+    --hover-highlight: rgb(48, 48, 48);
+    --select-highlight: rgb(80, 80, 80);
+}
+
+:global {
+    .btn {
+        &:hover {
+            background-color: var(--hover-highlight);
+            border-color: var(--border-color);
+        }
+        &:active,
+        &.active,
+        &:focus {
+            background-color: var(--select-highlight) !important;
+            color: var(--foreground-color) !important;
+            border-color: var(--border-color) !important;
+            box-shadow: none !important;
+        }
+    }
+}
