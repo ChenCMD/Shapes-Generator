@@ -60,9 +60,10 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams> {
             const normalizedVector = [vector[1] / vecMagnitude * params.vezier, -vector[0] / vecMagnitude * params.vezier];
 
             const controlPoint: Point = [(from[0] + to[0]) / 2 + normalizedVector[0], (from[1] + to[1]) / 2 + normalizedVector[1]];
-
-            for (let t = 0; t < 1; t += 1 / params.count)
+            for (let i = 0; i < params.count; i++) {
+                const t = i / (params.count);
                 addPoint(calcPoint(calcPoint(from, controlPoint, t), calcPoint(controlPoint, to, t), t));
+            }
         };
 
         const corners: Point[] = [];
