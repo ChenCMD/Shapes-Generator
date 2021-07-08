@@ -5,6 +5,7 @@
     border-color: var(--border-color);
     min-height: 250px;
     max-height: 430px;
+    border-radius: 0.25rem;
     overflow: auto;
     scrollbar-width: thin;
     &::-webkit-scrollbar {

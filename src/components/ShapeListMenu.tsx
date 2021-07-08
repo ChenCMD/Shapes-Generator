@@ -22,7 +22,7 @@ const ShapeListMenu: React.FC<ShapeListMenuProps> = ({ addShape }) => {
     };
     return (
         <div className={styles['shape-list-menu']}>
-            <select className={`${styles['shape-list-menu-pulldown']} rounded`} value={shapePulldown} onChange={e => setShapePulldown(e.target.value as ShapeType)}>
+            <select className={styles['shape-list-menu-pulldown']}value={shapePulldown} onChange={e => setShapePulldown(e.target.value as ShapeType)}>
                 <option className={styles['shape-list-menu-pulldown-option']} value="line">line</option>
                 <option className={styles['shape-list-menu-pulldown-option']} value="circle">circle</option>
                 <option className={styles['shape-list-menu-pulldown-option']} value="polygon">polygon</option>

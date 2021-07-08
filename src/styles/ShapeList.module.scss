@@ -6,12 +6,14 @@
     min-height: 260px;
     max-height: 457px;
     margin-bottom: 5px;
+    border-radius: 0.25rem;
 }
 
 .shape-list {
     max-height: 420px;
     padding-bottom: 1px;
     margin-bottom: 5px;
+    overflow:auto;
     scrollbar-width: thin;
     &::-webkit-scrollbar {
         width: 4px;

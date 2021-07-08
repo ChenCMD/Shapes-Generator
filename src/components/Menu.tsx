@@ -34,7 +34,7 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }) => (
-    <div className={`${styles['menu-window']} rounded`}>
+    <div className={styles['menu-window']}>
         <Container fluid className={styles['container']}>
             <Row className={styles['row']}>
                 <Col>

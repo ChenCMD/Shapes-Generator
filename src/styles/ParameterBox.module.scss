@@ -3,6 +3,7 @@
     width: 100%;
     border-width: 1px;
     border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
 }
 
 .param-box-name {
@@ -22,4 +23,5 @@
     border: none;
     outline: none;
     background-color: var(--input-bg-color);
+    border-radius: 0.25rem;
 }

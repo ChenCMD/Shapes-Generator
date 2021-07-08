@@ -60,9 +60,9 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
     });
 
     return (
-        <div className={`${styles['shape-list-window']} rounded`}>
+        <div className={styles['shape-list-window']}>
             <ShapeListMenu addShape={(shape: Shape) => setShapes([...shapes, shape])} />
-            <div id="scroll-bar" className={`${styles['shape-list']} overflow-auto`}>
+            <div id="scroll-bar" className={styles['shape-list']}>
                 <ListGroup>
                     {items}
                 </ListGroup>

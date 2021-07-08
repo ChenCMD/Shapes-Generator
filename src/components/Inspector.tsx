@@ -29,7 +29,7 @@ const Inspector: React.FC<InspectorProps> = ({ shapes, setShapes, selectedShapes
     );
 
     return (
-        <div className={`${styles['inspector']} rounded`}>
+        <div className={styles['inspector']}>
             <Container fluid className={styles['inspector-param-box-container']}>
                 <Row>
                     {paramBoxes}
