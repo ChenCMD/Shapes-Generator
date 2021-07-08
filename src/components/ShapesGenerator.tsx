@@ -11,7 +11,7 @@ import UserInterface from './UserInterface';
 const ShapesGenerator: React.FC = () => {
     const [shapes, setShapes] = useState<Shape[]>([]);
     const [selectedShapes, setSelectedShapes] = useState<Shape[]>([]);
-    const [gridMode, setGridMode] = useState<GridMode>(GridMode.center);
+    const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
 

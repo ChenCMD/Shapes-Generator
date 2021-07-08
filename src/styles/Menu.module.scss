@@ -3,6 +3,10 @@
     border: 1px solid var(--border-color);
 }
 
+.container {
+    margin: 5px auto 5px auto;
+}
+
 .row {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -15,12 +19,12 @@
     margin: 5px 0 5px 0;
 }
 
-.container {
-    margin: 5px auto 5px auto;
-}
-
 .text {
     color: var(--foreground-color);
     font-size: 1.15rem;
     padding-bottom: 5px;
+}
+
+.button {
+    width: 77px !important;
 }

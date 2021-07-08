@@ -40,14 +40,14 @@ const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange
                 <Col>
                     <div className={styles['text']}>グリッド</div>
                     <ToggleButtonGroup type="radio" name="options" defaultValue={gridMode} value={gridMode}>
-                        <ToggleButton value={1} onChange={() => setGridMode(GridMode.off)}>
+                        <ToggleButton className={styles['button']} value={0} onChange={() => setGridMode(GridMode.off)}>
                             Off
                         </ToggleButton>
-                        <ToggleButton value={2} onChange={() => setGridMode(GridMode.center)}>
-                            Corner
+                        <ToggleButton className={styles['button']} value={1} onChange={() => setGridMode(GridMode.block)}>
+                            Block
                         </ToggleButton>
-                        <ToggleButton value={3} onChange={() => setGridMode(GridMode.corner)}>
-                            Center
+                        <ToggleButton className={styles['button']} value={2} onChange={() => setGridMode(GridMode.double)}>
+                            Double
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Col>
