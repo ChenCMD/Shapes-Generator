@@ -6,7 +6,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'development',
     // pathの設定についてですがpathモジュールを使う必要は特にはありません。
     entry: path.resolve(__dirname, 'src/index.tsx'),
     output: {
