@@ -72,7 +72,7 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, 
 
     return (
         <ListGroup.Item
-            className={`${styles['shape-list-item']} ${isSelected ? styles['shape-list-item-active'] : ''}`}
+            className={`${styles['shape-list-item']} ${isSelected ? styles['active'] : ''}`}
             action
             active={isSelected}
         >
