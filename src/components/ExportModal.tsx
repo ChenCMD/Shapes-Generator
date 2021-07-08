@@ -55,7 +55,7 @@ const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpe
                         <input className={styles['input']} onChange={e => setParticle(e.target.value)} value={particle} />
                     </Col>
                 </Row>
-                <hr className={styles['line']} />
+                <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>Particle: Speed</div>
@@ -66,7 +66,7 @@ const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpe
                         />
                     </Col>
                 </Row>
-                <hr className={styles['line']} />
+                <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>出力の精度</div>
@@ -78,13 +78,13 @@ const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpe
                         />
                     </Col>
                 </Row>
-                <hr className={styles['line']} />
+                <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>出力されるParticle数: {points.length}</div>
                     </Col>
                 </Row>
-                <hr className={styles['line']} />
+                <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
                         <Button className={styles['button']} onClick={onCloseRequest}>Close</Button>
