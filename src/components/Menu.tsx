@@ -38,15 +38,6 @@ const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange
         <Container fluid className={styles['container']}>
             <Row className={styles['row']}>
                 <Col>
-                    <Button >未実装</Button>
-                </Col>
-                <Col>
-                    <Button onClick={openExportModal}>Export</Button>
-                </Col>
-            </Row>
-            <hr className={styles['line']} />
-            <Row className={styles['row']}>
-                <Col>
                     <div className={styles['text']}>グリッド</div>
                     <ToggleButtonGroup type="radio" name="options" defaultValue={gridMode} value={gridMode}>
                         <ToggleButton value={1} onChange={() => setGridMode(GridMode.off)}>
@@ -61,7 +52,7 @@ const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange
                     </ToggleButtonGroup>
                 </Col>
             </Row>
-            <hr className={styles['line']} />
+            <Row><Col><hr className={styles['line']} /></Col></Row>
             <Row className={styles['row']}>
                 <Col>
                     <div className={styles['text']}>重複点の削除</div>
@@ -74,7 +65,15 @@ const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange
                     />
                 </Col>
             </Row>
-            <hr className={styles['line']} />
+            <Row><Col><hr className={styles['line']} /></Col></Row>
+            <Row className={styles['row']}>
+                <Col>
+                    <Button >未実装</Button>
+                </Col>
+                <Col>
+                    <Button onClick={openExportModal}>Export</Button>
+                </Col>
+            </Row>
             {/* <Row>
                     <Col>
                         <div className={styles['text']}>背景のカラー</div>
