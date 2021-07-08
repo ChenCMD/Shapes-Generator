@@ -51,6 +51,8 @@ const ShapesGenerator: React.FC = () => {
                 points={points.map(v => v.point.pos)}
                 isOpen={isOpenExportModal}
                 onCloseRequest={() => setIsOpenExportModal(false)}
+                duplicatedPointRange={duplicatedPointRange}
+                setDuplicatedPointRange={setDuplicatedPointRange}
             />
         </div>
     );

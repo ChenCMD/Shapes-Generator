@@ -12,14 +12,14 @@ interface ExportModalProps {
     onCloseRequest: () => void
     points: Point[]
     isOpen: boolean
+    duplicatedPointRange: number
+    setDuplicatedPointRange: (value: number) => void
 }
 
-const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpen }) => {
+const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpen, duplicatedPointRange, setDuplicatedPointRange }) => {
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);
-
-
 
     const onExport = () => {
         const mkCmd = (pos: Point) => `particle ${particle.trim()} ^${toStr(pos[0])} ^ ^${toStr(pos[1])} 0 0 0 ${toStr(particleSpeed)} 1`;
@@ -75,6 +75,19 @@ const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpe
                             value={exportAcc}
                             setValue={setExportAcc}
                             unit="桁"
+                        />
+                    </Col>
+                </Row>
+                <Row><Col><hr className={styles['line']} /></Col></Row>
+                <Row noGutters>
+                    <Col className={styles['col']}>
+                        <div className={styles['text']}>重複点の削除</div>
+                        <RangeSlider
+                            min={0} step={0.05} max={0.5}
+                            value={duplicatedPointRange}
+                            setValue={setDuplicatedPointRange}
+                            unit="m"
+                            spIndicateZeroVal="OFF"
                         />
                     </Col>
                 </Row>
