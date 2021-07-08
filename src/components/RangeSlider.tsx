@@ -23,7 +23,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ className, min, step, value, 
                         {
                             spIndicateZeroVal !== undefined && value === 0
                                 ? spIndicateZeroVal
-                                : `${value}${unit}`
+                                : `${value}${unit ?? ''}`
                         }
                     </div>
                 </Col>
