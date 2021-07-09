@@ -19,7 +19,7 @@ const ParameterBox: React.FC<ParameterBoxProps> = ({ name, description, updatePa
     return (
         <div className={styles['param-box']} title={description}>
             <div className={styles['param-box-name']}>{name}</div>
-            <input className={styles['param-box-input']} onChange={e => onChange(e.target.value)} value={argValue} />
+            <input className={styles['param-box-input']} type='number' onChange={e => onChange(e.target.value)} value={argValue} />
         </div>
     );
 };
