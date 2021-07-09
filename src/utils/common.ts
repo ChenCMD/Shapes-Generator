@@ -41,17 +41,17 @@ export function mod(n: number, m: number): number {
     return (n % m + m) % m;
 }
 
-export function round(n: number, places = 0): number {
+export function round(n: number, places = 1): number {
     const base = 10 ** places;
     return Math.round(n * base) / base;
 }
 
-export function ceil(n: number, places = 0): number {
+export function ceil(n: number, places = 1): number {
     const base = 10 ** places;
     return Math.ceil(n * base) / base;
 }
 
-export function floor(n: number, places = 0): number {
+export function floor(n: number, places = 1): number {
     const base = 10 ** places;
     return Math.floor(n * base) / base;
 }

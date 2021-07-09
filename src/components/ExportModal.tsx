@@ -3,7 +3,7 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import ReactModal from 'react-modal';
 import styles from '../styles/ExportModal.module.scss';
 import { Point } from '../types/Point';
-import { toFracString as toStr } from '../utils/common';
+import { round, toFracString as toStr } from '../utils/common';
 import RangeSlider from './RangeSlider';
 
 ReactModal.setAppElement('#root');
@@ -23,8 +23,7 @@ const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpe
 
     const onExport = () => {
         const mkCmd = (pos: Point) => `particle ${particle.trim()} ^${toStr(pos[0])} ^ ^${toStr(pos[1])} 0 0 0 ${toStr(particleSpeed)} 1`;
-        const accMul = Math.pow(10, exportAcc);
-        const content = points.map(([x, y]) => mkCmd([Math.floor(x * accMul) / accMul, Math.floor(y * accMul) / accMul])).join('\n');
+        const content = points.map(([x, y]) => mkCmd([round(x, exportAcc), round(y, exportAcc)])).join('\n');
 
         const blob = new File([content], 'particle.mcfunction', { type: 'text/plain' });
         const a = document.createElement('a');
