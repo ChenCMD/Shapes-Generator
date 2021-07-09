@@ -1,7 +1,7 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
-import { toRadians } from '../utils/common';
+import { rotateMatrix2D, toRadians } from '../utils/common';
 
 type CircleParams =
     | 'count'
@@ -42,10 +42,11 @@ export class CircleShape extends AbstractShapeNode<CircleParams> {
         const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
 
         for (let theta = params.start; theta < 360 + params.start; theta += 360 / params.count) {
-            addPoint([
+            const p: Point = rotateMatrix2D([
                 params.center_x + Math.sin(toRadians(theta)) * params.radius,
                 params.center_y + -Math.cos(toRadians(theta)) * params.radius
-            ]);
+            ], params.rotate);
+            addPoint(rotateMatrix2D([p[0], p[1] * (params.ellipse / 100)], -params.rotate));
         }
 
         this.pointSet = points;

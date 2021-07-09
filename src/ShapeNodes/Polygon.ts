@@ -1,7 +1,7 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
-import { mod, toRadians } from '../utils/common';
+import { mod, rotateMatrix2D, toRadians } from '../utils/common';
 
 type PolygonParams =
     | 'count'
@@ -68,10 +68,11 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams> {
 
         const corners: Point[] = [];
         for (let theta = params.start; theta < 360 + params.start; theta += 360 / params.corner) {
-            corners.push([
+            const p: Point = rotateMatrix2D([
                 params.center_x + Math.sin(toRadians(theta)) * params.radius,
                 params.center_y + -Math.cos(toRadians(theta)) * params.radius
-            ]);
+            ], params.rotate);
+            corners.push(rotateMatrix2D([p[0], p[1] * (params.ellipse / 100)], -params.rotate));
         }
         for (const [i, corner] of corners.entries()) drawLine(corner, corners[mod(i + params.jump, corners.length)]);
 
