@@ -20,10 +20,10 @@ const defaultParams: Record<LineParams, string> = {
 };
 
 const paramMetaData: Record<LineParams, ParameterMetaData> = {
-    from_x: { name: '始点', description: '線の始点' },
-    from_y: { name: '始点', description: '線の始点' },
-    to_x: { name: '終点', description: '線の終点' },
-    to_y: { name: '終点', description: '線の終点' },
+    from_x: { name: '始点X', description: '線の始点' },
+    from_y: { name: '始点Y', description: '線の始点' },
+    to_x: { name: '終点X', description: '線の終点' },
+    to_y: { name: '終点Y', description: '線の終点' },
     count: { name: '生成数', description: 'いくつの点で生成するか' },
     vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
 };

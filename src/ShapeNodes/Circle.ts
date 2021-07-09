@@ -23,13 +23,13 @@ const defaultParams: Record<CircleParams, string> = {
 };
 
 const paramMetaData: Record<CircleParams, ParameterMetaData> = {
-    center_x: { name: '中心点', description: '円の中心点' },
-    center_y: { name: '中心点', description: '円の中心点' },
+    center_x: { name: '中心点X', description: '円の中心点' },
+    center_y: { name: '中心点Y', description: '円の中心点' },
     count: { name: '生成数', description: 'いくつの点で生成するか' },
     radius: { name: '半径', description: '中心よりどれだけ離れた位置で円を作るか' },
     start: { name: '開始角', description: '円を始める角度' },
     ellipse: { name: '楕円', description: '楕円の歪みの強さ' },
-    rotate: { name: '角度', description: '開始角には影響は与えません' }
+    rotate: { name: '楕円角', description: '楕円の歪みを与える角度' }
 };
 
 export class CircleShape extends AbstractShapeNode<CircleParams> {

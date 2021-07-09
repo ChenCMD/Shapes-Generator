@@ -29,13 +29,13 @@ const defaultParams: Record<PolygonParams, string> = {
 };
 
 const paramMetaData: Record<PolygonParams, ParameterMetaData> = {
-    center_x: { name: '中心点', description: '多角形の中心点' },
-    center_y: { name: '中心点', description: '多角形の中心点' },
+    center_x: { name: '中心点X', description: '多角形の中心点' },
+    center_y: { name: '中心点Y', description: '多角形の中心点' },
     count: { name: '生成数', description: 'いくつの点で生成するか' },
     radius: { name: '半径', description: '中心よりどれだけ離れた位置で円を作るか' },
     start: { name: '開始角', description: '多角形を始める角度' },
     ellipse: { name: '楕円', description: '楕円の歪みの強さ' },
-    rotate: { name: '角度', description: '開始角には影響は与えません' },
+    rotate: { name: '楕円角', description: '楕円の歪みを与える角度' },
     corner: { name: '角の数', description: '' },
     jump: { name: '紐づける角の遠さ', description: '角をいくつ先の角と紐づけていくか 2以上で星などの複雑な図形を生成できます' },
     vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
