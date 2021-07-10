@@ -40,7 +40,6 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
         };
         const onSelectMove = (to: -1 | 1) => {
             const shapeIdx = mod(shapes.indexOf(shape) + to, shapes.length);
-            console.log(`shapeIdx: ${shapeIdx}`);
             setFocusItem(shapeIdx);
             setSelectedShapes(shapes.slice(shapeIdx, shapeIdx + 1));
         };
