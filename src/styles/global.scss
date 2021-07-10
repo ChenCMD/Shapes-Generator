@@ -1,5 +1,13 @@
 body {
     background-color: rgb(0, 0, 0);
+    scrollbar-width: thin;
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(128, 128, 128);
+        border-radius: 0.25rem;
+    }
 }
 
 :root {
