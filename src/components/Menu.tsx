@@ -36,6 +36,8 @@ interface MenuProps {
 const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }) => {
     const onExport = () => openExportModal(true);
 
+    const onGridModeChange = (e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value));
+
     return (
         <div className={styles['menu-window']}>
             <Container fluid className={styles['container']}>
@@ -43,13 +45,13 @@ const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange
                     <Col>
                         <div className={styles['text']}>グリッド</div>
                         <ToggleButtonGroup type="radio" name="options" defaultValue={gridMode} value={gridMode}>
-                            <ToggleButton className={styles['button']} value={0} onChange={() => setGridMode(GridMode.off)}>
+                            <ToggleButton className={styles['button']} value={0} onChange={onGridModeChange}>
                                 Off
                             </ToggleButton>
-                            <ToggleButton className={styles['button']} value={1} onChange={() => setGridMode(GridMode.block)}>
+                            <ToggleButton className={styles['button']} value={1} onChange={onGridModeChange}>
                                 Block
                             </ToggleButton>
-                            <ToggleButton className={styles['button']} value={2} onChange={() => setGridMode(GridMode.double)}>
+                            <ToggleButton className={styles['button']} value={2} onChange={onGridModeChange}>
                                 Double
                             </ToggleButton>
                         </ToggleButtonGroup>

@@ -55,9 +55,11 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
         );
     });
 
+    const addShape = (shape: Shape) => setShapes([...shapes, shape]);
+
     return (
         <div className={styles['shape-list-window']}>
-            <ShapeListMenu addShape={(shape: Shape) => setShapes([...shapes, shape])} />
+            <ShapeListMenu addShape={addShape} />
             <div id="scroll-bar" className={styles['shape-list']}>
                 <ListGroup>
                     {items}

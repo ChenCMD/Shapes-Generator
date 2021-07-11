@@ -63,9 +63,11 @@ const Previewer: React.FC<PreviewerProps> = ({ shapes, gridMode }) => {
         }
     }
 
+    const onResize = ({ bounds }: { bounds?: { width?: number} }) => setSize(bounds?.width ?? 100);
+
     return (
         <div className={styles['previewer-window']}>
-            <Measure bounds onResize={contentRect => setSize(contentRect.bounds?.width ?? 100)}>
+            <Measure bounds onResize={onResize}>
                 {({ measureRef }) => (
                     <div ref={measureRef}>
                         <Stage width={size} height={size - bottomMargin}>

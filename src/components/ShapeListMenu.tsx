@@ -20,9 +20,12 @@ const ShapeListMenu: React.FC<ShapeListMenuProps> = ({ addShape }) => {
         setAddCount({ ...addCount, [shapePulldown]: cnt });
         addShape(getShape(`${shapePulldown} ${cnt}`, shapePulldown));
     };
+
+    const onChangeTargetShape = (e: React.ChangeEvent<HTMLSelectElement>) => setShapePulldown(e.target.value as ShapeType);
+
     return (
         <div className={styles['shape-list-menu']}>
-            <select className={styles['shape-list-menu-pulldown']}value={shapePulldown} onChange={e => setShapePulldown(e.target.value as ShapeType)}>
+            <select className={styles['shape-list-menu-pulldown']}value={shapePulldown} onChange={onChangeTargetShape}>
                 <option className={styles['shape-list-menu-pulldown-option']} value="line">line</option>
                 <option className={styles['shape-list-menu-pulldown-option']} value="circle">circle</option>
                 <option className={styles['shape-list-menu-pulldown-option']} value="polygon">polygon</option>
