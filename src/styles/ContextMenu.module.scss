@@ -1,0 +1,42 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    visibility: hidden;
+    &.visible {
+        visibility: visible;
+    }
+}
+
+.window {
+    position: absolute;
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    padding: 2px 0 2px 0;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    visibility: hidden;
+    &.visible {
+        visibility: visible;
+    }
+}
+
+.item {
+    cursor: pointer;
+    &:hover {
+        background-color: var(--hover-highlight);
+    }
+}
+
+.text {
+    padding: 5px 50px 5px 5px;
+}
+
+.shortcut {
+    padding: 5px 5px 5px 50px;
+    text-align: right;
+    opacity: 0.75;
+}

@@ -16,10 +16,11 @@ interface UserInterfaceProps {
     setGridMode: (mode: GridMode) => void
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
+    setContextTarget: (context: { x: number, y: number }) => void
     openExportModal: () => void
 }
 
-const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }) => (
+const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openExportModal }) => (
     <Container fluid className={styles['user-interface']}>
         <Row>
             <Col className={styles['col-inspector']}>
@@ -38,6 +39,7 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
                     setShapes={setShapes}
                     selectedShapes={selectedShapes}
                     setSelectedShapes={setSelectedShapes}
+                    setContextTarget={setContextTarget}
                 />
             </ Col>
             <Col xl={7} lg={7} md={12} sm={7} xs={12} className={styles['col-menu']}>

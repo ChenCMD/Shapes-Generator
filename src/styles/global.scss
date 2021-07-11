@@ -42,4 +42,33 @@ body {
             z-index: 0 !important;
         }
     }
+
+    .list-group-item {
+        background-color: var(--background-color);
+        color: var(--foreground-color);
+        width: 100%;
+        border-radius: unset;
+        padding: 0;
+        border-width: 1px !important;
+        z-index: 0;
+        &:hover {
+            background-color: var(--hover-highlight);
+            z-index: 0;
+        }
+        &:focus {
+            background-color: var(--background-color);
+            outline: 1px solid var(--border-color);
+            z-index: 0;
+        }
+        &:active,
+        &.active {
+            background-color: var(--select-highlight);
+            border-radius: unset;
+            margin-top: 0 !important;
+            border-width: 1px;
+            outline: 1px solid var(--border-color);
+            border-color: var(--select-highlight);
+            z-index: 0;
+        }
+    }
 }

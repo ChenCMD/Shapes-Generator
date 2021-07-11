@@ -10,9 +10,10 @@ interface ShapeListItemProps {
     onSelect: (isPushCtrl: boolean) => void
     onDelete: () => void
     onSelectMove: (to: -1 | 1) => void
+    setContextTarget: (context: { x: number, y: number }) => void
 }
 
-const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, onSelect, onExitFocus, onDelete, onSelectMove }) => {
+const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, onSelect, onExitFocus, onDelete, onSelectMove, setContextTarget }) => {
     const [renameMode, setRenameMode] = useState<boolean>(false);
     const alreadyClicked = useRef(false);
     const inputElemRef = useRef<HTMLInputElement>(null);
@@ -45,12 +46,17 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, 
         }
     };
 
+    const onContextMenu = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        e.preventDefault();
+        onSelect(e.ctrlKey);
+        setContextTarget({ x: e.clientX, y: e.clientY});
+    };
+
     useEffect(() => inputElemRef.current?.focus(), [renameMode]);
 
     const renameElem = (
         <input
             className={styles['shape-list-item-input']}
-            id={`shape-list-item-${index}`}
             ref={inputElemRef}
             onBlur={() => onExitRename()}
             onKeyDown={e => onKeyDown(e.key)}
@@ -60,7 +66,6 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, 
     const textElem = (
         <div
             className={styles['shape-list-item-text']}
-            id={`shape-list-item-${index}`}
             onClick={e => onClick(e.ctrlKey)}
             onDoubleClick={() => setRenameMode(true)}
             onKeyDown={e => onKeyDown(e.key)}
@@ -72,12 +77,13 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, 
 
     return (
         <ListGroup.Item
-            className={`${styles['shape-list-item']} ${isSelected ? styles['active'] : ''}`}
+            className={styles['shape-list-item']}
             action
             active={isSelected}
+            onContextMenu={onContextMenu}
         >
             {renameMode ? renameElem : textElem}
-        </ListGroup.Item>
+        </ListGroup.Item >
     );
 };
 

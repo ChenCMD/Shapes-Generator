@@ -11,9 +11,10 @@ interface ShapeListProps {
     setShapes: (shapes: Shape[]) => void
     selectedShapes: Shape[],
     setSelectedShapes: (shapes: Shape[]) => void
+    setContextTarget: (context: { x: number, y: number }) => void
 }
 
-const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes }) => {
+const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes, setContextTarget }) => {
     const [focusItem, setFocusItem] = useState<number>(0);
     useEffect(() => document.getElementById(`shape-list-item-${focusItem}`)?.focus(), [focusItem]);
     useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapes]);
@@ -35,7 +36,7 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
             }
         };
         const onDelete = () => {
-            setSelectedShapes(selectedShapes.filter(v => !selectedShapes.includes(v)));
+            setSelectedShapes([]);
             setShapes(shapes.filter(v => !selectedShapes.includes(v)));
         };
         const onSelectMove = (to: -1 | 1) => {
@@ -48,12 +49,13 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
             <ShapeListItem
                 index={i}
                 key={shape.uuid}
-                isSelected={selectedShapes.includes(shape)}
                 name={shape.name}
+                isSelected={selectedShapes.includes(shape)}
                 onExitFocus={onBlur}
                 onSelect={onClick}
                 onDelete={onDelete}
                 onSelectMove={onSelectMove}
+                setContextTarget={setContextTarget}
             />
         );
     });

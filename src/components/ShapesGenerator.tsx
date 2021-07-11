@@ -4,6 +4,7 @@ import { Shape } from '../ShapeNodes';
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';
 import { deleteDuplicatedPoints } from '../types/Point';
+import ContextMenu from './ContextMenu';
 import ExportModal from './ExportModal';
 import Previewer from './Previewer';
 import UserInterface from './UserInterface';
@@ -14,6 +15,11 @@ const ShapesGenerator: React.FC = () => {
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
+    const [contextTarget, setContextTarget] = useState<{ x: number, y: number} | undefined>();
+
+    const onKeyDown = ({ key }: { key: string }) => {
+        if (contextTarget && key === 'Escape') setContextTarget(undefined);
+    };
 
     const points = deleteDuplicatedPoints(
         shapes.flatMap(shape => {
@@ -23,7 +29,7 @@ const ShapesGenerator: React.FC = () => {
         duplicatedPointRange
     );
     return (
-        <div className={styles['shapes-generator']}>
+        <div className={styles['shapes-generator']} onKeyDown={onKeyDown}>
             <Container fluid>
                 <Row>
                     <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-previewer']}>
@@ -42,6 +48,7 @@ const ShapesGenerator: React.FC = () => {
                             setGridMode={setGridMode}
                             duplicatedPointRange={duplicatedPointRange}
                             setDuplicatedPointRange={setDuplicatedPointRange}
+                            setContextTarget={setContextTarget}
                             openExportModal={() => setIsOpenExportModal(true)}
                         />
                     </Col>
@@ -53,6 +60,15 @@ const ShapesGenerator: React.FC = () => {
                 onCloseRequest={() => setIsOpenExportModal(false)}
                 duplicatedPointRange={duplicatedPointRange}
                 setDuplicatedPointRange={setDuplicatedPointRange}
+            />
+            <ContextMenu
+                x={contextTarget?.x}
+                y={contextTarget?.y}
+                onCloseRequest={() => setContextTarget(undefined)}
+                shapes={shapes}
+                setShapes={setShapes}
+                selectedShapes={selectedShapes}
+                setSelectedShapes={setSelectedShapes}
             />
         </div>
     );
