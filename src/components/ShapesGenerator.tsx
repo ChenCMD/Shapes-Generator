@@ -19,6 +19,10 @@ const ShapesGenerator: React.FC = () => {
 
     const onKeyDown = ({ key }: { key: string }) => {
         if (contextTarget && key === 'Escape') setContextTarget(undefined);
+        if (selectedShapes && key === 'Delete') {
+            setSelectedShapes([]);
+            setShapes(shapes.filter(v => !selectedShapes.includes(v)));
+        }
     };
 
     const points = deleteDuplicatedPoints(
@@ -28,6 +32,7 @@ const ShapesGenerator: React.FC = () => {
         }),
         duplicatedPointRange
     );
+
     return (
         <div className={styles['shapes-generator']} onKeyDown={onKeyDown}>
             <Container fluid>

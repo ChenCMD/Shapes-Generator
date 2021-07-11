@@ -35,10 +35,6 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
                 setSelectedShapes([shape]);
             }
         };
-        const onDelete = () => {
-            setSelectedShapes([]);
-            setShapes(shapes.filter(v => !selectedShapes.includes(v)));
-        };
         const onSelectMove = (to: -1 | 1) => {
             const shapeIdx = mod(shapes.indexOf(shape) + to, shapes.length);
             setFocusItem(shapeIdx);
@@ -53,7 +49,6 @@ const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes
                 isSelected={selectedShapes.includes(shape)}
                 onExitFocus={onBlur}
                 onSelect={onClick}
-                onDelete={onDelete}
                 onSelectMove={onSelectMove}
                 setContextTarget={setContextTarget}
             />

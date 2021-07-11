@@ -8,12 +8,11 @@ interface ShapeListItemProps {
     isSelected: boolean
     onExitFocus: (newID: string) => void
     onSelect: (isPushCtrl: boolean) => void
-    onDelete: () => void
     onSelectMove: (to: -1 | 1) => void
     setContextTarget: (context: { x: number, y: number }) => void
 }
 
-const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, onSelect, onExitFocus, onDelete, onSelectMove, setContextTarget }) => {
+const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, onSelect, onExitFocus, onSelectMove, setContextTarget }) => {
     const [renameMode, setRenameMode] = useState<boolean>(false);
     const alreadyClicked = useRef(false);
     const inputElemRef = useRef<HTMLInputElement>(null);
@@ -37,8 +36,6 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, 
                 return renameMode ? onExitRename() : setRenameMode(true);
             case 'Escape':
                 return setRenameMode(false);
-            case 'Delete':
-                return onDelete();
             case 'ArrowUp':
                 return onSelectMove(-1);
             case 'ArrowDown':
