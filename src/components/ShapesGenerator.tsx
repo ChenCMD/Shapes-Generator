@@ -15,7 +15,12 @@ const ShapesGenerator: React.FC = () => {
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
-    const [contextTarget, setContextTarget] = useState<{ x: number, y: number} | undefined>();
+    const [contextTarget, setContextTarget] = useState<{ x: number, y: number } | undefined>();
+
+    const onDelete = () => {
+        setSelectedShapes([]);
+        setShapes(shapes.filter(v => !selectedShapes.includes(v)));
+    };
 
     const onKeyDown = ({ key }: { key: string }) => {
         if (contextTarget && key === 'Escape') setContextTarget(undefined);
@@ -54,7 +59,7 @@ const ShapesGenerator: React.FC = () => {
                             duplicatedPointRange={duplicatedPointRange}
                             setDuplicatedPointRange={setDuplicatedPointRange}
                             setContextTarget={setContextTarget}
-                            openExportModal={() => setIsOpenExportModal(true)}
+                            openExportModal={setIsOpenExportModal}
                         />
                     </Col>
                 </ Row>
@@ -62,7 +67,7 @@ const ShapesGenerator: React.FC = () => {
             <ExportModal
                 points={points.map(v => v.point.pos)}
                 isOpen={isOpenExportModal}
-                onCloseRequest={() => setIsOpenExportModal(false)}
+                openExportModal={setIsOpenExportModal}
                 duplicatedPointRange={duplicatedPointRange}
                 setDuplicatedPointRange={setDuplicatedPointRange}
             />
@@ -70,10 +75,7 @@ const ShapesGenerator: React.FC = () => {
                 x={contextTarget?.x}
                 y={contextTarget?.y}
                 onCloseRequest={() => setContextTarget(undefined)}
-                shapes={shapes}
-                setShapes={setShapes}
-                selectedShapes={selectedShapes}
-                setSelectedShapes={setSelectedShapes}
+                onDelete={onDelete}
             />
         </div>
     );

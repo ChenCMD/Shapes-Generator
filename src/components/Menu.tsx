@@ -30,57 +30,60 @@ interface MenuProps {
     setGridMode: (mode: GridMode) => void
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
-    openExportModal: () => void
+    openExportModal: (isOpen: boolean) => void;
 }
 
-const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }) => (
-    <div className={styles['menu-window']}>
-        <Container fluid className={styles['container']}>
-            <Row className={styles['row']}>
-                <Col>
-                    <div className={styles['text']}>グリッド</div>
-                    <ToggleButtonGroup type="radio" name="options" defaultValue={gridMode} value={gridMode}>
-                        <ToggleButton className={styles['button']} value={0} onChange={() => setGridMode(GridMode.off)}>
-                            Off
-                        </ToggleButton>
-                        <ToggleButton className={styles['button']} value={1} onChange={() => setGridMode(GridMode.block)}>
-                            Block
-                        </ToggleButton>
-                        <ToggleButton className={styles['button']} value={2} onChange={() => setGridMode(GridMode.double)}>
-                            Double
-                        </ToggleButton>
-                    </ToggleButtonGroup>
-                </Col>
-            </Row>
-            <Row><Col><hr className={styles['line']} /></Col></Row>
-            <Row className={styles['row']}>
-                <Col>
-                    <div className={styles['text']}>重複点の削除</div>
-                    <RangeSlider
-                        min={0} step={0.05} max={0.5}
-                        value={duplicatedPointRange}
-                        setValue={setDuplicatedPointRange}
-                        unit="m"
-                        spIndicateZeroVal="OFF"
-                    />
-                </Col>
-            </Row>
-            <Row><Col><hr className={styles['line']} /></Col></Row>
-            <Row className={styles['row']}>
-                <Col>
-                    <Button >未実装</Button>
-                </Col>
-                <Col>
-                    <Button onClick={openExportModal}>Export</Button>
-                </Col>
-            </Row>
-            {/* <Row>
+const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }) => {
+    const onExport = () => openExportModal(true);
+
+    return (
+        <div className={styles['menu-window']}>
+            <Container fluid className={styles['container']}>
+                <Row className={styles['row']}>
+                    <Col>
+                        <div className={styles['text']}>グリッド</div>
+                        <ToggleButtonGroup type="radio" name="options" defaultValue={gridMode} value={gridMode}>
+                            <ToggleButton className={styles['button']} value={0} onChange={() => setGridMode(GridMode.off)}>
+                                Off
+                            </ToggleButton>
+                            <ToggleButton className={styles['button']} value={1} onChange={() => setGridMode(GridMode.block)}>
+                                Block
+                            </ToggleButton>
+                            <ToggleButton className={styles['button']} value={2} onChange={() => setGridMode(GridMode.double)}>
+                                Double
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+                    </Col>
+                </Row>
+                <Row><Col><hr className={styles['line']} /></Col></Row>
+                <Row className={styles['row']}>
+                    <Col>
+                        <div className={styles['text']}>重複点の削除</div>
+                        <RangeSlider
+                            min={0} step={0.05} max={0.5}
+                            value={duplicatedPointRange}
+                            setValue={setDuplicatedPointRange}
+                            unit="m"
+                            spIndicateZeroVal="OFF"
+                        />
+                    </Col>
+                </Row>
+                <Row><Col><hr className={styles['line']} /></Col></Row>
+                <Row className={styles['row']}>
+                    <Col>
+                        <Button >未実装</Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={onExport}>Export</Button>
+                    </Col>
+                </Row>
+                {/* <Row>
                     <Col>
                         <div className={styles['text']}>背景のカラー</div>
                         <div id="pickr"></div>
                     </Col>
                 </Row> */}
-            {/* <Row>
+                {/* <Row>
                 <Col>
                     <div className={styles['text']}>点の表示のカラー/サイズ設定</div>
                 </Col>
@@ -90,8 +93,9 @@ const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange
                     <div className={styles['text']}>出力に利用するパーティクル</div>
                 </Col>
             </Row> */}
-        </Container>
-    </div>
-);
+            </Container>
+        </div>
+    );
+};
 
 export default Menu;

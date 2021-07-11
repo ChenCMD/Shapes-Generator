@@ -9,14 +9,14 @@ import RangeSlider from './RangeSlider';
 ReactModal.setAppElement('#root');
 
 interface ExportModalProps {
-    onCloseRequest: () => void
+    openExportModal: (isOpen: boolean) => void;
     points: Point[]
     isOpen: boolean
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
 }
 
-const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpen, duplicatedPointRange, setDuplicatedPointRange }) => {
+const ExportModal: React.FC<ExportModalProps> = ({ openExportModal, points, isOpen, duplicatedPointRange, setDuplicatedPointRange }) => {
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);
@@ -32,10 +32,12 @@ const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpe
         a.click();
     };
 
+    const onRequestClose = () => openExportModal(false);
+
     return (
         <ReactModal
             isOpen={isOpen}
-            onRequestClose={onCloseRequest}
+            onRequestClose={onRequestClose}
             overlayClassName={{
                 base: styles['overlay'],
                 afterOpen: styles['after'],
@@ -99,7 +101,7 @@ const ExportModal: React.FC<ExportModalProps> = ({ onCloseRequest, points, isOpe
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
-                        <Button className={styles['button']} onClick={onCloseRequest}>Close</Button>
+                        <Button className={styles['button']} onClick={onRequestClose}>Close</Button>
                     </Col>
                     <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
                         <Button className={styles['button']} onClick={onExport}>Export</Button>

@@ -1,19 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import useWindowSize from '../hooks/useWindowSize';
-import { Shape } from '../ShapeNodes';
 import styles from '../styles/ContextMenu.module.scss';
 
 interface ContextMenuProps {
     x?: number
     y?: number
     onCloseRequest: () => void
-    shapes: Shape[]
-    setShapes: (shapes: Shape[]) => void
-    selectedShapes: Shape[],
-    setSelectedShapes: (shapes: Shape[]) => void
+    onDelete: () => void
 }
 
-const ContextMenu: React.ComponentType<ContextMenuProps> = ({ x, y, onCloseRequest, shapes, setShapes, selectedShapes, setSelectedShapes }) => {
+const ContextMenu: React.ComponentType<ContextMenuProps> = ({ x, y, onCloseRequest, onDelete }) => {
     const overlayRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLTableSectionElement>(null);
     const { width, height } = useWindowSize();
@@ -46,11 +42,6 @@ const ContextMenu: React.ComponentType<ContextMenuProps> = ({ x, y, onCloseReque
             elem.dispatchEvent(event);
             overlayRef.current.style.visibility = '';
         }
-    };
-
-    const onDelete = () => {
-        setShapes(shapes.filter(v => !selectedShapes.includes(v)));
-        setSelectedShapes([]);
     };
 
     return (

@@ -17,7 +17,7 @@ interface UserInterfaceProps {
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
     setContextTarget: (context: { x: number, y: number }) => void
-    openExportModal: () => void
+    openExportModal: (isOpen: boolean) => void;
 }
 
 const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openExportModal }) => (
