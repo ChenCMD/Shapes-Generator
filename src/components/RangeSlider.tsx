@@ -1,5 +1,8 @@
 import React from 'react';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import Col from 'react-bootstrap/esm/Col';
+import Container from 'react-bootstrap/esm/Container';
+import Form from 'react-bootstrap/esm/Form';
+import Row from 'react-bootstrap/esm/Row';
 import styles from '../styles/RangeSlider.module.scss';
 
 interface RangeSliderProps {

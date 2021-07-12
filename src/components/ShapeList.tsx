@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import ListGroup from 'react-bootstrap/esm/ListGroup';
+import { Shape } from '../ShapeNodes';
+import styles from '../styles/ShapeList.module.scss';
+import { mod } from '../utils/common';
 import ShapeListItem from './ShapeListItem';
 import ShapeListMenu from './ShapeListMenu';
-import styles from '../styles/ShapeList.module.scss';
-import { Shape } from '../ShapeNodes';
-import { mod } from '../utils/common';
 
 interface ShapeListProps {
     shapes: Shape[]

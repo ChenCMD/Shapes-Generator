@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import ListGroup from 'react-bootstrap/esm/ListGroup';
 import styles from '../styles/ShapeListItem.module.scss';
 
 interface ShapeListItemProps {

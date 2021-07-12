@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import Col from 'react-bootstrap/esm/Col';
+import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/esm/Row';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';

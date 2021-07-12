@@ -1,5 +1,10 @@
-import React from 'react';
-import { Col, Container, Row, Button, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import React, { useCallback } from 'react';
+import Button from 'react-bootstrap/esm/Button';
+import Col from 'react-bootstrap/esm/Col';
+import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/esm/Row';
+import ToggleButton from 'react-bootstrap/esm/ToggleButton';
+import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
 import styles from '../styles/Menu.module.scss';
 import { GridMode } from '../types/GridMode';
 import RangeSlider from './RangeSlider';
@@ -34,9 +39,8 @@ interface MenuProps {
 }
 
 const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }: MenuProps): JSX.Element => {
-    const onExport = () => openExportModal(true);
-
-    const onGridModeChange = (e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value));
+    const onExport = useCallback(() => openExportModal(true), [openExportModal]);
+    const onGridModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value)), [setGridMode]);
 
     return (
         <div className={styles['menu-window']}>
@@ -100,4 +104,4 @@ const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointR
     );
 };
 
-export default Menu;
+export default React.memo(Menu);

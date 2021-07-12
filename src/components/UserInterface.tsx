@@ -1,11 +1,13 @@
 import React from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import Col from 'react-bootstrap/esm/Col';
+import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/esm/Row';
+import { Shape } from '../ShapeNodes';
+import styles from '../styles/UserInterface.module.scss';
+import { GridMode } from '../types/GridMode';
 import Inspector from './Inspector';
 import Menu from './Menu';
 import ShapeList from './ShapeList';
-import styles from '../styles/UserInterface.module.scss';
-import { Shape } from '../ShapeNodes';
-import { GridMode } from '../types/GridMode';
 
 interface UserInterfaceProps {
     shapes: Shape[]

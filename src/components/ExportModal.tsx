@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
+import Col from 'react-bootstrap/esm/Col';
+import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/esm/Row';
 import ReactModal from 'react-modal';
 import styles from '../styles/ExportModal.module.scss';
 import { Point } from '../types/Point';

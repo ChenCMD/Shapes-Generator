@@ -1,9 +1,11 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import ParameterBox from './ParameterBox';
-import styles from '../styles/Inspector.module.scss';
+import Col from 'react-bootstrap/esm/Col';
+import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/esm/Row';
 import { Shape } from '../ShapeNodes';
+import styles from '../styles/Inspector.module.scss';
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
+import ParameterBox from './ParameterBox';
 
 interface InspectorProps {
     shapes: Shape[]
