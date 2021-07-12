@@ -5,9 +5,9 @@
     bottom: 0;
     right: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--context-overlay-color);
     opacity: 0;
-    transition-property: background-color, opacity;
+    transition-property: opacity;
     transition-duration: 400ms;
     transition-timing-function: ease-in-out;
     outline: 0;
@@ -15,11 +15,9 @@
     justify-content: center;
     align-items: center;
     &.after {
-        background-color: rgba(0, 0, 0, 0.6);
         opacity: 1;
     }
     &.before {
-        background-color: rgba(0, 0, 0, 0);
         opacity: 0;
     }
 }
@@ -34,6 +32,7 @@
     align-items: center;
     height: 0%;
     width: 0%;
+    opacity: 2;
     background-color: transparent;
     transition-property: background-color, width, height;
     transition-duration: 200ms;
@@ -66,7 +65,7 @@
     border: 1px solid var(--border-color);
     border-radius: 0.25rem;
     padding: 7px;
-    background-color: var(--background-color);
+    background-color: var(--window-bg-color);
 }
 
 .col {
@@ -81,7 +80,7 @@
 }
 
 .text {
-    color: var(--foreground-color);
+    color: var(--text-color);
     font-size: 1.15rem;
     padding-bottom: 5px;
 }
@@ -90,7 +89,7 @@
     width: 100%;
     line-height: 1.5;
     padding: 2px 0 2px 2px;
-    color: var(--foreground-color);
+    color: var(--text-color);
     border: none;
     outline: none;
     background-color: var(--input-bg-color);

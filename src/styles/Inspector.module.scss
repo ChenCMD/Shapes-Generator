@@ -1,5 +1,5 @@
 .inspector {
-    background-color: var(--background-color);
+    background-color: var(--window-bg-color);
     border-style: solid;
     border-width: 1px;
     border-color: var(--border-color);
@@ -12,7 +12,7 @@
         width: 4px;
     }
     &::-webkit-scrollbar-thumb {
-        background-color: rgb(128, 128, 128);
+        background-color: var(--scrollbar-color);
         border-radius: 0.25rem;
     }
 }

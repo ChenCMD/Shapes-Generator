@@ -1,28 +1,31 @@
+:root {
+    --background-color: rgb(0, 0, 0);
+    --text-color: rgb(212, 212, 212);
+    --window-bg-color: rgb(16, 16, 16);
+    --input-bg-color: rgb(0, 0, 0);
+    --border-color: rgb(110, 110, 110);
+    --hover-highlight: rgb(48, 48, 48);
+    --select-highlight: rgb(80, 80, 80);
+    --scrollbar-color: rgb(128, 128, 128);
+    --context-overlay-color: rgba(0, 0, 0, 0.6);
+}
+
 body {
-    background-color: rgb(0, 0, 0);
+    background-color: var(--background-color);
     scrollbar-width: thin;
     &::-webkit-scrollbar {
         width: 4px;
     }
     &::-webkit-scrollbar-thumb {
-        background-color: rgb(128, 128, 128);
+        background-color: var(--scrollbar-color);
         border-radius: 0.25rem;
     }
 }
 
-:root {
-    --foreground-color: rgb(212, 212, 212);
-    --background-color: rgb(16, 16, 16);
-    --input-bg-color: rgb(0, 0, 0);
-    --border-color: rgb(110, 110, 110);
-    --hover-highlight: rgb(48, 48, 48);
-    --select-highlight: rgb(80, 80, 80);
-}
-
 :global {
     .btn {
-        background-color: var(--background-color);
-        color: var(--foreground-color);
+        background-color: var(--window-bg-color);
+        color: var(--text-color);
         width: 100%;
         margin: 0;
         border-width: 1px;
@@ -30,13 +33,13 @@ body {
         &:hover {
             background-color: var(--hover-highlight);
             border-color: var(--border-color);
-            color: var(--foreground-color);
+            color: var(--text-color);
         }
         &:active,
         &.active,
         &:focus {
             background-color: var(--select-highlight) !important;
-            color: var(--foreground-color) !important;
+            color: var(--text-color) !important;
             border-color: var(--border-color) !important;
             box-shadow: none !important;
             z-index: 0 !important;
@@ -44,8 +47,8 @@ body {
     }
 
     .list-group-item {
-        background-color: var(--background-color);
-        color: var(--foreground-color);
+        background-color: var(--window-bg-color);
+        color: var(--text-color);
         width: 100%;
         border-radius: unset;
         padding: 0;
@@ -56,7 +59,7 @@ body {
             z-index: 0;
         }
         &:focus {
-            background-color: var(--background-color);
+            background-color: var(--window-bg-color);
             outline: 1px solid var(--border-color);
             z-index: 0;
         }

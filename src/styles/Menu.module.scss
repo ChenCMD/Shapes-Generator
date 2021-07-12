@@ -1,5 +1,5 @@
 .menu-window {
-    background-color: var(--background-color);
+    background-color: var(--window-bg-color);
     border: 1px solid var(--border-color);
     border-radius: 0.25rem;
 }
@@ -21,7 +21,7 @@
 }
 
 .text {
-    color: var(--foreground-color);
+    color: var(--text-color);
     font-size: 1.15rem;
     padding-bottom: 5px;
 }

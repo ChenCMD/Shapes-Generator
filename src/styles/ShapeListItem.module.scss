@@ -6,7 +6,7 @@
     width: 100%;
     line-height: 1.5;
     padding: 2px 0 2px 2px;
-    color: var(--foreground-color);
+    color: var(--text-color);
     &:focus-visible {
         outline: none;
     }
@@ -16,7 +16,7 @@
     width: 100%;
     line-height: 1.5;
     padding: 2px 0 2px 2px;
-    color: var(--foreground-color);
+    color: var(--text-color);
     border: 0;
     background-color: var(--input-bg-color);
     &:focus {

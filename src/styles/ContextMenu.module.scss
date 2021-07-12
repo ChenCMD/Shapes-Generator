@@ -16,8 +16,8 @@
     border: 1px solid var(--border-color);
     border-radius: 0.25rem;
     padding: 2px 0 2px 0;
-    background-color: var(--background-color);
-    color: var(--foreground-color);
+    background-color: var(--window-bg-color);
+    color: var(--text-color);
     visibility: hidden;
     &.visible {
         visibility: visible;
