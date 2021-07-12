@@ -13,6 +13,7 @@ interface PreviewerProps {
 
 const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     const [size, setSize] = useState<number>(100);
+    const rawStyle = window.getComputedStyle(document.documentElement);
 
     const bottomMargin = 35;
     const padding = size / 6;
@@ -44,9 +45,9 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
 
         if (gridMode !== GridMode.off) {
             const drawGridLine = (offset: number, axis: 'x' | 'y' = 'x') => {
-                let strokeColor = 'rgb(64, 64, 64)';
-                if (offset === 0) strokeColor = 'rgb(96,96,96)';
-                if (mod(offset, 1) === 0.5) strokeColor = 'rgb(32,32,32)';
+                let strokeColor = rawStyle.getPropertyValue('--grid-block-color');
+                if (offset === 0) strokeColor = rawStyle.getPropertyValue('--grid-center-color');
+                if (mod(offset, 1) === 0.5) strokeColor = rawStyle.getPropertyValue('--grid-double-color');
                 const p = [0, offset * posMultiple + centerModifier[axis], size, offset * posMultiple + centerModifier[axis]];
                 grids.push(<Line
                     key={`${axis}-${offset * posMultiple}`} stroke={strokeColor} strokeWidth={1.25}
@@ -64,7 +65,6 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     }
 
     const onResize = ({ bounds }: { bounds?: { width?: number } }) => setSize(bounds?.width ?? 100);
-
     return (
         <div className={styles['previewer-window']}>
             <Measure bounds onResize={onResize}>
@@ -75,7 +75,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
                                 <Rect
                                     x={padding} y={padding}
                                     width={size - padding * 2} height={size - padding * 2}
-                                    fill="rgb(16, 16, 16)"
+                                    fill={rawStyle.getPropertyValue('--window-bg-color')}
                                 />
                                 {grids}
                                 {points}
