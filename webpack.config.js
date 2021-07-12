@@ -6,7 +6,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    // pathの設定についてですがpathモジュールを使う必要は特にはありません。
     entry: path.resolve(__dirname, 'src/index.tsx'),
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -15,7 +14,7 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
         port: 3000,
-        historyApiFallback: true, // これがないとルーティングできない
+        historyApiFallback: true
     },
     resolve: {
         modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
@@ -42,19 +41,19 @@ module.exports = {
             // js,ts,tsxのローダ設定
             {
                 test: [/\.ts$/, /\.tsx$/],
-                loader: ['ts-loader'],
-            },
-        ],
+                loader: ['ts-loader']
+            }
+        ]
     },
     plugins: [
         new HtmlWebpackPlugin({
-            publicPath: 'dist', // ビルド後のHTMLの出力先
-            filename: 'index.html', //出力するHTMLのファイル名
-            template: 'src/index.html', //出力するためのHTMLのテンプレート
+            publicPath: 'dist',
+            filename: 'index.html',
+            template: 'src/index.html'
         }),
         new MiniCssExtractPlugin({
-            publicPath: 'dist', // ビルド後のCSSの出力先
-            filename: 'app.css', //出力するCSSのファイル名
-        }),
-    ],
+            publicPath: 'dist',
+            filename: `app-${Date.now()}.css`
+        })
+    ]
 }
