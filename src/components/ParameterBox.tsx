@@ -8,7 +8,7 @@ interface ParameterBoxProps {
     value: string
 }
 
-const ParameterBox: React.FC<ParameterBoxProps> = ({ name, description, updateParam, value }) => {
+const ParameterBox = ({ name, description, updateParam, value }: ParameterBoxProps): JSX.Element => {
     const [argValue, setArgValue] = useState(value);
     const onChange = ({ target: { value: newValue } }: React.ChangeEvent<HTMLInputElement>) => {
         setArgValue(newValue);

@@ -12,7 +12,7 @@ interface InspectorProps {
     setSelectedShapes: (shapes: Shape[]) => void
 }
 
-const Inspector: React.FC<InspectorProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes }) => {
+const Inspector = ({ shapes, setShapes, selectedShapes, setSelectedShapes }: InspectorProps): JSX.Element => {
     const paramBoxes = selectedShapes.flatMap(<T extends string, U extends AbstractShapeNode<T>>(shape: U) =>
         shape.getParameterList().map(({ argID, value, name, description }) => {
             const updateParam = (newParam: string) => {

@@ -13,7 +13,7 @@ interface RangeSliderProps {
     className?: string
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({ className, min, step, value, setValue, max, unit, spIndicateZeroVal }) => {
+const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndicateZeroVal }: RangeSliderProps): JSX.Element => {
     const onChange = (e: { target: { value: string } }) => setValue(parseFloat(e.target.value));
     return (
         <Container className={className}>

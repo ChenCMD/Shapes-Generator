@@ -33,7 +33,7 @@ interface MenuProps {
     openExportModal: (isOpen: boolean) => void;
 }
 
-const Menu: React.FC<MenuProps> = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }) => {
+const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }: MenuProps): JSX.Element => {
     const onExport = () => openExportModal(true);
 
     const onGridModeChange = (e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value));

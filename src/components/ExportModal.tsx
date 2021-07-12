@@ -16,7 +16,7 @@ interface ExportModalProps {
     setDuplicatedPointRange: (value: number) => void
 }
 
-const ExportModal: React.FC<ExportModalProps> = ({ openExportModal, points, isOpen, duplicatedPointRange, setDuplicatedPointRange }) => {
+const ExportModal = ({ openExportModal, points, isOpen, duplicatedPointRange, setDuplicatedPointRange }: ExportModalProps): JSX.Element => {
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);

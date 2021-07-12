@@ -6,7 +6,7 @@ interface ShapeListMenuProps {
     addShape: (shape: Shape) => void
 }
 
-const ShapeListMenu: React.FC<ShapeListMenuProps> = ({ addShape }) => {
+const ShapeListMenu = ({ addShape }: ShapeListMenuProps): JSX.Element => {
     const [shapePulldown, setShapePulldown] = useState<ShapeType>('line');
     const [addCount, setAddCount] = useState<Record<ShapeType, number>>({
         line: 0,
@@ -25,7 +25,7 @@ const ShapeListMenu: React.FC<ShapeListMenuProps> = ({ addShape }) => {
 
     return (
         <div className={styles['shape-list-menu']}>
-            <select className={styles['shape-list-menu-pulldown']}value={shapePulldown} onChange={onChangeTargetShape}>
+            <select className={styles['shape-list-menu-pulldown']} value={shapePulldown} onChange={onChangeTargetShape}>
                 <option className={styles['shape-list-menu-pulldown-option']} value="line">line</option>
                 <option className={styles['shape-list-menu-pulldown-option']} value="circle">circle</option>
                 <option className={styles['shape-list-menu-pulldown-option']} value="polygon">polygon</option>

@@ -12,7 +12,7 @@ interface ShapeListItemProps {
     setContextTarget: (context: { x: number, y: number }) => void
 }
 
-const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, onSelect, onExitFocus, onSelectMove, setContextTarget }) => {
+const ShapeListItem = ({ index, name, isSelected, onSelect, onExitFocus, onSelectMove, setContextTarget }: ShapeListItemProps): JSX.Element => {
     const [renameMode, setRenameMode] = useState<boolean>(false);
     const alreadyClicked = useRef(false);
     const inputElemRef = useRef<HTMLInputElement>(null);
@@ -46,7 +46,7 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ index, name, isSelected, 
     const onContextMenu = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault();
         onSelect(e.ctrlKey);
-        setContextTarget({ x: e.clientX, y: e.clientY});
+        setContextTarget({ x: e.clientX, y: e.clientY });
     };
 
     useEffect(() => inputElemRef.current?.focus(), [renameMode]);

@@ -9,7 +9,7 @@ interface ContextMenuProps {
     onDelete: () => void
 }
 
-const ContextMenu: React.ComponentType<ContextMenuProps> = ({ x, y, onCloseRequest, onDelete }) => {
+const ContextMenu = ({ x, y, onCloseRequest, onDelete }: ContextMenuProps): JSX.Element => {
     const overlayRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLTableSectionElement>(null);
     const { width, height } = useWindowSize();

@@ -9,7 +9,7 @@ import ExportModal from './ExportModal';
 import Previewer from './Previewer';
 import UserInterface from './UserInterface';
 
-const ShapesGenerator: React.FC = () => {
+const ShapesGenerator = (): JSX.Element => {
     const [shapes, setShapes] = useState<Shape[]>([]);
     const [selectedShapes, setSelectedShapes] = useState<Shape[]>([]);
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);

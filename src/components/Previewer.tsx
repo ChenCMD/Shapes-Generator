@@ -11,7 +11,7 @@ interface PreviewerProps {
     gridMode: GridMode
 }
 
-const Previewer: React.FC<PreviewerProps> = ({ shapes, gridMode }) => {
+const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     const [size, setSize] = useState<number>(100);
 
     const bottomMargin = 35;
@@ -63,7 +63,7 @@ const Previewer: React.FC<PreviewerProps> = ({ shapes, gridMode }) => {
         }
     }
 
-    const onResize = ({ bounds }: { bounds?: { width?: number} }) => setSize(bounds?.width ?? 100);
+    const onResize = ({ bounds }: { bounds?: { width?: number } }) => setSize(bounds?.width ?? 100);
 
     return (
         <div className={styles['previewer-window']}>

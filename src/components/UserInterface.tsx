@@ -20,7 +20,7 @@ interface UserInterfaceProps {
     openExportModal: (isOpen: boolean) => void;
 }
 
-const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openExportModal }) => (
+const UserInterface = ({ shapes, setShapes, selectedShapes, setSelectedShapes, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openExportModal }: UserInterfaceProps): JSX.Element => (
     <Container fluid className={styles['user-interface']}>
         <Row>
             <Col className={styles['col-inspector']}>
@@ -52,7 +52,6 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ shapes, setShapes, select
                 />
             </ Col>
         </ Row>
-    </Container>
-);
+    </Container>);
 
 export default UserInterface;

@@ -14,7 +14,7 @@ interface ShapeListProps {
     setContextTarget: (context: { x: number, y: number }) => void
 }
 
-const ShapeList: React.FC<ShapeListProps> = ({ shapes, setShapes, selectedShapes, setSelectedShapes, setContextTarget }) => {
+const ShapeList = ({ shapes, setShapes, selectedShapes, setSelectedShapes, setContextTarget }: ShapeListProps): JSX.Element => {
     const [focusItem, setFocusItem] = useState<number>(0);
     useEffect(() => document.getElementById(`shape-list-item-${focusItem}`)?.focus(), [focusItem]);
     useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapes]);
