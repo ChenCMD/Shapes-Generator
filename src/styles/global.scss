@@ -11,6 +11,20 @@
     --grid-center-color: rgb(64, 64, 64);
     --grid-block-color: rgb(96, 96, 96);
     --grid-double-color: rgb(32, 32, 32);
+    &[theme="yv"] {
+        --background-color: #202529;
+        --text-color: #ebf5ff;
+        --window-bg-color: #343a3f;
+        --input-bg-color: #4b5359;
+        --border-color: #191c1e;
+        --hover-highlight: #465056;
+        --select-highlight: #68727c;
+        --scrollbar-color: #68727c;
+        --modal-overlay-color: #00000099;
+        --grid-center-color: #68727c;
+        --grid-block-color: #4C545C;
+        --grid-double-color: #2A3035;
+    }
 }
 
 body {
