@@ -5,7 +5,29 @@
 			"type": "npm",
 			"script": "start",
 			"label": "yarn: start",
-			"detail": "react-scripts start",
+			"detail": "webpack-dev-server --mode development",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "custom",
+				"pattern": {
+					"regexp": "ˆ$"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling...",
+					"endsPattern": "Compiled .*"
+				}
+			}
+		},
+		{
+			"type": "npm",
+			"script": "start-profiling",
+			"label": "yarn: start-profiling",
+			"detail": "webpack-dev-server --mode production",
 			"group": {
 				"kind": "test",
 				"isDefault": true

@@ -5,7 +5,7 @@
             "type": "pwa-chrome",
             "request": "launch",
             "preLaunchTask": "yarn: start",
-            "name": "Launch Chrome against localhost",
+            "name": "Debug - Dev",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}",
             "sourceMaps": true,
@@ -13,5 +13,17 @@
                 "webpack:///./*": "${webRoot}/src/*"
             }
         },
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "preLaunchTask": "yarn: start-profiling",
+            "name": "Debug - Profiling",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${webRoot}/src/*"
+            }
+        }
     ]
 }
