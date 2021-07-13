@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import styles from '../styles/ShapeListItem.module.scss';
 
@@ -6,66 +6,65 @@ interface ShapeListItemProps {
     index: number
     name: string
     isSelected: boolean
-    onExitFocus: (newID: string) => void
-    onSelect: (isPushCtrl: boolean) => void
-    onSelectMove: (to: -1 | 1) => void
-    setContextTarget: (context: { x: number, y: number }) => void
+    onSelect: (index: number, isPushCtrl: boolean) => void
+    onRename: (index: number, newID: string) => void
+    onMoveSelect: (index: number, to: -1 | 1) => void
+    showContextMenu: (index: number, e: React.MouseEvent<HTMLElement, MouseEvent>) => void
 }
 
-const ShapeListItem = ({ index, name, isSelected, onSelect, onExitFocus, onSelectMove, setContextTarget }: ShapeListItemProps): JSX.Element => {
+const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSelect, showContextMenu }: ShapeListItemProps): JSX.Element => {
     const [renameMode, setRenameMode] = useState<boolean>(false);
     const alreadyClicked = useRef(false);
     const inputElemRef = useRef<HTMLInputElement>(null);
 
-    const onClick = (isPushCtrl: boolean) => {
+    const onClick = useCallback(({ ctrlKey: isPushCtrl }: { ctrlKey: boolean }) => {
         if (!alreadyClicked.current) {
             alreadyClicked.current = true;
-            onSelect(isPushCtrl);
+            onSelect(index, isPushCtrl);
             setTimeout(() => alreadyClicked.current = false, 200);
         }
-    };
+    }, [index, onSelect]);
 
-    const onExitRename = () => {
-        if (inputElemRef.current?.value) onExitFocus(inputElemRef.current.value);
+    const onExitRenameMode = useCallback(() => {
+        if (inputElemRef.current?.value)
+            onRename(index, inputElemRef.current.value);
         setRenameMode(false);
-    };
+    }, [index, onRename]);
 
-    const onKeyDown = (key: string) => {
+    const onKeyDown = useCallback(({ key }: { key: string }) => {
         switch (key) {
             case 'Enter':
-                return renameMode ? onExitRename() : setRenameMode(true);
+                return renameMode ? onExitRenameMode() : setRenameMode(true);
             case 'Escape':
                 return setRenameMode(false);
             case 'ArrowUp':
-                return onSelectMove(-1);
+                return onMoveSelect(index, -1);
             case 'ArrowDown':
-                return onSelectMove(1);
+                return onMoveSelect(index, +1);
         }
-    };
+    }, [index, onExitRenameMode, onMoveSelect, renameMode]);
 
-    const onContextMenu = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        e.preventDefault();
-        onSelect(e.ctrlKey);
-        setContextTarget({ x: e.clientX, y: e.clientY });
-    };
+    const onContextMenu = useCallback((e: React.MouseEvent<HTMLElement, MouseEvent>) => showContextMenu(index, e), [index, showContextMenu]);
 
     useEffect(() => inputElemRef.current?.focus(), [renameMode]);
 
     const renameElem = (
         <input
             className={styles['shape-list-item-input']}
+            id={`shape-list-item-${index}`}
             ref={inputElemRef}
-            onBlur={() => onExitRename()}
-            onKeyDown={e => onKeyDown(e.key)}
+            onBlur={onExitRenameMode}
+            onKeyDown={onKeyDown}
             tabIndex={index === 0 ? 0 : -1}
         />
     );
     const textElem = (
         <div
             className={styles['shape-list-item-text']}
-            onClick={e => onClick(e.ctrlKey)}
+            id={`shape-list-item-${index}`}
+            onClick={onClick}
             onDoubleClick={() => setRenameMode(true)}
-            onKeyDown={e => onKeyDown(e.key)}
+            onKeyDown={onKeyDown}
             tabIndex={index === 0 ? 0 : -1}
         >
             {name}
@@ -84,4 +83,4 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onExitFocus, onSelec
     );
 };
 
-export default ShapeListItem;
+export default React.memo(ShapeListItem);

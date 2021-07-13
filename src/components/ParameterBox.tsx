@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
+import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ParameterBox.module.scss';
+import { Parameter } from '../types/AbstractShapeNode';
 
-interface ParameterBoxProps {
-    name: string
-    description: string
-    updateParam: (newParam: string) => void
-    value: string
+interface ParameterBoxProps<T extends string> {
+    data: Parameter<T>
+    index: number
+    shapesDispatch: ShapesDispatch
 }
 
-const ParameterBox = ({ name, description, updateParam, value }: ParameterBoxProps): JSX.Element => {
-    const [argValue, setArgValue] = useState(value);
-    const onChange = ({ target: { value: newValue } }: React.ChangeEvent<HTMLInputElement>) => {
-        setArgValue(newValue);
-        if (!(/^[+,-]?(?:[1-9]\d*|0)(?:\.\d+)?$/.test(newValue))) return;
-        updateParam(newValue);
+const ParameterBox = <T extends string>({ data, index, shapesDispatch }: ParameterBoxProps<T>): JSX.Element => {
+    const [argValue, setArgValue] = useState(data.value);
+    const onChange = ({ target: { value: newParam } }: React.ChangeEvent<HTMLInputElement>) => {
+        setArgValue(newParam);
+        if (!(/^[+,-]?(?:[1-9]\d*|0)(?:\.\d+)?$/.test(newParam))) return;
+        shapesDispatch({ type: 'update', index, arg: data.argID, newParam });
     };
 
     return (
-        <div className={styles['param-box']} title={description}>
-            <div className={styles['param-box-name']}>{name}</div>
+        <div className={styles['param-box']} title={data.description}>
+            <div className={styles['param-box-name']}>{data.name}</div>
             <input className={styles['param-box-input']} type='number' onChange={onChange} value={argValue} />
         </div>
     );
 };
 
-export default ParameterBox;
+export default React.memo(ParameterBox);

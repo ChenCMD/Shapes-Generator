@@ -1,15 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import useWindowSize from '../hooks/useWindowSize';
+import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ContextMenu.module.scss';
 
 interface ContextMenuProps {
     x?: number
     y?: number
     onCloseRequest: () => void
-    onDelete: () => void
+    shapesDispatch: ShapesDispatch
 }
 
-const ContextMenu = ({ x, y, onCloseRequest, onDelete }: ContextMenuProps): JSX.Element => {
+const ContextMenu = ({ x, y, onCloseRequest, shapesDispatch }: ContextMenuProps): JSX.Element => {
     const overlayRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLTableSectionElement>(null);
     const { width, height } = useWindowSize();
@@ -29,7 +30,7 @@ const ContextMenu = ({ x, y, onCloseRequest, onDelete }: ContextMenuProps): JSX.
         }
     }, [width, height, x, y]);
 
-    const onContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const onContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
         e.stopPropagation();
         if (overlayRef.current) {
@@ -42,7 +43,9 @@ const ContextMenu = ({ x, y, onCloseRequest, onDelete }: ContextMenuProps): JSX.
             elem.dispatchEvent(event);
             overlayRef.current.style.visibility = '';
         }
-    };
+    }, [onCloseRequest]);
+
+    const onDelete = useCallback(() => shapesDispatch({ type: 'delete' }), [shapesDispatch]);
 
     return (
         <div className={`${styles['overlay']}`} ref={overlayRef} onClick={onCloseRequest} onContextMenu={onContextMenu}>
@@ -65,4 +68,4 @@ const ContextMenu = ({ x, y, onCloseRequest, onDelete }: ContextMenuProps): JSX.
     );
 };
 
-export default ContextMenu;
+export default React.memo(ContextMenu);

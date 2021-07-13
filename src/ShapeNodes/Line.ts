@@ -2,13 +2,8 @@ import rfdc from 'rfdc';
 import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 
-type LineParams =
-    | 'count'
-    | 'from_x'
-    | 'from_y'
-    | 'to_x'
-    | 'to_y'
-    | 'vezier';
+const lineParams = ['count', 'from_x', 'from_y', 'to_x', 'to_y', 'vezier'] as const;
+type LineParams = typeof lineParams[number];
 
 const defaultParams: Record<LineParams, string> = {
     count: '10',
@@ -30,7 +25,7 @@ const paramMetaData: Record<LineParams, ParameterMetaData> = {
 
 export class LineShape extends AbstractShapeNode<LineParams> {
     public constructor(id: string) {
-        super('line', id, rfdc()(defaultParams), paramMetaData);
+        super('line', lineParams, paramMetaData, id, rfdc()(defaultParams));
     }
 
     protected updatePointSet(params: Record<LineParams, number>): void {

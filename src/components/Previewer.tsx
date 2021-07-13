@@ -88,4 +88,4 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     );
 };
 
-export default Previewer;
+export default React.memo(Previewer);

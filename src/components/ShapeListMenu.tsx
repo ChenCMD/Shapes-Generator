@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { getShape, Shape, ShapeType } from '../ShapeNodes';
+import React, { useState, useCallback } from 'react';
+import { ShapesDispatch } from '../reducers/shapesReducer';
+import { getShape, ShapeType } from '../ShapeNodes';
 import styles from '../styles/ShapeListMenu.module.scss';
 
 interface ShapeListMenuProps {
-    addShape: (shape: Shape) => void
+    shapesDispatch: ShapesDispatch
 }
 
-const ShapeListMenu = ({ addShape }: ShapeListMenuProps): JSX.Element => {
+const ShapeListMenu = ({ shapesDispatch }: ShapeListMenuProps): JSX.Element => {
     const [shapePulldown, setShapePulldown] = useState<ShapeType>('line');
     const [addCount, setAddCount] = useState<Record<ShapeType, number>>({
         line: 0,
@@ -14,14 +15,13 @@ const ShapeListMenu = ({ addShape }: ShapeListMenuProps): JSX.Element => {
         polygon: 0
     });
 
-    const addShapes = () => {
+    const addShapes = useCallback(() => {
         const cnt = addCount[shapePulldown] + 1;
-
         setAddCount({ ...addCount, [shapePulldown]: cnt });
-        addShape(getShape(`${shapePulldown} ${cnt}`, shapePulldown));
-    };
+        shapesDispatch({ type: 'add', shape: getShape(`${shapePulldown} ${cnt}`, shapePulldown) });
+    }, [addCount, shapePulldown, shapesDispatch]);
 
-    const onChangeTargetShape = (e: React.ChangeEvent<HTMLSelectElement>) => setShapePulldown(e.target.value as ShapeType);
+    const onChangeTargetShape = useCallback((e: { target: { value: string } }) => setShapePulldown(e.target.value as ShapeType), []);
 
     return (
         <div className={styles['shape-list-menu']}>
@@ -35,4 +35,4 @@ const ShapeListMenu = ({ addShape }: ShapeListMenuProps): JSX.Element => {
     );
 };
 
-export default ShapeListMenu;
+export default React.memo(ShapeListMenu);

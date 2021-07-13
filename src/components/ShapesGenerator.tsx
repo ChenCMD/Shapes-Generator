@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback, useReducer } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
-import { Shape } from '../ShapeNodes';
+import shapesReducer from '../reducers/shapesReducer';
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';
 import { deleteDuplicatedPoints } from '../types/Point';
@@ -12,33 +12,25 @@ import Previewer from './Previewer';
 import UserInterface from './UserInterface';
 
 const ShapesGenerator = (): JSX.Element => {
-    const [shapes, setShapes] = useState<Shape[]>([]);
-    const [selectedShapes, setSelectedShapes] = useState<Shape[]>([]);
+    const [shapes, shapesDispatch] = useReducer(shapesReducer, []);
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
     const [contextTarget, setContextTarget] = useState<{ x: number, y: number } | undefined>();
 
-    const onDelete = () => {
-        setSelectedShapes([]);
-        setShapes(shapes.filter(v => !selectedShapes.includes(v)));
-    };
-
-    const onKeyDown = ({ key }: { key: string }) => {
+    const onKeyDown = useCallback(({ key }: { key: string }) => {
         if (contextTarget && key === 'Escape') setContextTarget(undefined);
-        if (selectedShapes && key === 'Delete') {
-            setSelectedShapes([]);
-            setShapes(shapes.filter(v => !selectedShapes.includes(v)));
-        }
-    };
+        if (key === 'Delete') shapesDispatch({ type: 'delete' });
+    }, [contextTarget]);
 
-    const points = deleteDuplicatedPoints(
-        shapes.flatMap(shape => {
-            const selected = selectedShapes.includes(shape);
-            return shape.pointSet.map(v => ({ selected, point: v }));
-        }),
+    const onContextCloseRequest = useCallback(() => setContextTarget(undefined), []);
+
+    const dependString = useMemo(() => shapes.map(v => `${v.isSelected ? 1 : 0}${v.pointSet.map(v2 => v2.id).join('+')}`).join('+'), [shapes]);
+    const points = useMemo(() => deleteDuplicatedPoints(
+        shapes.flatMap(shape => shape.pointSet.map(v => ({ selected: shape.isSelected, point: v }))),
         duplicatedPointRange
-    );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    ), [duplicatedPointRange, dependString]);
 
     return (
         <div className={styles['shapes-generator']} onKeyDown={onKeyDown}>
@@ -53,9 +45,7 @@ const ShapesGenerator = (): JSX.Element => {
                     <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-user-interface']}>
                         <UserInterface
                             shapes={shapes}
-                            setShapes={setShapes}
-                            selectedShapes={selectedShapes}
-                            setSelectedShapes={setSelectedShapes}
+                            shapesDispatch={shapesDispatch}
                             gridMode={gridMode}
                             setGridMode={setGridMode}
                             duplicatedPointRange={duplicatedPointRange}
@@ -76,8 +66,8 @@ const ShapesGenerator = (): JSX.Element => {
             <ContextMenu
                 x={contextTarget?.x}
                 y={contextTarget?.y}
-                onCloseRequest={() => setContextTarget(undefined)}
-                onDelete={onDelete}
+                onCloseRequest={onContextCloseRequest}
+                shapesDispatch={shapesDispatch}
             />
         </div>
     );

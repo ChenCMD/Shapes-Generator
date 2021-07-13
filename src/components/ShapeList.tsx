@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import deepEqual from 'fast-deep-equal';
+import React, { useCallback, useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
+import { ShapesDispatch } from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/ShapeList.module.scss';
 import { mod } from '../utils/common';
@@ -7,59 +9,52 @@ import ShapeListItem from './ShapeListItem';
 import ShapeListMenu from './ShapeListMenu';
 
 interface ShapeListProps {
-    shapes: Shape[]
-    setShapes: (shapes: Shape[]) => void
-    selectedShapes: Shape[],
-    setSelectedShapes: (shapes: Shape[]) => void
+    shapes: Pick<Shape, 'uuid' | 'name' | 'isSelected'>[]
+    shapesLength: number
+    shapesDispatch: ShapesDispatch
     setContextTarget: (context: { x: number, y: number }) => void
 }
 
-const ShapeList = ({ shapes, setShapes, selectedShapes, setSelectedShapes, setContextTarget }: ShapeListProps): JSX.Element => {
+const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: ShapeListProps): JSX.Element => {
     const [focusItem, setFocusItem] = useState<number>(0);
-    useEffect(() => document.getElementById(`shape-list-item-${focusItem}`)?.focus(), [focusItem]);
-    useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapes]);
+    useEffect(() => document.getElementById(`shape-list-item-${mod(focusItem, shapesLength)}`)?.focus(), [focusItem, shapesLength]);
+    useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapesLength]);
 
-    const items = shapes.map((shape, i) => {
-        const onBlur = (newID: string) => {
-            shape.name = newID;
-            setSelectedShapes([...selectedShapes]);
-            setShapes([...shapes]);
-        };
-        const onClick = (isPushCtrl: boolean) => {
-            if (isPushCtrl) {
-                if (selectedShapes.includes(shape))
-                    setSelectedShapes(selectedShapes.filter(v => v !== shape));
-                else
-                    setSelectedShapes([...selectedShapes, shape]);
-            } else {
-                setSelectedShapes([shape]);
-            }
-        };
-        const onSelectMove = (to: -1 | 1) => {
-            const shapeIdx = mod(shapes.indexOf(shape) + to, shapes.length);
-            setFocusItem(shapeIdx);
-            setSelectedShapes(shapes.slice(shapeIdx, shapeIdx + 1));
-        };
+    const onSelect = useCallback((index: number, isRetentionOld: boolean) => {
+        shapesDispatch({ type: 'select', index, isRetentionOld });
+    }, [shapesDispatch]);
 
-        return (
-            <ShapeListItem
-                index={i}
-                key={shape.uuid}
-                name={shape.name}
-                isSelected={selectedShapes.includes(shape)}
-                onExitFocus={onBlur}
-                onSelect={onClick}
-                onSelectMove={onSelectMove}
-                setContextTarget={setContextTarget}
-            />
-        );
-    });
+    const onMoveSelect = useCallback((index: number, to: -1 | 1) => {
+        setFocusItem(index + to);
+        shapesDispatch({ type: 'move', index, to });
+    }, [shapesDispatch]);
 
-    const addShape = (shape: Shape) => setShapes([...shapes, shape]);
+    const onRename = useCallback((index: number, newName: string) => {
+        shapesDispatch({ type: 'rename', index, newName });
+    }, [shapesDispatch]);
+
+    const showContextMenu = useCallback((index, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        e.preventDefault();
+        shapesDispatch({ type: 'select', index, isRetentionOld: e.ctrlKey });
+        setContextTarget({ x: e.clientX, y: e.clientY });
+    }, [setContextTarget, shapesDispatch]);
+
+    const items = shapes.map((shape, i) => (
+        <ShapeListItem
+            index={i}
+            key={shape.uuid}
+            name={shape.name}
+            isSelected={shape.isSelected}
+            onSelect={onSelect}
+            onRename={onRename}
+            onMoveSelect={onMoveSelect}
+            showContextMenu={showContextMenu}
+        />
+    ));
 
     return (
         <div className={styles['shape-list-window']}>
-            <ShapeListMenu addShape={addShape} />
+            <ShapeListMenu shapesDispatch={shapesDispatch} />
             <div id="scroll-bar" className={styles['shape-list']}>
                 <ListGroup>
                     {items}
@@ -69,4 +64,4 @@ const ShapeList = ({ shapes, setShapes, selectedShapes, setSelectedShapes, setCo
     );
 };
 
-export default ShapeList;
+export default React.memo(ShapeList, deepEqual);

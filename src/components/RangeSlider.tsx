@@ -46,4 +46,4 @@ const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndic
     );
 };
 
-export default RangeSlider;
+export default React.memo(RangeSlider);

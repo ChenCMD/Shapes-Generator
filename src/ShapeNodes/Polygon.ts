@@ -3,17 +3,8 @@ import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { mod, rotateMatrix2D, toRadians } from '../utils/common';
 
-type PolygonParams =
-    | 'count'
-    | 'center_x'
-    | 'center_y'
-    | 'radius'
-    | 'start'
-    | 'ellipse'
-    | 'rotate'
-    | 'corner'
-    | 'jump'
-    | 'vezier';
+const polygonParams = ['count', 'center_x', 'center_y', 'radius', 'start', 'ellipse', 'rotate', 'corner', 'jump', 'vezier'] as const;
+type PolygonParams = typeof polygonParams[number];
 
 const defaultParams: Record<PolygonParams, string> = {
     count: '10',
@@ -43,7 +34,7 @@ const paramMetaData: Record<PolygonParams, ParameterMetaData> = {
 
 export class PolygonShape extends AbstractShapeNode<PolygonParams> {
     public constructor(id: string) {
-        super('polygon', id, rfdc()(defaultParams), paramMetaData);
+        super('polygon', polygonParams, paramMetaData, id, rfdc()(defaultParams));
     }
 
     protected updatePointSet(params: Record<PolygonParams, number>): void {

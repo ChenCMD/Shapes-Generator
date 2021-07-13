@@ -2,33 +2,27 @@ import React from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
+import { ShapesDispatch } from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/Inspector.module.scss';
-import { AbstractShapeNode } from '../types/AbstractShapeNode';
+import { AbstractShapeNode, Parameter } from '../types/AbstractShapeNode';
 import ParameterBox from './ParameterBox';
 
 interface InspectorProps {
     shapes: Shape[]
-    setShapes: (shapes: Shape[]) => void
-    selectedShapes: Shape[]
-    setSelectedShapes: (shapes: Shape[]) => void
+    shapesDispatch: ShapesDispatch
 }
 
-const Inspector = ({ shapes, setShapes, selectedShapes, setSelectedShapes }: InspectorProps): JSX.Element => {
-    const paramBoxes = selectedShapes.flatMap(<T extends string, U extends AbstractShapeNode<T>>(shape: U) =>
-        shape.getParameterList().map(({ argID, value, name, description }) => {
-            const updateParam = (newParam: string) => {
-                shape.setParameter(argID, newParam);
-                setSelectedShapes([...selectedShapes]);
-                setShapes([...shapes]);
-            };
-            return (
-                <Col key={`${shape.name}-${argID}`} xl={3} lg={4} md={6} sm={4} xs={6} >
-                    <ParameterBox name={name} description={description} updateParam={updateParam} value={value} />
-                </Col>
-            );
-        })
-    );
+const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
+    const paramBoxes = shapes.flatMap(<T extends string, U extends AbstractShapeNode<T>>(shape: U, i: number) => {
+        if (!shape.isSelected) return;
+        // TODO 複数選択時の挙動
+        return shape.getParameterList().map((data: Parameter<T>) => (
+            <Col key={`${shape.uuid}-${data.argID}`} xl={3} lg={4} md={6} sm={4} xs={6} >
+                <ParameterBox data={data} index={i} shapesDispatch={shapesDispatch} />
+            </Col>
+        ));
+    }).filter(v => v !== undefined) as JSX.Element[];
 
     return (
         <div className={styles['inspector']}>
@@ -41,4 +35,4 @@ const Inspector = ({ shapes, setShapes, selectedShapes, setSelectedShapes }: Ins
     );
 };
 
-export default Inspector;
+export default React.memo(Inspector);

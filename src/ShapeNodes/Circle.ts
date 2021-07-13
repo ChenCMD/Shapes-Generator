@@ -3,14 +3,8 @@ import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { rotateMatrix2D, toRadians } from '../utils/common';
 
-type CircleParams =
-    | 'count'
-    | 'center_x'
-    | 'center_y'
-    | 'radius'
-    | 'start'
-    | 'ellipse'
-    | 'rotate';
+const circleParams = ['count', 'center_x', 'center_y', 'radius', 'start', 'ellipse', 'rotate'] as const;
+type CircleParams = typeof circleParams[number];
 
 const defaultParams: Record<CircleParams, string> = {
     count: '20',
@@ -34,7 +28,7 @@ const paramMetaData: Record<CircleParams, ParameterMetaData> = {
 
 export class CircleShape extends AbstractShapeNode<CircleParams> {
     public constructor(id: string) {
-        super('circle', id, rfdc()(defaultParams), paramMetaData);
+        super('circle', circleParams, paramMetaData, id, rfdc()(defaultParams));
     }
 
     protected updatePointSet(params: Record<CircleParams, number>): void {

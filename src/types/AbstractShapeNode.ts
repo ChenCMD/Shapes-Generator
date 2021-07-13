@@ -9,16 +9,20 @@ export interface ParameterMetaData {
 export type Parameter<T extends string> = { argID: T, value: string } & ParameterMetaData;
 
 export abstract class AbstractShapeNode<T extends string> {
+    private readonly validateArgs: Set<string>;
     private _uuid: string;
     private _pointSet: IdentifiedPoint[] = [];
+    public isSelected = false;
     public name: string;
 
     public constructor(
         private type: string,
+        validateArgs: readonly T[],
+        private readonly paramMetaData: Record<T, ParameterMetaData>,
         id: string,
-        private _params: Record<T, string>,
-        private readonly paramMetaData: Record<T, ParameterMetaData>
+        private _params: Record<T, string>
     ) {
+        this.validateArgs = new Set(validateArgs);
         this._uuid = uuid.generate();
         this.name = id;
         const params: Partial<Record<T, number>> = {};
@@ -43,7 +47,13 @@ export abstract class AbstractShapeNode<T extends string> {
         this._pointSet = points;
     }
 
-    public setParameter(argName: T, value: string): void {
+    private isArgs(argName: string): argName is T {
+        return this.validateArgs.has(argName);
+    }
+
+    public setParameter(argName: string, value: string): void {
+        if (!this.isArgs(argName))
+            throw new TypeError(`パラメータID '${argName}' は '${this.type}' には存在しません。`);
         this._params[argName] = value;
 
         const params: Partial<Record<T, number>> = {};

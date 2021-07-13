@@ -1,20 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const useWindowSize = (): { width: number, height: number } => {
-    const getWindowSize = () => ({
+    const getWindowSize = useCallback(() => ({
         width: window.innerWidth,
         height: window.innerHeight
-    });
-
+    }), []);
     const [windowSize, setWindowDimensions] = useState<{ width: number, height: number }>(getWindowSize());
+    const onResize = useCallback(() => setWindowDimensions(getWindowSize()), [getWindowSize]);
 
     useEffect(() => {
-        const onResize = () => {
-            setWindowDimensions(getWindowSize());
-        };
         window.addEventListener('resize', onResize);
         return () => window.removeEventListener('resize', onResize);
-    }, []);
+    }, [onResize]);
 
     return windowSize;
 };

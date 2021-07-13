@@ -2,6 +2,7 @@ import React from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
+import { ShapesDispatch } from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/UserInterface.module.scss';
 import { GridMode } from '../types/GridMode';
@@ -11,9 +12,7 @@ import ShapeList from './ShapeList';
 
 interface UserInterfaceProps {
     shapes: Shape[]
-    setShapes: (shapes: Shape[]) => void
-    selectedShapes: Shape[],
-    setSelectedShapes: (shapes: Shape[]) => void
+    shapesDispatch: ShapesDispatch
     gridMode: GridMode
     setGridMode: (mode: GridMode) => void
     duplicatedPointRange: number
@@ -22,25 +21,22 @@ interface UserInterfaceProps {
     openExportModal: (isOpen: boolean) => void;
 }
 
-const UserInterface = ({ shapes, setShapes, selectedShapes, setSelectedShapes, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openExportModal }: UserInterfaceProps): JSX.Element => (
+const UserInterface = ({ shapes, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openExportModal }: UserInterfaceProps): JSX.Element => (
     <Container fluid className={styles['user-interface']}>
         <Row>
             <Col className={styles['col-inspector']}>
                 <Inspector
                     shapes={shapes}
-                    setShapes={setShapes}
-                    selectedShapes={selectedShapes}
-                    setSelectedShapes={setSelectedShapes}
+                    shapesDispatch={shapesDispatch}
                 />
             </Col>
         </ Row>
         <Row>
             <Col xl={5} lg={5} md={12} sm={5} xs={12} className={styles['col-shape-list']}>
                 <ShapeList
-                    shapes={shapes}
-                    setShapes={setShapes}
-                    selectedShapes={selectedShapes}
-                    setSelectedShapes={setSelectedShapes}
+                    shapes={shapes.map(shape => ({ name: shape.name, uuid: shape.uuid, isSelected: shape.isSelected }))}
+                    shapesLength={shapes.length}
+                    shapesDispatch={shapesDispatch}
                     setContextTarget={setContextTarget}
                 />
             </ Col>
@@ -54,6 +50,7 @@ const UserInterface = ({ shapes, setShapes, selectedShapes, setSelectedShapes, g
                 />
             </ Col>
         </ Row>
-    </Container>);
+    </Container>
+);
 
-export default UserInterface;
+export default React.memo(UserInterface);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
@@ -24,7 +24,7 @@ const ExportModal = ({ openExportModal, points, isOpen, duplicatedPointRange, se
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);
 
-    const onExport = () => {
+    const onExport = useCallback(() => {
         const mkCmd = (pos: Point) => `particle ${particle.trim()} ^${toStr(pos[0])} ^ ^${toStr(pos[1])} 0 0 0 ${toStr(particleSpeed)} 1`;
         const content = points.map(([x, y]) => mkCmd([round(x, exportAcc), round(y, exportAcc)])).join('\n');
 
@@ -33,9 +33,9 @@ const ExportModal = ({ openExportModal, points, isOpen, duplicatedPointRange, se
         a.href = window.URL.createObjectURL(blob);
         a.download = 'particle.mcfunction';
         a.click();
-    };
+    }, [exportAcc, particle, particleSpeed, points]);
 
-    const onRequestClose = () => openExportModal(false);
+    const onRequestClose = useCallback(() => openExportModal(false), [openExportModal]);
 
     return (
         <ReactModal
@@ -115,4 +115,4 @@ const ExportModal = ({ openExportModal, points, isOpen, duplicatedPointRange, se
     );
 };
 
-export default ExportModal;
+export default React.memo(ExportModal);
