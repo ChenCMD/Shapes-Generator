@@ -46,7 +46,13 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
 
     const onContextMenu = useCallback((e: React.MouseEvent<HTMLElement, MouseEvent>) => showContextMenu(index, e), [index, showContextMenu]);
 
-    useEffect(() => inputElemRef.current?.focus(), [renameMode]);
+    useEffect(() => {
+        if (inputElemRef.current) {
+            inputElemRef.current.value = name;
+            inputElemRef.current.focus();
+            inputElemRef.current.select();
+        }
+    }, [name, renameMode]);
 
     const renameElem = (
         <input
