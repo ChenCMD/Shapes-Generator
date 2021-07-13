@@ -32,9 +32,12 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
     }, [index, onRename]);
 
     const onKeyDown = useCallback(({ key }: { key: string }) => {
+        console.log(`onKeyDown: ${key}`);
         switch (key) {
             case 'Enter':
                 return renameMode ? onExitRenameMode() : setRenameMode(true);
+            case 'F2':
+                return setRenameMode(true);
             case 'Escape':
                 return setRenameMode(false);
             case 'ArrowUp':
@@ -47,7 +50,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
     const onContextMenu = useCallback((e: React.MouseEvent<HTMLElement, MouseEvent>) => showContextMenu(index, e), [index, showContextMenu]);
 
     useEffect(() => {
-        if (inputElemRef.current) {
+        if (renameMode && inputElemRef.current) {
             inputElemRef.current.value = name;
             inputElemRef.current.focus();
             inputElemRef.current.select();

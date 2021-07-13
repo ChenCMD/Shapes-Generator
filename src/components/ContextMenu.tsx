@@ -6,11 +6,12 @@ import styles from '../styles/ContextMenu.module.scss';
 interface ContextMenuProps {
     x?: number
     y?: number
+    index?: number
     onCloseRequest: () => void
     shapesDispatch: ShapesDispatch
 }
 
-const ContextMenu = ({ x, y, onCloseRequest, shapesDispatch }: ContextMenuProps): JSX.Element => {
+const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMenuProps): JSX.Element => {
     const overlayRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLTableSectionElement>(null);
     const { width, height } = useWindowSize();
@@ -38,7 +39,7 @@ const ContextMenu = ({ x, y, onCloseRequest, shapesDispatch }: ContextMenuProps)
             onCloseRequest();
             const elem = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement;
             const event = document.createEvent('MouseEvents');
-            event.initMouseEvent('contextmenu', e.bubbles, e.cancelable, elem.ownerDocument.defaultView ?? new Window(), 1,
+            event.initMouseEvent('contextmenu', e.bubbles, e.cancelable, elem.ownerDocument.defaultView ?? window, 1,
                 e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, null);
             elem.dispatchEvent(event);
             overlayRef.current.style.visibility = '';
@@ -47,13 +48,21 @@ const ContextMenu = ({ x, y, onCloseRequest, shapesDispatch }: ContextMenuProps)
 
     const onDelete = useCallback(() => shapesDispatch({ type: 'delete' }), [shapesDispatch]);
 
+    const onRename = useCallback(() => {
+        onCloseRequest();
+        const event = new KeyboardEvent('keydown', { key: 'F2', keyCode: 'F2'.charCodeAt(0), altKey: false, ctrlKey: false, shiftKey: false, metaKey: false, bubbles: true });
+        console.log(document.getElementById(`shape-list-item-${index}`));
+        document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(event);
+    }, [index, onCloseRequest]);
+
     return (
         <div className={`${styles['overlay']}`} ref={overlayRef} onClick={onCloseRequest} onContextMenu={onContextMenu}>
             <table>
-                <tbody
-                    ref={menuRef}
-                    className={`${styles['window']}`}
-                >
+                <tbody ref={menuRef} className={`${styles['window']}`}>
+                    <tr className={styles['item']} onClick={onRename}>
+                        <td align="right" className={styles['text']}>名前の変更</td>
+                        <td className={styles['shortcut']}>F2</td>
+                    </tr>
                     <tr className={styles['item']} onClick={onDelete}>
                         <td align="right" className={styles['text']}>削除</td>
                         <td className={styles['shortcut']}>Delete</td>

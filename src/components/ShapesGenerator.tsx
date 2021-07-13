@@ -16,7 +16,7 @@ const ShapesGenerator = (): JSX.Element => {
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
-    const [contextTarget, setContextTarget] = useState<{ x: number, y: number } | undefined>();
+    const [contextTarget, setContextTarget] = useState<{ x: number, y: number, index: number } | undefined>();
 
     const onKeyDown = useCallback(({ key }: { key: string }) => {
         if (contextTarget && key === 'Escape') setContextTarget(undefined);
@@ -66,6 +66,7 @@ const ShapesGenerator = (): JSX.Element => {
             <ContextMenu
                 x={contextTarget?.x}
                 y={contextTarget?.y}
+                index={contextTarget?.index}
                 onCloseRequest={onContextCloseRequest}
                 shapesDispatch={shapesDispatch}
             />

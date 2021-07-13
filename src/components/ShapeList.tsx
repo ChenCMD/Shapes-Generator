@@ -12,7 +12,7 @@ interface ShapeListProps {
     shapes: Pick<Shape, 'uuid' | 'name' | 'isSelected'>[]
     shapesLength: number
     shapesDispatch: ShapesDispatch
-    setContextTarget: (context: { x: number, y: number }) => void
+    setContextTarget: (context: { x: number, y: number, index: number }) => void
 }
 
 const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: ShapeListProps): JSX.Element => {
@@ -36,7 +36,7 @@ const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: S
     const showContextMenu = useCallback((index, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault();
         shapesDispatch({ type: 'select', index, isRetentionOld: e.ctrlKey });
-        setContextTarget({ x: e.clientX, y: e.clientY });
+        setContextTarget({ x: e.clientX, y: e.clientY, index });
     }, [setContextTarget, shapesDispatch]);
 
     const items = shapes.map((shape, i) => (

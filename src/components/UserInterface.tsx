@@ -17,7 +17,7 @@ interface UserInterfaceProps {
     setGridMode: (mode: GridMode) => void
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
-    setContextTarget: (context: { x: number, y: number }) => void
+    setContextTarget: (context: { x: number, y: number, index: number }) => void
     openExportModal: (isOpen: boolean) => void;
 }
 
