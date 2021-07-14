@@ -22,8 +22,8 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
             if (x !== undefined && y !== undefined) {
                 overlayRef.current.classList.add('visible');
                 menuRef.current.classList.add('visible');
-                menuRef.current.style.top = `${y + menuRef.current.clientHeight < height ? y : y - menuRef.current.clientHeight - 3}px`;
-                menuRef.current.style.left = `${x + menuRef.current.clientWidth < width ? x : width - menuRef.current.clientWidth - 3}px`;
+                menuRef.current.style.top = `${y + menuRef.current.clientHeight < height ? y : y - menuRef.current.clientHeight}px`;
+                menuRef.current.style.left = `${x + menuRef.current.clientWidth < width ? x : width - menuRef.current.clientWidth - 8}px`;
                 menuRef.current.focus();
             } else {
                 overlayRef.current.classList.remove('visible');
