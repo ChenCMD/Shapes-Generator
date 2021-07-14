@@ -23,7 +23,7 @@ const paramMetaData: Record<PolygonParams, ParameterMetaData> = {
     center_x: { name: '中心点X', description: '多角形の中心点' },
     center_y: { name: '中心点Y', description: '多角形の中心点' },
     count: { name: '生成数', description: 'いくつの点で生成するか' },
-    radius: { name: '半径', description: '中心よりどれだけ離れた位置で円を作るか' },
+    radius: { name: '半径', description: '中心よりどれだけ離れた位置に角を作るか' },
     start: { name: '開始角', description: '多角形を始める角度' },
     ellipse: { name: '楕円', description: '楕円の歪みの強さ' },
     rotate: { name: '楕円角', description: '楕円の歪みを与える角度' },
