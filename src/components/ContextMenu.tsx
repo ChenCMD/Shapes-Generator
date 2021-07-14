@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import useWindowSize from '../hooks/useWindowSize';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ContextMenu.module.scss';
+import { getParentsId } from '../utils/element';
 
 interface ContextMenuProps {
     x?: number
@@ -35,14 +36,14 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
         e.preventDefault();
         e.stopPropagation();
         if (overlayRef.current) {
-            overlayRef.current.style.visibility = 'hidden';
             onCloseRequest();
-            const elem = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement;
+            const elem = document.elementsFromPoint(e.clientX, e.clientY)[1] as HTMLElement;
+            if (getParentsId(elem).includes('context-menu'))
+                return;
             const event = document.createEvent('MouseEvents');
             event.initMouseEvent('contextmenu', e.bubbles, e.cancelable, elem.ownerDocument.defaultView ?? window, 1,
                 e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, null);
             elem.dispatchEvent(event);
-            overlayRef.current.style.visibility = '';
         }
     }, [onCloseRequest]);
 
@@ -56,7 +57,9 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
     }, [index, onCloseRequest]);
 
     return (
-        <div className={`${styles['overlay']}`} ref={overlayRef} onClick={onCloseRequest} onContextMenu={onContextMenu}>
+        <div
+            className={`${styles['overlay']}`} ref={overlayRef} id="context-menu"
+            onClick={onCloseRequest} onContextMenu={onContextMenu}>
             <table>
                 <tbody ref={menuRef} className={`${styles['window']}`}>
                     <tr className={styles['item']} onClick={onRename}>
