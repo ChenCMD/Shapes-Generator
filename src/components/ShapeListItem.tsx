@@ -25,6 +25,8 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
         }
     }, [index, onSelect]);
 
+    const onDoubleClick = useCallback(() => setRenameMode(true), []);
+
     const onExitRenameMode = useCallback(() => {
         if (inputElemRef.current?.value)
             onRename(index, inputElemRef.current.value);
@@ -72,7 +74,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
             className={styles['shape-list-item-text']}
             id={`shape-list-item-${index}`}
             onClick={onClick}
-            onDoubleClick={() => setRenameMode(true)}
+            onDoubleClick={onDoubleClick}
             onKeyDown={onKeyDown}
             tabIndex={index === 0 ? 0 : -1}
         >

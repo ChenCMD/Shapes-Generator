@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ParameterBox.module.scss';
 import { Parameter } from '../types/AbstractShapeNode';
@@ -11,11 +11,11 @@ interface ParameterBoxProps<T extends string> {
 
 const ParameterBox = <T extends string>({ data, index, shapesDispatch }: ParameterBoxProps<T>): JSX.Element => {
     const [argValue, setArgValue] = useState(data.value);
-    const onChange = ({ target: { value: newParam } }: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLInputElement>) => {
         setArgValue(newParam);
         if (!(/^[+,-]?(?:[1-9]\d*|0)(?:\.\d+)?$/.test(newParam))) return;
         shapesDispatch({ type: 'update', index, arg: data.argID, newParam });
-    };
+    }, [data.argID, data.validation, index, shapesDispatch]);
 
     return (
         <div className={styles['param-box']} title={data.description}>

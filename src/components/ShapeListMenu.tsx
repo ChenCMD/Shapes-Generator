@@ -30,7 +30,7 @@ const ShapeListMenu = ({ shapesDispatch }: ShapeListMenuProps): JSX.Element => {
                 <option className={styles['shape-list-menu-pulldown-option']} value="circle">circle</option>
                 <option className={styles['shape-list-menu-pulldown-option']} value="polygon">polygon</option>
             </select>
-            <button className={styles['shape-list-menu-add']} onClick={() => addShapes()} >+</button>
+            <button className={styles['shape-list-menu-add']} onClick={addShapes} >+</button>
         </div>
     );
 };

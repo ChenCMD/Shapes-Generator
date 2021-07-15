@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Form from 'react-bootstrap/esm/Form';
@@ -17,7 +17,8 @@ interface RangeSliderProps {
 }
 
 const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndicateZeroVal }: RangeSliderProps): JSX.Element => {
-    const onChange = (e: { target: { value: string } }) => setValue(parseFloat(e.target.value));
+    const onChange = useCallback((e: { target: { value: string } }) => setValue(parseFloat(e.target.value)), [setValue]);
+
     return (
         <Container className={className}>
             <Row>
