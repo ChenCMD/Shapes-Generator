@@ -34,7 +34,6 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
     }, [index, onRename]);
 
     const onKeyDown = useCallback(({ key }: { key: string }) => {
-        console.log(`onKeyDown: ${key}`);
         switch (key) {
             case 'Enter':
                 return renameMode ? onExitRenameMode() : setRenameMode(true);
