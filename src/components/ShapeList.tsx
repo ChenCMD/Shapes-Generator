@@ -21,6 +21,7 @@ const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: S
     useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapesLength]);
 
     const onSelect = useCallback((index: number, isRetentionOld: boolean) => {
+        setFocusItem(index);
         shapesDispatch({ type: 'select', index, isRetentionOld });
     }, [shapesDispatch]);
 
@@ -35,6 +36,7 @@ const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: S
 
     const showContextMenu = useCallback((index, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault();
+        setFocusItem(index);
         shapesDispatch({ type: 'select', index, isRetentionOld: e.ctrlKey });
         setContextTarget({ x: e.clientX, y: e.clientY, index });
     }, [setContextTarget, shapesDispatch]);
