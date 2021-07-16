@@ -43,37 +43,42 @@ const selectionChanger = (target: Shape, selected: boolean) => {
     return target;
 };
 
-const shapesReducer: React.Reducer<Shape[], Action> = (shapes, action) => {
-    switch (action.type) {
-        case 'add': {
-            return [...shapes.map(shape => selectionChanger(shape, false)), selectionChanger(action.shape, true)];
-        }
-        case 'select': {
-            if (action.isRetentionOld) {
-                shapes[action.index].isSelected = !shapes[action.index].isSelected;
+const createReducer: ((onChange: () => void) => React.Reducer<Shape[], Action>) = onChange =>
+    (shapes, action) => {
+        switch (action.type) {
+            case 'add': {
+                onChange();
+                return [...shapes.map(shape => selectionChanger(shape, false)), selectionChanger(action.shape, true)];
+            }
+            case 'select': {
+                if (action.isRetentionOld) {
+                    shapes[action.index].isSelected = !shapes[action.index].isSelected;
+                    return [...shapes];
+                }
+                if (shapes[action.index].isSelected) return shapes;
+                return shapes.map((shape, i) => selectionChanger(shape, action.index === i));
+            }
+            case 'move': {
+                const shapeIdx = mod(action.index + action.to, shapes.length);
+                return shapes.map((shape, i) => selectionChanger(shape, shapeIdx === i));
+            }
+            case 'rename': {
+                onChange();
+                shapes[action.index].name = action.newName;
                 return [...shapes];
             }
-            if (shapes[action.index].isSelected) return shapes;
-            return shapes.map((shape, i) => selectionChanger(shape, action.index === i));
+            case 'update': {
+                onChange();
+                shapes[action.index].setParameter(action.arg, action.newParam);
+                return [...shapes];
+            }
+            case 'delete': {
+                onChange();
+                return shapes.filter(shape => !shape.isSelected);
+            }
         }
-        case 'move': {
-            const shapeIdx = mod(action.index + action.to, shapes.length);
-            return shapes.map((shape, i) => selectionChanger(shape, shapeIdx === i));
-        }
-        case 'rename': {
-            shapes[action.index].name = action.newName;
-            return [...shapes];
-        }
-        case 'update': {
-            shapes[action.index].setParameter(action.arg, action.newParam);
-            return [...shapes];
-        }
-        case 'delete': {
-            return shapes.filter(shape => !shape.isSelected);
-        }
-    }
-};
+    };
 
 export type ShapesDispatch = React.Dispatch<Action>;
 
-export default shapesReducer;
+export default createReducer;

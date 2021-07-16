@@ -17,14 +17,16 @@ interface ExportModalProps {
     isOpen: boolean
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
+    setImmediatelyAfterExport: (value: boolean) => void
 }
 
-const ExportModal = ({ openExportModal, points, isOpen, duplicatedPointRange, setDuplicatedPointRange }: ExportModalProps): JSX.Element => {
+const ExportModal = ({ openExportModal, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, setImmediatelyAfterExport }: ExportModalProps): JSX.Element => {
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);
 
     const onExport = useCallback(() => {
+        setImmediatelyAfterExport(true);
         const mkCmd = (pos: Point) => `particle ${particle.trim()} ^${toStr(pos[0])} ^ ^${toStr(pos[1])} 0 0 0 ${toStr(particleSpeed)} 1`;
         const content = points.map(([x, y]) => mkCmd([round(x, exportAcc), round(y, exportAcc)])).join('\n');
 
@@ -33,7 +35,7 @@ const ExportModal = ({ openExportModal, points, isOpen, duplicatedPointRange, se
         a.href = window.URL.createObjectURL(blob);
         a.download = 'particle.mcfunction';
         a.click();
-    }, [exportAcc, particle, particleSpeed, points]);
+    }, [exportAcc, particle, particleSpeed, points, setImmediatelyAfterExport]);
 
     const onRequestClose = useCallback(() => openExportModal(false), [openExportModal]);
 

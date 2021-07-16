@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useCallback, useReducer } from 'react';
+import React, { useState, useMemo, useCallback, useReducer, useEffect } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
-import shapesReducer from '../reducers/shapesReducer';
+import createReducer from '../reducers/shapesReducer'; '../reducers/shapesReducer';
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';
 import { deleteDuplicatedPoints } from '../types/Point';
@@ -12,11 +12,23 @@ import Previewer from './Previewer';
 import UserInterface from './UserInterface';
 
 const ShapesGenerator = (): JSX.Element => {
-    const [shapes, shapesDispatch] = useReducer(shapesReducer, []);
+    const [immediatelyAfterExport, setImmediatelyAfterExport] = useState<boolean>(true);
+    const [shapes, shapesDispatch] = useReducer(createReducer(() => setImmediatelyAfterExport(false)), []);
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
     const [contextTarget, setContextTarget] = useState<{ x: number, y: number, index: number } | undefined>();
+
+    const onBeforeUnload = useCallback((e: BeforeUnloadEvent) => {
+        if (!immediatelyAfterExport) {
+            e.preventDefault();
+            e.returnValue = '出力されていないデータが存在します。本当に閉じますか？';
+        }
+    }, [immediatelyAfterExport]);
+    useEffect(() => {
+        window.addEventListener('beforeunload', onBeforeUnload);
+        return () => window.removeEventListener('beforeunload', onBeforeUnload);
+    }, [onBeforeUnload]);
 
     const onKeyDown = useCallback(({ key }: { key: string }) => {
         if (contextTarget && key === 'Escape') setContextTarget(undefined);
@@ -62,6 +74,7 @@ const ShapesGenerator = (): JSX.Element => {
                 openExportModal={setIsOpenExportModal}
                 duplicatedPointRange={duplicatedPointRange}
                 setDuplicatedPointRange={setDuplicatedPointRange}
+                setImmediatelyAfterExport={setImmediatelyAfterExport}
             />
             <ContextMenu
                 x={contextTarget?.x}
