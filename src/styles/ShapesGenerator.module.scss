@@ -1,5 +1,9 @@
 .shapes-generator {
-    padding: 7px
+    padding: 7px;
+    &:focus {
+        outline: none;
+        border: none;
+    }
 }
 
 .col-previewer {

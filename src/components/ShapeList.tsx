@@ -51,6 +51,7 @@ const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: S
             onRename={onRename}
             onMoveSelect={onMoveSelect}
             showContextMenu={showContextMenu}
+            shapesDispatch={shapesDispatch}
         />
     ));
 

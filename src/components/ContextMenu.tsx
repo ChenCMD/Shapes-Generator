@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import useWindowSize from '../hooks/useWindowSize';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ContextMenu.module.scss';
-import { getParentsId } from '../utils/element';
+import { createKeyboardEvent, getParentsId } from '../utils/element';
 
 interface ContextMenuProps {
     x?: number
@@ -51,9 +51,7 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
 
     const onRename = useCallback(() => {
         onCloseRequest();
-        const event = new KeyboardEvent('keydown', { key: 'F2', keyCode: 'F2'.charCodeAt(0), altKey: false, ctrlKey: false, shiftKey: false, metaKey: false, bubbles: true });
-        console.log(document.getElementById(`shape-list-item-${index}`));
-        document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(event);
+        document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(createKeyboardEvent('F2', false, false, false));
     }, [index, onCloseRequest]);
 
     return (

@@ -43,38 +43,42 @@ const selectionChanger = (target: Shape, selected: boolean) => {
     return target;
 };
 
-const createReducer: ((onChange: () => void) => React.Reducer<Shape[], Action>) = onChange =>
-    (shapes, action) => {
+const createReducer: ((onChange: () => void) => React.Reducer<[shapes: Shape[], selectionLog: number[]], Action>) = onChange =>
+    ([shapes, selectLog], action) => {
         switch (action.type) {
             case 'add': {
                 onChange();
-                return [...shapes.map(shape => selectionChanger(shape, false)), selectionChanger(action.shape, true)];
+                return [[...shapes.map(shape => selectionChanger(shape, false)), selectionChanger(action.shape, true)], [shapes.length]];
             }
             case 'select': {
                 if (action.isRetentionOld) {
                     shapes[action.index].isSelected = !shapes[action.index].isSelected;
-                    return [...shapes];
+                    return [
+                        [...shapes],
+                        shapes[action.index].isSelected
+                            ? [...selectLog, action.index]
+                            : selectLog.filter(v => v !== action.index)
+                    ];
                 }
-                if (shapes[action.index].isSelected) return shapes;
-                return shapes.map((shape, i) => selectionChanger(shape, action.index === i));
+                return [shapes.map((shape, i) => selectionChanger(shape, action.index === i)), [action.index]];
             }
             case 'move': {
                 const shapeIdx = mod(action.index + action.to, shapes.length);
-                return shapes.map((shape, i) => selectionChanger(shape, shapeIdx === i));
+                return [shapes.map((shape, i) => selectionChanger(shape, shapeIdx === i)), [shapeIdx]];
             }
             case 'rename': {
                 onChange();
                 shapes[action.index].name = action.newName;
-                return [...shapes];
+                return [[...shapes], selectLog];
             }
             case 'update': {
                 onChange();
                 shapes[action.index].setParameter(action.arg, action.newParam);
-                return [...shapes];
+                return [[...shapes], selectLog];
             }
             case 'delete': {
                 onChange();
-                return shapes.filter(shape => !shape.isSelected);
+                return [shapes.filter(shape => !shape.isSelected), []];
             }
         }
     };

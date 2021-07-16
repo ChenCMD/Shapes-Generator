@@ -6,6 +6,7 @@ import createReducer from '../reducers/shapesReducer'; '../reducers/shapesReduce
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';
 import { deleteDuplicatedPoints } from '../types/Point';
+import { createKeyboardEvent } from '../utils/element';
 import ContextMenu from './ContextMenu';
 import ExportModal from './ExportModal';
 import Previewer from './Previewer';
@@ -13,7 +14,7 @@ import UserInterface from './UserInterface';
 
 const ShapesGenerator = (): JSX.Element => {
     const [immediatelyAfterExport, setImmediatelyAfterExport] = useState<boolean>(true);
-    const [shapes, shapesDispatch] = useReducer(createReducer(() => setImmediatelyAfterExport(false)), []);
+    const [[shapes, latestSelect], shapesDispatch] = useReducer(createReducer(() => setImmediatelyAfterExport(false)), [[], []]);
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
@@ -30,10 +31,13 @@ const ShapesGenerator = (): JSX.Element => {
         return () => window.removeEventListener('beforeunload', onBeforeUnload);
     }, [onBeforeUnload]);
 
-    const onKeyDown = useCallback(({ key }: { key: string }) => {
-        if (contextTarget && key === 'Escape') setContextTarget(undefined);
-        if (key === 'Delete') shapesDispatch({ type: 'delete' });
-    }, [contextTarget]);
+    const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
+        console.log(`root/onKeyDown: ${e.key}`);
+        if (contextTarget && e.key === 'Escape') return setContextTarget(undefined);
+        // こっちでは処理できないキー
+        const elem = document.getElementById(`shape-list-item-${latestSelect.slice(-1)[0]}`);
+        elem?.dispatchEvent(createKeyboardEvent(e.key, e.altKey, e.ctrlKey, e.shiftKey));
+    }, [contextTarget, latestSelect]);
 
     const onContextCloseRequest = useCallback(() => setContextTarget(undefined), []);
 
@@ -45,7 +49,7 @@ const ShapesGenerator = (): JSX.Element => {
     ), [duplicatedPointRange, dependString]);
 
     return (
-        <div className={styles['shapes-generator']} onKeyDown={onKeyDown}>
+        <div className={styles['shapes-generator']} onKeyDown={onKeyDown} tabIndex={-1}>
             <Container fluid>
                 <Row>
                     <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-previewer']}>
