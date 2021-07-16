@@ -13,23 +13,23 @@ import Previewer from './Previewer';
 import UserInterface from './UserInterface';
 
 const ShapesGenerator = (): JSX.Element => {
-    const [immediatelyAfterExport, setImmediatelyAfterExport] = useState<boolean>(true);
-    const [[shapes, latestSelect], shapesDispatch] = useReducer(createReducer(() => setImmediatelyAfterExport(false)), [[], []]);
+    const immediatelyAfterExport = useRef<boolean>(true);
+    const [[shapes, latestSelect], shapesDispatch] = useReducer(createReducer(() => immediatelyAfterExport.current = false), [[], []]);
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
     const [contextTarget, setContextTarget] = useState<{ x: number, y: number, index: number } | undefined>();
 
-    const onBeforeUnload = useCallback((e: BeforeUnloadEvent) => {
-        if (!immediatelyAfterExport) {
-            e.preventDefault();
-            e.returnValue = '出力されていないデータが存在します。本当に閉じますか？';
-        }
-    }, [immediatelyAfterExport]);
     useEffect(() => {
+        const onBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (!immediatelyAfterExport.current) {
+                e.preventDefault();
+                e.returnValue = '出力されていないデータが存在します。本当に閉じますか？';
+            }
+        };
         window.addEventListener('beforeunload', onBeforeUnload);
         return () => window.removeEventListener('beforeunload', onBeforeUnload);
-    }, [onBeforeUnload]);
+    });
 
     const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
         console.log(`root/onKeyDown: ${e.key}`);
@@ -78,7 +78,7 @@ const ShapesGenerator = (): JSX.Element => {
                 openExportModal={setIsOpenExportModal}
                 duplicatedPointRange={duplicatedPointRange}
                 setDuplicatedPointRange={setDuplicatedPointRange}
-                setImmediatelyAfterExport={setImmediatelyAfterExport}
+                immediatelyAfterExport={immediatelyAfterExport}
             />
             <ContextMenu
                 x={contextTarget?.x}
