@@ -15,7 +15,7 @@ const ParameterBox = <T extends string>({ data, index, shapesDispatch }: Paramet
         setArgValue(newParam);
         if (!(/^[+,-]?(?:[1-9]\d*|0)(?:\.\d+)?$/.test(newParam))) return;
         shapesDispatch({ type: 'update', index, arg: data.argID, newParam });
-    }, [data.argID, data.validation, index, shapesDispatch]);
+    }, [data.argID, index, shapesDispatch]);
 
     return (
         <div className={styles['param-box']} title={data.description}>
