@@ -51,15 +51,15 @@ const createReducer: ((onChange: () => void) => React.Reducer<[shapes: Shape[], 
                 return [[...shapes.map(shape => selectionChanger(shape, false)), selectionChanger(action.shape, true)], [shapes.length]];
             }
             case 'select': {
-                if (action.isRetentionOld) {
-                    shapes[action.index].isSelected = !shapes[action.index].isSelected;
-                    return [
-                        [...shapes],
-                        shapes[action.index].isSelected
-                            ? [...selectLog, action.index]
-                            : selectLog.filter(v => v !== action.index)
-                    ];
-                }
+                // if (action.isRetentionOld) {
+                //     shapes[action.index].isSelected = !shapes[action.index].isSelected;
+                //     return [
+                //         [...shapes],
+                //         shapes[action.index].isSelected
+                //             ? [...selectLog, action.index]
+                //             : selectLog.filter(v => v !== action.index)
+                //     ];
+                // }
                 return [shapes.map((shape, i) => selectionChanger(shape, action.index === i)), [action.index]];
             }
             case 'move': {
