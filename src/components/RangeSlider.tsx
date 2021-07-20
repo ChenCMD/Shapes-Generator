@@ -14,16 +14,18 @@ interface RangeSliderProps {
     unit?: string
     spIndicateZeroVal?: string
     className?: string
+    hasSplitLine?: true
+    layoutOffset?: number
 }
 
-const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndicateZeroVal }: RangeSliderProps): JSX.Element => {
+const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndicateZeroVal, hasSplitLine, layoutOffset }: RangeSliderProps): JSX.Element => {
     const onChange = useCallback((e: { target: { value: string } }) => setValue(parseFloat(e.target.value)), [setValue]);
 
     return (
         <Container className={className}>
-            <Row>
-                <Col xs={2} className={styles['col-value']}>
-                    <div className={styles['value']}>
+            <Row noGutters>
+                <Col xs={2 + (layoutOffset ?? 0)}>
+                    <div className={`${styles['value']} ${hasSplitLine ? styles['split-line'] : ''}`}>
                         {
                             spIndicateZeroVal !== undefined && value === 0
                                 ? spIndicateZeroVal
@@ -31,7 +33,7 @@ const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndic
                         }
                     </div>
                 </Col>
-                <Col xs={10} className={styles['col-slider']}>
+                <Col xs={10 - (layoutOffset ?? 0)}>
                     <Form.Control
                         className={styles['slider']}
                         type="range"

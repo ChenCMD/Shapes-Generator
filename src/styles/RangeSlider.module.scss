@@ -1,16 +1,21 @@
-.col-value {
-    padding: 0 10px 0 0;
-}
-
-.col-slider {
-    padding: 0 0 0 10px;
-}
-
 .value {
     color: var(--text-color);
+    padding: 0 10px 0 0;
     text-align: right;
+    &.split-line {
+        border-style: solid;
+        border-color: var(--border-color);
+        padding: 0 5px 0 0;
+        margin: 0 5px 0 0;
+        border-width: 0 1px 0 0 ;
+    }
 }
 
 .slider {
     cursor: pointer;
+    display: flex;
+    flex-flow: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
 }
