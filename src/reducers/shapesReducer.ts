@@ -29,7 +29,7 @@ interface UpdateParamAction {
     type: 'update'
     index: number
     arg: string
-    newParam: string
+    newParam: number | { x: number, y: number }
 }
 
 interface DeleteAction {

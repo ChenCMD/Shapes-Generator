@@ -1,48 +1,53 @@
 import rfdc from 'rfdc';
-import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode';
+import { AbstractShapeNode } from '../types/AbstractShapeNode';
+import { NormalParameter, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { rotateMatrix2D, toRadians } from '../utils/common';
 
-const circleParams = ['count', 'center_x', 'center_y', 'radius', 'start', 'ellipse', 'rotate'] as const;
-type CircleParams = typeof circleParams[number];
+export interface CircleParams {
+    count: NormalParameter
+    center: PosParameter
+    radius: NormalParameter
+    start: RangeParameter
+    ellipse: RangeParameter
+    rotate: RangeParameter
+}
 
-const defaultParams: Record<CircleParams, string> = {
-    count: '20',
-    center_x: '0',
-    center_y: '0',
-    radius: '5',
-    start: '0',
-    ellipse: '100',
-    rotate: '0'
+const paramMetaData: ParamMetaData<CircleParams> = {
+    count: { name: '生成数', description: 'いくつの点で生成するか', unit: '個', validation: { min: 1 } },
+    center: { type: 'pos', name: '中心点', description: '円の中心点', unit: '' },
+    radius: { name: '半径', description: '中心よりどれだけ離れた位置で円を作るか', unit: 'm', validation: { min: 0.0001 } },
+    start: { type: 'range', name: '開始角', description: '円を始める角度', unit: '°', min: 0, max: 360, step: 1 },
+    ellipse: { type: 'range', name: '楕円補正値', description: '楕円の歪みの強さ', unit: '%', min: 0, max: 100, step: 1 },
+    rotate: { type: 'range', name: '楕円角', description: '楕円の歪みを与える角度', unit: '°', min: 0, max: 360, step: 1 }
 };
 
-const paramMetaData: Record<CircleParams, ParameterMetaData> = {
-    center_x: { name: '中心点X', description: '円の中心点' },
-    center_y: { name: '中心点Y', description: '円の中心点' },
-    count: { name: '生成数', description: 'いくつの点で生成するか' },
-    radius: { name: '半径', description: '中心よりどれだけ離れた位置で円を作るか' },
-    start: { name: '開始角', description: '円を始める角度' },
-    ellipse: { name: '楕円', description: '楕円の歪みの強さ' },
-    rotate: { name: '楕円角', description: '楕円の歪みを与える角度' }
+const defaultParams: ParamValue<CircleParams> = {
+    count: 20,
+    center: { x: 0, y: 0 },
+    radius: 5,
+    start: 0,
+    ellipse: 100,
+    rotate: 0
 };
 
-export class CircleShape extends AbstractShapeNode<CircleParams> {
+export class CircleShape extends AbstractShapeNode<CircleParams, keyof CircleParams> {
     public constructor(id: string) {
-        super('circle', circleParams, paramMetaData, id, rfdc()(defaultParams));
+        super('circle', paramMetaData, id, rfdc()(defaultParams));
     }
 
-    protected updatePointSet(params: Record<CircleParams, number>): void {
+    protected generatePointSet(params: ParamValue<CircleParams>): IdentifiedPoint[] {
         const points: IdentifiedPoint[] = [];
         const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
 
         for (let theta = params.start; theta < 360 + params.start; theta += 360 / params.count) {
             const p: Point = rotateMatrix2D([
-                params.center_x + Math.sin(toRadians(theta)) * params.radius,
-                params.center_y + -Math.cos(toRadians(theta)) * params.radius
+                params.center.x + Math.sin(toRadians(theta)) * params.radius,
+                params.center.y + -Math.cos(toRadians(theta)) * params.radius
             ], params.rotate);
             addPoint(rotateMatrix2D([p[0], p[1] * (params.ellipse / 100)], -params.rotate));
         }
 
-        this.pointSet = points;
+        return points;
     }
 }

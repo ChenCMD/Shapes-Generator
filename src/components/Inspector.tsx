@@ -5,8 +5,11 @@ import Row from 'react-bootstrap/esm/Row';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/Inspector.module.scss';
-import { AbstractShapeNode, Parameter } from '../types/AbstractShapeNode';
-import ParameterBox from './ParameterBox';
+import { AbstractShapeNode } from '../types/AbstractShapeNode';
+import { Param } from '../types/Parameter';
+import NormalParameterBox from './ParameterBox/Normal';
+import RangeParameterBox from './ParameterBox/Range';
+import PosParameterBox from './ParameterBox/Pos';
 
 interface InspectorProps {
     shapes: Shape[]
@@ -14,14 +17,17 @@ interface InspectorProps {
 }
 
 const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
-    const paramBoxes = shapes.flatMap(<T extends string, U extends AbstractShapeNode<T>>(shape: U, i: number) => {
+    const paramBoxes = shapes.flatMap(<T extends { [key in P]: Param }, P extends string, S extends AbstractShapeNode<T, P>>(shape: S, i: number) => {
         if (!shape.isSelected) return;
         // TODO 複数選択時の挙動
-        return shape.getParameterList().map((data: Parameter<T>) => (
-            <Col key={`${shape.uuid}-${data.argID}`} xl={3} lg={4} md={6} sm={4} xs={6} >
-                <ParameterBox data={data} index={i} shapesDispatch={shapesDispatch} />
-            </Col>
-        ));
+        return shape.getParameterMap().map(([arg, param]) => {
+            const colWrap = (w: number, elem: JSX.Element) => (<Col key={`${shape.uuid}-${param.name}`} xl={w * 1} lg={w * 2} md={w * 3} sm={w * 2} xs={w * 3} >{elem}</Col>);
+            switch (param.type) {
+                case 'pos': return colWrap(4, <PosParameterBox arg={arg} data={param} index={i} shapesDispatch={shapesDispatch}/>);
+                case 'range': return colWrap(4, <RangeParameterBox arg={arg} data={param} index={i} shapesDispatch={shapesDispatch} />);
+                case 'normal': default: return colWrap(4, <NormalParameterBox arg={arg} data={param} index={i} shapesDispatch={shapesDispatch} />);
+            }
+        });
     }).filter(v => v !== undefined) as JSX.Element[];
 
     return (

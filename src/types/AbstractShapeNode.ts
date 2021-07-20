@@ -1,41 +1,30 @@
 import uuid from 'uuidjs';
+import { ParamMetaData, Param, ParamValue, Parameter } from './Parameter';
 import { IdentifiedPoint } from './Point';
 
-export interface ParameterMetaData {
-    name: string
-    description: string
-}
-
-export type Parameter<T extends string> = { argID: T, value: string } & ParameterMetaData;
-
-export abstract class AbstractShapeNode<T extends string> {
-    private readonly validateArgs: Set<string>;
+export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P extends string> {
+    // Set<P>にしないのはAbstractShapeNode#setParameterでのvalidationが面倒になるため。
+    private validateParams: Set<string>;
     private _uuid: string;
     private _pointSet: IdentifiedPoint[] = [];
     public isSelected = false;
-    public name: string;
 
     public constructor(
         private type: string,
-        validateArgs: readonly T[],
-        private readonly paramMetaData: Record<T, ParameterMetaData>,
-        id: string,
-        private _params: Record<T, string>
+        private readonly paramMetaData: ParamMetaData<T>,
+        public name: string,
+        private _params: ParamValue<T>
     ) {
-        this.validateArgs = new Set(validateArgs);
+        this.validateParams = new Set(Object.keys(paramMetaData));
         this._uuid = uuid.generate();
-        this.name = id;
-        const params: Partial<Record<T, number>> = {};
-        for (const key of Object.keys(this.params) as T[]) params[key] = parseFloat(this.params[key]);
-
-        this.updatePointSet(params as Record<T, number>);
+        this.updatePointSet();
     }
 
     public get uuid(): string {
         return this._uuid;
     }
 
-    protected get params(): Record<T, string> {
+    protected get params(): ParamValue<T> {
         return this._params;
     }
 
@@ -43,37 +32,37 @@ export abstract class AbstractShapeNode<T extends string> {
         return this._pointSet;
     }
 
-    protected set pointSet(points: IdentifiedPoint[]) {
-        this._pointSet = points;
+    private isParameterKey(argName: string): argName is P {
+        return this.validateParams.has(argName);
     }
 
-    private isArgs(argName: string): argName is T {
-        return this.validateArgs.has(argName);
+    private isParameterValue(argName: P, v: unknown): v is T[P]['value'] {
+        // normal | range -> number, pos -> { x: number, y: number };
+        const type = this.paramMetaData[argName].type ?? 'normal';
+        if (type === 'normal' || type === 'range') return typeof v === 'number';
+        if (type === 'pos') return !!(typeof v === 'object' && v && 'x' in v && 'y' in v);
+        return false;
     }
 
-    public setParameter(argName: string, value: string): void {
-        if (!this.isArgs(argName))
-            throw new TypeError(`パラメータID '${argName}' は '${this.type}' には存在しません。`);
+    public setParameter(argName: string, value: unknown): void {
+        if (!this.isParameterKey(argName) || !this.isParameterValue(argName, value)) return;
         this._params[argName] = value;
-
-        const params: Partial<Record<T, number>> = {};
-        for (const key of Object.keys(this.params) as T[]) params[key] = parseFloat(this.params[key]);
-
-        this.updatePointSet(params as Record<T, number>);
+        this.updatePointSet();
     }
 
-    public getParameterList(): Parameter<T>[] {
-        const params: Parameter<T>[] = [];
+    public getParameterMap(): [string, Parameter<Param>][] {
+        const params: [string, Parameter<Param>][] = [];
+        for (const key of Object.getOwnPropertyNames(this.params))
+            params.push([key, { ...this.paramMetaData[key as keyof T], value: this.params[key as keyof T] } as Parameter<Param>]);
 
-        for (const argID of Object.getOwnPropertyNames(this.params) as T[]) {
-            const value = this.params[argID];
-            const { name, description } = this.paramMetaData[argID] ?? { name: '', description: '' };
-            params.push({ argID, value, name, description });
-        }
         return params;
     }
 
-    protected abstract updatePointSet(params: Record<T, number>): void;
+    private updatePointSet(): void {
+        this._pointSet = this.generatePointSet(this.params);
+    }
+
+    protected abstract generatePointSet(params: ParamValue<T>): IdentifiedPoint[];
 
     public toExportObject(): string {
         return JSON.stringify({

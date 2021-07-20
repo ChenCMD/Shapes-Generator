@@ -1,0 +1,51 @@
+.container {
+    padding: 0;
+}
+
+.param-box {
+    margin: 10px 0 10px 0;
+    width: 100%;
+    border-width: 1px;
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+}
+
+.param-box-name {
+    color: var(--text-color);
+    line-height: 1.5;
+    padding: 2px 0 2px 2px;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: var(--border-color);
+}
+
+.param-box-input {
+    width: 100%;
+    line-height: 1.5;
+    padding: 2px 0 2px 2px;
+    color: var(--text-color);
+    border: none;
+    outline: none;
+    background-color: var(--input-bg-color);
+    border-radius: 0.25rem;
+}
+
+%unit {
+    color: var(--text-color);
+    text-align: center;
+    line-height: 1.5;
+    padding: 2px 0 2px 0;
+    border-style: solid;
+    border-color: var(--border-color);
+    height: 100%;
+}
+
+.unit-x {
+    @extend %unit;
+    border-width: 0 1px 0 0;
+}
+
+.unit-y {
+    @extend %unit;
+    border-width: 0 1px 0 1px;
+}

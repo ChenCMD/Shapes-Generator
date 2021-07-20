@@ -63,3 +63,10 @@ export function rotateMatrix2D([x, y]: Point, rotation: number): Point {
         x * Math.sin(radian) + y * Math.cos(radian)
     ];
 }
+
+export function objEntries<K extends PropertyKey, V>(obj: { [k in K]: V }): [K, V][] {
+    const res: [K, V][] = [];
+    for (const k of Object.getOwnPropertyNames(obj) as K[])
+        res.push([k, obj[k]]);
+    return res;
+}

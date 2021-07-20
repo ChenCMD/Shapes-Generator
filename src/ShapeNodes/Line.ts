@@ -1,34 +1,35 @@
 import rfdc from 'rfdc';
-import { AbstractShapeNode, ParameterMetaData } from '../types/AbstractShapeNode';
+import { AbstractShapeNode } from '../types/AbstractShapeNode';
+import { NormalParameter, ParamMetaData as LineParamMetaData, ParamValue as LineParamValue, ParamValue, PosParameter } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 
-const lineParams = ['count', 'from_x', 'from_y', 'to_x', 'to_y', 'vezier'] as const;
-type LineParams = typeof lineParams[number];
+export interface LineParams {
+    count: NormalParameter
+    from: PosParameter
+    to: PosParameter
+    vezier: NormalParameter
+}
 
-const defaultParams: Record<LineParams, string> = {
-    count: '10',
-    from_x: '1',
-    from_y: '0',
-    to_x: '-1',
-    to_y: '0',
-    vezier: '0'
-};
-
-const paramMetaData: Record<LineParams, ParameterMetaData> = {
-    from_x: { name: '始点X', description: '線の始点' },
-    from_y: { name: '始点Y', description: '線の始点' },
-    to_x: { name: '終点X', description: '線の終点' },
-    to_y: { name: '終点Y', description: '線の終点' },
-    count: { name: '生成数', description: 'いくつの点で生成するか' },
+const paramMetaData: LineParamMetaData<LineParams> = {
+    count: { name: '生成数', description: 'いくつの点で生成するか', unit: '個', validation: { min: 2 } },
+    from: { type: 'pos', name: '始点', description: '線の始点', unit: '' },
+    to: { type: 'pos', name: '終点X', description: '線の終点', unit: '' },
     vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
 };
 
-export class LineShape extends AbstractShapeNode<LineParams> {
+const defaultParams: LineParamValue<LineParams> = {
+    count: 10,
+    from: { x: 1, y: 1 },
+    to: { x: -1, y: -1 },
+    vezier: 0
+};
+
+export class LineShape extends AbstractShapeNode<LineParams, keyof LineParams> {
     public constructor(id: string) {
-        super('line', lineParams, paramMetaData, id, rfdc()(defaultParams));
+        super('line', paramMetaData, id, rfdc()(defaultParams));
     }
 
-    protected updatePointSet(params: Record<LineParams, number>): void {
+    protected generatePointSet(params: ParamValue<LineParams>): IdentifiedPoint[] {
         const points: IdentifiedPoint[] = [];
         const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
         const calcPoint = (fromPos: Point, toPos: Point, t: number): Point => [
@@ -36,16 +37,16 @@ export class LineShape extends AbstractShapeNode<LineParams> {
             (1 - t) * fromPos[1] + t * toPos[1]
         ];
 
-        const vector = [params.to_x - params.from_x, params.to_y - params.from_y];
+        const vector = [params.to.x - params.from.x, params.to.y - params.from.y];
         const vecMagnitude = Math.sqrt(vector[0] ** 2 + vector[1] ** 2);
         const normalizedVector = [vector[1] / vecMagnitude * params.vezier, -vector[0] / vecMagnitude * params.vezier];
 
-        const controlPoint: Point = [(params.from_x + params.to_x) / 2 + normalizedVector[0], (params.from_y + params.to_y) / 2 + normalizedVector[1]];
+        const controlPoint: Point = [(params.from.x + params.to.x) / 2 + normalizedVector[0], (params.from.y + params.to.y) / 2 + normalizedVector[1]];
         for (let i = 0; i < params.count; i++) {
             const t = i / (params.count - 1);
-            addPoint(calcPoint(calcPoint([params.from_x, params.from_y], controlPoint, t), calcPoint(controlPoint, [params.to_x, params.to_y], t), t));
+            addPoint(calcPoint(calcPoint([params.from.x, params.from.y], controlPoint, t), calcPoint(controlPoint, [params.to.x, params.to.y], t), t));
         }
 
-        this.pointSet = points;
+        return points;
     }
 }
