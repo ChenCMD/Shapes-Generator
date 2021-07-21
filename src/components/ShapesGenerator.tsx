@@ -42,11 +42,13 @@ const ShapesGenerator = (): JSX.Element => {
     const onContextCloseRequest = useCallback(() => setContextTarget(undefined), []);
 
     const dependString = useMemo(() => shapes.map(v => `${v.isSelected ? 1 : 0}${v.pointSet.map(v2 => v2.id).join('+')}`).join('+'), [shapes]);
-    const points = useMemo(() => deleteDuplicatedPoints(
-        shapes.flatMap(shape => shape.pointSet.map(v => ({ selected: shape.isSelected, point: v }))),
-        duplicatedPointRange
+    const points = useMemo(() => {
+        const res = shapes.flatMap(shape => shape.pointSet.map(v => ({ selected: shape.isSelected, point: v })));
+        return duplicatedPointRange === 0
+            ? res
+            : deleteDuplicatedPoints(res, duplicatedPointRange);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    ), [duplicatedPointRange, dependString]);
+    }, [duplicatedPointRange, dependString]);
 
     return (
         <div className={styles['shapes-generator']} onKeyDown={onKeyDown} tabIndex={-1}>
