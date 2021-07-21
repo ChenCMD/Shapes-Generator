@@ -2,9 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
 import { RangeParameter, Parameter } from '../../types/Parameter';
 import styles from '../../styles/ParameterBox/Range.module.scss';
-import Col from 'react-bootstrap/esm/Col';
-import Container from 'react-bootstrap/esm/Container';
-import Row from 'react-bootstrap/esm/Row';
 import RangeSlider from '../RangeSlider';
 
 interface RangeParameterBoxProps {
