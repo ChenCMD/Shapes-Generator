@@ -8,3 +8,7 @@ export function createKeyboardEvent(key: string, altKey = false, ctrlKey = false
         { key, keyCode: key.charCodeAt(0), altKey, ctrlKey, shiftKey, metaKey: false, bubbles: true }
     );
 }
+
+export function stopPropagation(e: { stopPropagation(): void }): void {
+    e.stopPropagation();
+}

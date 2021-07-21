@@ -7,6 +7,7 @@ import ReactModal from 'react-modal';
 import styles from '../styles/ExportModal.module.scss';
 import { Point } from '../types/Point';
 import { round, toFracString as toStr } from '../utils/common';
+import { stopPropagation } from '../utils/element';
 import RangeSlider from './RangeSlider';
 
 ReactModal.setAppElement('#root');
@@ -58,7 +59,7 @@ const ExportModal = ({ openExportModal, points, isOpen, duplicatedPointRange, se
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>Particle</div>
-                        <input className={styles['input']} onChange={e => setParticle(e.target.value)} value={particle} />
+                        <input className={styles['input']} onChange={e => setParticle(e.target.value)} value={particle} onKeyDown={stopPropagation}/>
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>

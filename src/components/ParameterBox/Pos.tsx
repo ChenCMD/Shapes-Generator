@@ -5,6 +5,7 @@ import styles from '../../styles/ParameterBox/Pos.module.scss';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
+import { stopPropagation } from '../../utils/element';
 
 interface PosParameterBoxProps {
     arg: string
@@ -44,11 +45,11 @@ const PosParameterBox = ({ arg, data, index, shapesDispatch }: PosParameterBoxPr
                 <Row noGutters>
                     <Col xs={1}><div className={styles['unit-x']}>X</div></Col>
                     <Col xs={5}>
-                        <input className={styles['param-box-input']} type='number' onChange={onChangeX} value={argValueX} />
+                        <input className={styles['param-box-input']} type='number' onChange={onChangeX} value={argValueX} onKeyDown={stopPropagation} />
                     </Col>
                     <Col xs={1}><div className={styles['unit-y']}>Y</div></Col>
                     <Col xs={5}>
-                        <input className={styles['param-box-input']} type='number' onChange={onChangeY} value={argValueY} />
+                        <input className={styles['param-box-input']} type='number' onChange={onChangeY} value={argValueY} onKeyDown={stopPropagation} />
                     </Col>
                 </Row>
             </Container>

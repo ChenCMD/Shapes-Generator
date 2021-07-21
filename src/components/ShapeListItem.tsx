@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ShapeListItem.module.scss';
+import { stopPropagation } from '../utils/element';
 
 interface ShapeListItemProps {
     index: number
@@ -70,6 +71,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
             ref={inputElemRef}
             onBlur={onExitRenameMode}
             tabIndex={index === 0 ? 0 : -1}
+            onKeyDown={stopPropagation}
         />
     );
     const textElem = (

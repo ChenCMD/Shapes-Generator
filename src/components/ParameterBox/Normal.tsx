@@ -5,6 +5,7 @@ import styles from '../../styles/ParameterBox/Normal.module.scss';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
+import { stopPropagation } from '../../utils/element';
 
 interface NormalParameterBoxProps {
     arg: string
@@ -33,7 +34,7 @@ const NormalParameterBox = ({ arg, data, index, shapesDispatch }: NormalParamete
             <Container fluid className={styles['container']}>
                 <Row noGutters>
                     <Col xs={12 - (data.unit ? 2 : 0)}>
-                        <input className={styles['param-box-input']} type='number' onChange={onChange} value={argValue} />
+                        <input className={styles['param-box-input']} type='number' onChange={onChange} value={argValue} onKeyDown={stopPropagation} />
                     </Col>
                     {data.unit ? (<Col xs={2}><div className={styles['unit']}>{data.unit}</div></Col>) : <></>}
                 </Row>
