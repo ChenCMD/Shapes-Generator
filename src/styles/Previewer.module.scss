@@ -1,7 +1,6 @@
 .previewer-window {
     background-color: var(--window-bg-color);
-    border-style: solid;
-    border-width: 1px;
-    border-color: var(--border-color);
+    border: var(--border-color) solid 1px;
     border-radius: 0.25rem;
+    min-height: 100%;
 }

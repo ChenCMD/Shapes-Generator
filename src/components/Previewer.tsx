@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Circle, Layer, Line, Rect, Stage } from 'react-konva';
+import { Circle, Layer, Line, Stage } from 'react-konva';
 import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
 import { GridMode } from '../types/GridMode';
 import { IdentifiedPoint } from '../types/Point';
-import { mod } from '../utils/common';
 
 interface PreviewerProps {
     shapes: { selected: boolean, point: IdentifiedPoint }[]
@@ -12,14 +11,15 @@ interface PreviewerProps {
 }
 
 const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
-    const [size, setSize] = useState<number>(100);
+    const [size, setSize] = useState<{ x: number, y: number }>({ x: 100, y: 100 });
+    const minSize = size.x < size.y ? 'x' : 'y';
     const rawStyle = window.getComputedStyle(document.documentElement);
 
-    const bottomMargin = 35;
-    const padding = size / 6;
-    const centerModifier = useMemo(() => ({ x: size / 2, y: (size - bottomMargin) / 2 }), [size]);
+    const padding = size[minSize] / 6;
+    const centerModifier = useMemo(() => ({ x: size.x / 2, y: size.y / 2 }), [size]);
     const maxBounds = Math.max(...shapes.flatMap(v => v.point.pos).map(Math.abs));
-    const posMultiple = Math.min((size - padding * 2) / 2 / maxBounds, size / 12);
+    const getMultiple = useCallback((axis: 'x' | 'y') => Math.min((size[axis] - padding * 2) / 2 / maxBounds, size[axis] / 12), [maxBounds, padding, size]);
+    const posMultiple = getMultiple(minSize);
 
     const points: JSX.Element[] = [];
     if (posMultiple && maxBounds < 250) {
@@ -47,53 +47,52 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     const grids = useMemo(() => {
         if (!posMultiple || maxBounds >= 250 || gridMode === GridMode.off) return [];
         const ans: JSX.Element[] = [];
-        const drawGridLine = (offset: number, axis: 'x' | 'y' = 'x') => {
-            let strokeColor = rawStyle.getPropertyValue('--grid-block-color');
-            if (offset === 0)
-                strokeColor = rawStyle.getPropertyValue('--grid-center-color');
-            if (mod(offset, 1) === 0.5)
-                strokeColor = rawStyle.getPropertyValue('--grid-double-color');
-            const p = [0, offset * posMultiple + centerModifier[axis], size, offset * posMultiple + centerModifier[axis]];
+        const drawGridLine = (offset: number, axis: 'x' | 'y', strokeColor: string, width = 1.25) => {
+            const anchor = offset * posMultiple + centerModifier[axis === 'x' ? 'y' : 'x'];
+            const p = [0, anchor, size[axis], anchor];
             ans.push(<Line
-                key={`${axis}-${offset * posMultiple}`} stroke={strokeColor} strokeWidth={1.25}
-                points={axis === 'y' ? p : [p[1], p[0], p[3], p[2]]}
+                key={`${axis}-${offset}`} stroke={strokeColor} strokeWidth={width}
+                points={axis === 'x' ? p : [p[1], p[0], p[3], p[2]]}
             />);
 
-            if (axis === 'x') {
-                drawGridLine(offset, 'y');
-                if (offset > 0)
-                    drawGridLine(-offset);
-            }
+            if (offset > 0) drawGridLine(-offset, axis, strokeColor, width);
         };
-        for (let i = 1 / gridMode; i * posMultiple * 2 < size; i += 1 / gridMode)
-            drawGridLine(i);
-        drawGridLine(0);
+
+        if (gridMode === GridMode.double) {
+            for (let i = 0.5; i * getMultiple('x') / 2 < size.x; i++)
+                drawGridLine(i, 'x', rawStyle.getPropertyValue('--grid-double-color'));
+            for (let i = 0.5; i * getMultiple('y') / 2 < size.y; i++)
+                drawGridLine(i, 'y', rawStyle.getPropertyValue('--grid-double-color'));
+        }
+
+        for (let i = 1; i * getMultiple('x') / 2 < size.x; i++)
+            drawGridLine(i, 'x', rawStyle.getPropertyValue('--grid-block-color'));
+        for (let i = 1; i * getMultiple('y') / 2 < size.y; i++)
+            drawGridLine(i, 'y', rawStyle.getPropertyValue('--grid-block-color'));
+
+        drawGridLine(0, 'x', rawStyle.getPropertyValue('--grid-center-color'), 1.5);
+        drawGridLine(0, 'y', rawStyle.getPropertyValue('--grid-center-color'), 1.5);
 
         return ans;
-    }, [centerModifier, gridMode, maxBounds, posMultiple, rawStyle, size]);
+    }, [centerModifier, getMultiple, gridMode, maxBounds, posMultiple, rawStyle, size]);
 
-    const onResize = useCallback(({ bounds }: { bounds?: { width?: number } }) => setSize(bounds?.width ?? 100), []);
+    // yの-2はborder分、本来ならclientから取得できるのだけどうまくいかなかったので
+    const onResize = useCallback(({ bounds }: { bounds?: { width?: number, height?: number } }) =>
+        setSize({ x: bounds?.width ?? 0, y: (bounds?.height ?? 0) - 2 }), []);
 
     return (
-        <div className={styles['previewer-window']}>
-            <Measure bounds onResize={onResize}>
-                {({ measureRef }) => (
-                    <div ref={measureRef}>
-                        <Stage width={size} height={size - bottomMargin}>
-                            <Layer>
-                                <Rect
-                                    x={padding} y={padding}
-                                    width={size - padding * 2} height={size - padding * 2}
-                                    fill={rawStyle.getPropertyValue('--window-bg-color')}
-                                />
-                                {grids}
-                                {points}
-                            </Layer>
-                        </Stage>
-                    </div>
-                )}
-            </Measure>
-        </div>
+        <Measure bounds onResize={onResize}>
+            {({ measureRef }) => (
+                <div className={styles['previewer-window']} ref={measureRef}>
+                    <Stage width={size.x} height={size.y}>
+                        <Layer>
+                            {grids}
+                            {points}
+                        </Layer>
+                    </Stage>
+                </div>
+            )}
+        </Measure>
     );
 };
 
