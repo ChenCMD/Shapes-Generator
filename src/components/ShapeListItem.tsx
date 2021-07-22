@@ -66,7 +66,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
 
     const renameElem = (
         <input
-            className={styles['shape-list-item-input']}
+            className={styles['input']}
             id={`shape-list-item-${index}`}
             ref={inputElemRef}
             onBlur={onExitRenameMode}
@@ -76,7 +76,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
     );
     const textElem = (
         <div
-            className={styles['shape-list-item-text']}
+            className={styles['text']}
             id={`shape-list-item-${index}`}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
@@ -88,7 +88,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
 
     return (
         <ListGroup.Item
-            className={styles['shape-list-item']}
+            className={styles['item']}
             action
             active={isSelected}
             onContextMenu={onContextMenu}

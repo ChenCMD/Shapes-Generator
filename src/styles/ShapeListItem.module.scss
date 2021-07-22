@@ -1,8 +1,8 @@
-.shape-list-item {
+.item {
     outline: 1px solid var(--border-color);
 }
 
-.shape-list-item-text {
+.text {
     width: 100%;
     line-height: 1.5;
     padding: 2px 0 2px 2px;
@@ -12,7 +12,7 @@
     }
 }
 
-.shape-list-item-input {
+.input {
     width: 100%;
     line-height: 1.5;
     padding: 2px 0 2px 2px;

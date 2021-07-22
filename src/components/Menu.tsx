@@ -43,7 +43,7 @@ const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointR
     const onGridModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value)), [setGridMode]);
 
     return (
-        <div className={styles['menu-window']}>
+        <div className={styles['window']}>
             <Container fluid className={styles['container']}>
                 <Row className={styles['row']}>
                     <Col>

@@ -1,8 +1,4 @@
-.container {
-    padding: 0;
-}
-
-.param-box {
+.window {
     margin: 10px 0 10px 0;
     width: 100%;
     border-width: 1px;
@@ -10,7 +6,7 @@
     border-radius: 0.25rem;
 }
 
-.param-box-name {
+.name {
     color: var(--text-color);
     line-height: 1.5;
     padding: 2px 0 2px 2px;
@@ -19,28 +15,6 @@
     border-color: var(--border-color);
 }
 
-.param-box-input {
-    width: 100%;
-    line-height: 1.5;
-    padding: 2px 0 2px 2px;
-    color: var(--text-color);
-    border: none;
-    outline: none;
-    background-color: var(--input-bg-color);
-    border-radius: 0.25rem;
-}
-
 .slider {
     padding: 0;
-}
-
-.unit {
-    color: var(--text-color);
-    text-align: center;
-    line-height: 1.5;
-    padding: 2px 0 2px 0;
-    height: 100%;
-    border-style: solid;
-    border-color: var(--border-color);
-    border-left: 1px;
 }

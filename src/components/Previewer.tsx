@@ -83,7 +83,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     return (
         <Measure bounds onResize={onResize}>
             {({ measureRef }) => (
-                <div className={styles['previewer-window']} ref={measureRef}>
+                <div className={styles['window']} ref={measureRef}>
                     <Stage width={size.x} height={size.y}>
                         <Layer>
                             {grids}

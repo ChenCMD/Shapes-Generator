@@ -39,17 +39,17 @@ const PosParameterBox = ({ arg, data, index, shapesDispatch }: PosParameterBoxPr
     }, [arg, argValueX, checkValue, index, shapesDispatch]);
 
     return (
-        <div className={styles['param-box']} title={data.description}>
-            <div className={styles['param-box-name']}>{data.name}</div>
+        <div className={styles['window']} title={data.description}>
+            <div className={styles['name']}>{data.name}</div>
             <Container fluid className={styles['container']}>
                 <Row noGutters>
                     <Col xs={1}><div className={styles['unit-x']}>X</div></Col>
                     <Col xs={5}>
-                        <input className={styles['param-box-input']} type='number' onChange={onChangeX} value={argValueX} onKeyDown={stopPropagation} />
+                        <input className={styles['input']} type='number' onChange={onChangeX} value={argValueX} onKeyDown={stopPropagation} />
                     </Col>
                     <Col xs={1}><div className={styles['unit-y']}>Y</div></Col>
                     <Col xs={5}>
-                        <input className={styles['param-box-input']} type='number' onChange={onChangeY} value={argValueY} onKeyDown={stopPropagation} />
+                        <input className={styles['input']} type='number' onChange={onChangeY} value={argValueY} onKeyDown={stopPropagation} />
                     </Col>
                 </Row>
             </Container>

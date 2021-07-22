@@ -1,11 +1,11 @@
-.shape-list-menu {
+.menu {
     height: 30px;
     border-style: solid;
     border-width: 0 0 1px 0;
     border-bottom-color: var(--border-color);
 }
 
-.shape-list-menu-pulldown {
+.pulldown {
     background: none;
     height: 100%;
     color: var(--text-color);
@@ -23,7 +23,7 @@
     }
 }
 
-.shape-list-menu-pulldown-option {
+.option {
     background-color: var(--window-bg-color);
     color: var(--text-color);
     padding-left: 2px;
@@ -37,7 +37,7 @@
     }
 }
 
-.shape-list-menu-add {
+.add {
     background: none;
     color: var(--text-color);
     height: 100%;

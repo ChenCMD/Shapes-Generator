@@ -56,9 +56,9 @@ const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: S
     ));
 
     return (
-        <div className={styles['shape-list-window']}>
+        <div className={styles['window']}>
             <ShapeListMenu shapesDispatch={shapesDispatch} />
-            <div id="scroll-bar" className={styles['shape-list']}>
+            <div id="scroll-bar" className={styles['list']}>
                 <ListGroup>
                     {items}
                 </ListGroup>

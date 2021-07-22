@@ -31,8 +31,8 @@ const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
     }).filter(v => v !== undefined) as JSX.Element[];
 
     return (
-        <div className={styles['inspector']}>
-            <Container fluid className={styles['inspector-param-box-container']}>
+        <div className={styles['window']}>
+            <Container fluid className={styles['container']}>
                 <Row>
                     {paramBoxes}
                 </Row>

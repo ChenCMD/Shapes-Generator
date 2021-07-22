@@ -29,12 +29,12 @@ const NormalParameterBox = ({ arg, data, index, shapesDispatch }: NormalParamete
     }, [arg, data.validation, index, shapesDispatch]);
 
     return (
-        <div className={styles['param-box']} title={data.description}>
-            <div className={styles['param-box-name']}>{data.name}</div>
+        <div className={styles['window']} title={data.description}>
+            <div className={styles['name']}>{data.name}</div>
             <Container fluid className={styles['container']}>
                 <Row noGutters>
                     <Col xs={12 - (data.unit ? 2 : 0)}>
-                        <input className={styles['param-box-input']} type='number' onChange={onChange} value={argValue} onKeyDown={stopPropagation} />
+                        <input className={styles['input']} type='number' onChange={onChange} value={argValue} onKeyDown={stopPropagation} />
                     </Col>
                     {data.unit ? (<Col xs={2}><div className={styles['unit']}>{data.unit}</div></Col>) : <></>}
                 </Row>

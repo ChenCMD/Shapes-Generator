@@ -24,13 +24,13 @@ const ShapeListMenu = ({ shapesDispatch }: ShapeListMenuProps): JSX.Element => {
     const onChangeTargetShape = useCallback((e: { target: { value: string } }) => setShapePulldown(e.target.value as ShapeType), []);
 
     return (
-        <div className={styles['shape-list-menu']}>
-            <select className={styles['shape-list-menu-pulldown']} value={shapePulldown} onChange={onChangeTargetShape}>
-                <option className={styles['shape-list-menu-pulldown-option']} value="line">line</option>
-                <option className={styles['shape-list-menu-pulldown-option']} value="circle">circle</option>
-                <option className={styles['shape-list-menu-pulldown-option']} value="polygon">polygon</option>
+        <div className={styles['menu']}>
+            <select className={styles['pulldown']} value={shapePulldown} onChange={onChangeTargetShape}>
+                <option className={styles['option']} value="line">line</option>
+                <option className={styles['option']} value="circle">circle</option>
+                <option className={styles['option']} value="polygon">polygon</option>
             </select>
-            <button className={styles['shape-list-menu-add']} onClick={addShapes} >+</button>
+            <button className={styles['add']} onClick={addShapes} >+</button>
         </div>
     );
 };
