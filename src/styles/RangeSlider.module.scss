@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .container {
     padding: 0;
     margin: 0 5px 0 0;
@@ -43,52 +45,52 @@
 .col-xxl {
     @media screen and (min-width: 1500px) {
         &-1 {
-            flex: 0 0 (100% / 12 * 1);
-            max-width: (100% / 12 * 1);
+            flex: 0 0 (math.div(100%, 12) * 1);
+            max-width: (math.div(100%, 12) * 1);
         }
         &-2 {
-            flex: 0 0 (100% / 12 * 2);
-            max-width: (100% / 12 * 2);
+            flex: 0 0 (math.div(100%, 12) * 2);
+            max-width: (math.div(100%, 12) * 2);
         }
         &-3 {
-            flex: 0 0 (100% / 12 * 3);
-            max-width: (100% / 12 * 3);
+            flex: 0 0 (math.div(100%, 12) * 3);
+            max-width: (math.div(100%, 12) * 3);
         }
         &-4 {
-            flex: 0 0 (100% / 12 * 4);
-            max-width: (100% / 12 * 4);
+            flex: 0 0 (math.div(100%, 12) * 4);
+            max-width: (math.div(100%, 12) * 4);
         }
         &-5 {
-            flex: 0 0 (100% / 12 * 5);
-            max-width: (100% / 12 * 5);
+            flex: 0 0 (math.div(100%, 12) * 5);
+            max-width: (math.div(100%, 12) * 5);
         }
         &-6 {
-            flex: 0 0 (100% / 12 * 6);
-            max-width: (100% / 12 * 6);
+            flex: 0 0 (math.div(100%, 12) * 6);
+            max-width: (math.div(100%, 12) * 6);
         }
         &-7 {
-            flex: 0 0 (100% / 12 * 7);
-            max-width: (100% / 12 * 7);
+            flex: 0 0 (math.div(100%, 12) * 7);
+            max-width: (math.div(100%, 12) * 7);
         }
         &-8 {
-            flex: 0 0 (100% / 12 * 8);
-            max-width: (100% / 12 * 8);
+            flex: 0 0 (math.div(100%, 12) * 8);
+            max-width: (math.div(100%, 12) * 8);
         }
         &-9 {
-            flex: 0 0 (100% / 12 * 9);
-            max-width: (100% / 12 * 9);
+            flex: 0 0 (math.div(100%, 12) * 9);
+            max-width: (math.div(100%, 12) * 9);
         }
         &-10 {
-            flex: 0 0 (100% / 12 * 10);
-            max-width: (100% / 12 * 10);
+            flex: 0 0 (math.div(100%, 12) * 10);
+            max-width: (math.div(100%, 12) * 10);
         }
         &-11 {
-            flex: 0 0 (100% / 12 * 11);
-            max-width: (100% / 12 * 11);
+            flex: 0 0 (math.div(100%, 12) * 11);
+            max-width: (math.div(100%, 12) * 11);
         }
         &-12 {
-            flex: 0 0 (100% / 12 * 12);
-            max-width: (100% / 12 * 12);
+            flex: 0 0 (math.div(100%, 12) * 12);
+            max-width: (math.div(100%, 12) * 12);
         }
     }
 }
