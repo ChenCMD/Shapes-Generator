@@ -36,8 +36,8 @@ const defaultParams: ParamValue<PolygonParams> = {
 };
 
 export class PolygonShape extends AbstractShapeNode<PolygonParams, keyof PolygonParams> {
-    public constructor(id: string) {
-        super('polygon', paramMetaData, id, rfdc()(defaultParams));
+    public constructor(name: string) {
+        super('polygon', paramMetaData, name, rfdc()(defaultParams));
     }
 
     protected generatePointSet(params: ParamValue<PolygonParams>): IdentifiedPoint[] {

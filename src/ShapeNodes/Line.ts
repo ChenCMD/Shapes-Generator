@@ -25,8 +25,8 @@ const defaultParams: LineParamValue<LineParams> = {
 };
 
 export class LineShape extends AbstractShapeNode<LineParams, keyof LineParams> {
-    public constructor(id: string) {
-        super('line', paramMetaData, id, rfdc()(defaultParams));
+    public constructor(name: string) {
+        super('line', paramMetaData, name, rfdc()(defaultParams));
     }
 
     protected generatePointSet(params: ParamValue<LineParams>): IdentifiedPoint[] {
