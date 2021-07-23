@@ -1,0 +1,107 @@
+.overlay {
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: var(--modal-overlay-color);
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 400ms;
+    transition-timing-function: ease-in-out;
+    outline: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.after {
+        opacity: 1;
+    }
+    &.before {
+        opacity: 0;
+    }
+}
+
+.content {
+    position: relative;
+    margin: 0 auto;
+    border: 0;
+    outline: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0%;
+    width: 0%;
+    opacity: 2;
+    background-color: transparent;
+    transition-property: background-color, width, height;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+    &.after {
+        @media screen and (max-width: 575px) {
+            // xs
+            width: 96%;
+        }
+        @media screen and (min-width: 576px) {
+            // sm
+            width: 60%;
+        }
+        @media screen and (min-width: 768px) {
+            // md
+            width: 50%;
+        }
+        @media screen and (min-width: 992px) {
+            // lg
+            width: 40%;
+        }
+        @media screen and (min-width: 1200px) {
+            // xl
+            width: 30%;
+        }
+    }
+    &.before {
+        width: 0%;
+        height: 0%;
+        background-color: transparent;
+    }
+}
+
+.container {
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    padding: 7px;
+    background-color: var(--window-bg-color);
+}
+
+.col {
+    padding: 8px !important;
+}
+
+.line {
+    color: var(--border-color);
+    background-color: var(--border-color);
+    height: 1px;
+    margin: 5px 8px 5px 8px;
+}
+
+.text {
+    color: var(--text-color);
+    font-size: 1.15rem;
+    padding-bottom: 5px;
+}
+
+.input {
+    width: 100%;
+    line-height: 1.5;
+    padding: 2px 0 2px 2px;
+    color: var(--text-color);
+    border: none;
+    outline: none;
+    background-color: var(--input-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+}
+
+.button {
+    width: 77px !important;
+}

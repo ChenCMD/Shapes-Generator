@@ -35,10 +35,12 @@ interface MenuProps {
     setGridMode: (mode: GridMode) => void
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
+    openImportModal: (isOpen: boolean) => void;
     openExportModal: (isOpen: boolean) => void;
 }
 
-const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openExportModal }: MenuProps): JSX.Element => {
+const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openImportModal, openExportModal }: MenuProps): JSX.Element => {
+    const onImport = useCallback(() => openImportModal(true), [openImportModal]);
     const onExport = useCallback(() => openExportModal(true), [openExportModal]);
     const onGridModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value)), [setGridMode]);
 
@@ -76,12 +78,8 @@ const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointR
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row className={styles['row']}>
-                    <Col>
-                        <Button >未実装</Button>
-                    </Col>
-                    <Col>
-                        <Button onClick={onExport}>Export</Button>
-                    </Col>
+                    <Col><Button onClick={onImport}>Import</Button></Col>
+                    <Col><Button onClick={onExport}>Export</Button></Col>
                 </Row>
                 {/* <Row>
                     <Col>

@@ -7,6 +7,11 @@ interface AddAction {
     shape: Shape
 }
 
+interface AddManyAction {
+    type: 'addMany'
+    shapes: Shape[]
+}
+
 interface SelectAction {
     type: 'select'
     index: number
@@ -36,7 +41,7 @@ interface DeleteAction {
     type: 'delete'
 }
 
-type Action = AddAction | SelectAction | MoveAction | RenameAction | UpdateParamAction | DeleteAction;
+type Action = AddAction | AddManyAction | SelectAction | MoveAction | RenameAction | UpdateParamAction | DeleteAction;
 
 const selectionChanger = (target: Shape, selected: boolean) => {
     target.isSelected = selected;
@@ -49,6 +54,10 @@ const createReducer: ((onChange: () => void) => React.Reducer<[shapes: Shape[], 
             case 'add': {
                 onChange();
                 return [[...shapes.map(shape => selectionChanger(shape, false)), selectionChanger(action.shape, true)], [shapes.length]];
+            }
+            case 'addMany': {
+                onChange();
+                return [[...shapes, ...action.shapes], selectLog];
             }
             case 'select': {
                 // if (action.isRetentionOld) {

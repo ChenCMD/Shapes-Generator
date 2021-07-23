@@ -18,10 +18,11 @@ interface UserInterfaceProps {
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
     setContextTarget: (context: { x: number, y: number, index: number }) => void
-    openExportModal: (isOpen: boolean) => void;
+    openImportModal: (isOpen: boolean) => void
+    openExportModal: (isOpen: boolean) => void
 }
 
-const UserInterface = ({ shapes, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openExportModal }: UserInterfaceProps): JSX.Element => (
+const UserInterface = ({ shapes, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openImportModal, openExportModal }: UserInterfaceProps): JSX.Element => (
     <Container fluid className={styles['user-interface']}>
         <Row noGutters>
             <Col className={styles['col-inspector']}>
@@ -46,6 +47,7 @@ const UserInterface = ({ shapes, shapesDispatch, gridMode, setGridMode, duplicat
                     setGridMode={setGridMode}
                     duplicatedPointRange={duplicatedPointRange}
                     setDuplicatedPointRange={setDuplicatedPointRange}
+                    openImportModal={openImportModal}
                     openExportModal={openExportModal}
                 />
             </ Col>

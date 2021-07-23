@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { NormalParameter, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
+import { NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { rotateMatrix2D, toRadians } from '../utils/common';
 
@@ -32,8 +32,8 @@ const defaultParams: ParamValue<CircleParams> = {
 };
 
 export class CircleShape extends AbstractShapeNode<CircleParams, keyof CircleParams> {
-    public constructor(name: string) {
-        super('circle', paramMetaData, name, rfdc()(defaultParams));
+    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = rfdc()(defaultParams)) {
+        super('circle', paramMetaData, name, params as ParamValue<CircleParams>);
     }
 
     protected generatePointSet(params: ParamValue<CircleParams>): IdentifiedPoint[] {

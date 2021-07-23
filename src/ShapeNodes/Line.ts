@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { NormalParameter, ParamMetaData as LineParamMetaData, ParamValue as LineParamValue, ParamValue, PosParameter } from '../types/Parameter';
+import { NormalParameter, Param, ParamMetaData as LineParamMetaData, ParamValue as LineParamValue, ParamValue, PosParameter } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 
 export interface LineParams {
@@ -25,8 +25,8 @@ const defaultParams: LineParamValue<LineParams> = {
 };
 
 export class LineShape extends AbstractShapeNode<LineParams, keyof LineParams> {
-    public constructor(name: string) {
-        super('line', paramMetaData, name, rfdc()(defaultParams));
+    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = rfdc()(defaultParams)) {
+        super('line', paramMetaData, name, params as ParamValue<LineParams>);
     }
 
     protected generatePointSet(params: ParamValue<LineParams>): IdentifiedPoint[] {

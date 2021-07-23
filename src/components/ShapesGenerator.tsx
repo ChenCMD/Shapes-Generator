@@ -2,22 +2,29 @@ import React, { useState, useMemo, useCallback, useReducer, useEffect, useRef } 
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
-import createReducer from '../reducers/shapesReducer'; '../reducers/shapesReducer';
+import createReducer from '../reducers/shapesReducer'; import { Shape } from '../ShapeNodes';
+'../reducers/shapesReducer';
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';
 import { deleteDuplicatedPoints } from '../types/Point';
 import { createKeyboardEvent } from '../utils/element';
 import ContextMenu from './ContextMenu';
 import ExportModal from './ExportModal';
+import ImportModal from './ImportModal';
 import Previewer from './Previewer';
 import UserInterface from './UserInterface';
 
-const ShapesGenerator = (): JSX.Element => {
+interface ShapesGeneratorProps {
+    defaultShapes?: Shape[]
+}
+
+const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element => {
     const immediatelyAfterExport = useRef<boolean>(true);
-    const [[shapes, latestSelect], shapesDispatch] = useReducer(createReducer(() => immediatelyAfterExport.current = false), [[], []]);
+    const [[shapes, latestSelect], shapesDispatch] = useReducer(createReducer(() => immediatelyAfterExport.current = false), [defaultShapes ?? [], []]);
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
+    const [isOpenImportModal, setIsOpenImportModal] = useState<boolean>(false);
     const [contextTarget, setContextTarget] = useState<{ x: number, y: number, index: number } | undefined>();
 
     useEffect(() => {
@@ -69,11 +76,17 @@ const ShapesGenerator = (): JSX.Element => {
                             duplicatedPointRange={duplicatedPointRange}
                             setDuplicatedPointRange={setDuplicatedPointRange}
                             setContextTarget={setContextTarget}
+                            openImportModal={setIsOpenImportModal}
                             openExportModal={setIsOpenExportModal}
                         />
                     </Col>
                 </ Row>
             </Container>
+            <ImportModal
+                isOpen={isOpenImportModal}
+                openImportModal={setIsOpenImportModal}
+                shapesDispatch={shapesDispatch}
+            />
             <ExportModal
                 importStrings={shapes.map(v => v.toExportObject())}
                 points={points.map(v => v.point.pos)}

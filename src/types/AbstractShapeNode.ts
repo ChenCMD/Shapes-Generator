@@ -1,4 +1,5 @@
 import uuid from 'uuidjs';
+import { ShapeType } from '../ShapeNodes';
 import { ExportObject } from './ExportObject';
 import { ParamMetaData, Param, ParamValue, Parameter } from './Parameter';
 import { IdentifiedPoint } from './Point';
@@ -11,7 +12,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
     public isSelected = false;
 
     public constructor(
-        private type: string,
+        private type: ShapeType,
         private readonly paramMetaData: ParamMetaData<T>,
         public name: string,
         private _params: ParamValue<T>

@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { NormalParameter, ParamMetaData as PolygonParamMetaData, ParamValue } from '../types/Parameter';
+import { NormalParameter, Param, ParamMetaData as PolygonParamMetaData, ParamValue } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { mod, rotateMatrix2D, toRadians } from '../utils/common';
 import { CircleParams } from './Circle';
@@ -36,8 +36,8 @@ const defaultParams: ParamValue<PolygonParams> = {
 };
 
 export class PolygonShape extends AbstractShapeNode<PolygonParams, keyof PolygonParams> {
-    public constructor(name: string) {
-        super('polygon', paramMetaData, name, rfdc()(defaultParams));
+    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = rfdc()(defaultParams)) {
+        super('polygon', paramMetaData, name, params as ParamValue<PolygonParams>);
     }
 
     protected generatePointSet(params: ParamValue<PolygonParams>): IdentifiedPoint[] {
