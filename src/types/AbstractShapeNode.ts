@@ -1,4 +1,5 @@
 import uuid from 'uuidjs';
+import { ExportObject } from './ExportObject';
 import { ParamMetaData, Param, ParamValue, Parameter } from './Parameter';
 import { IdentifiedPoint } from './Point';
 
@@ -64,11 +65,11 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
 
     protected abstract generatePointSet(params: ParamValue<T>): IdentifiedPoint[];
 
-    public toExportObject(): string {
-        return JSON.stringify({
+    public toExportObject(): ExportObject {
+        return {
             type: this.type,
             name: this.name,
             params: this.params
-        });
+        };
     }
 }

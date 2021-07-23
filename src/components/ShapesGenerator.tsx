@@ -75,6 +75,7 @@ const ShapesGenerator = (): JSX.Element => {
                 </ Row>
             </Container>
             <ExportModal
+                importStrings={shapes.map(v => v.toExportObject())}
                 points={points.map(v => v.point.pos)}
                 isOpen={isOpenExportModal}
                 openExportModal={setIsOpenExportModal}
