@@ -111,10 +111,10 @@ const ExportModal = ({ openExportModal, importStrings, points, isOpen, duplicate
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
-                        <Button className={styles['button']} onClick={onRequestClose}>Cancel</Button>
+                        <Button onClick={onRequestClose}>Cancel</Button>
                     </Col>
                     <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
-                        <Button className={styles['button']} onClick={onExport}>Export</Button>
+                        <Button onClick={onExport}>Export</Button>
                     </Col>
                 </Row>
             </Container>
