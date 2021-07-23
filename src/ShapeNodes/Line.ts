@@ -19,8 +19,8 @@ const paramMetaData: LineParamMetaData<LineParams> = {
 
 const defaultParams: LineParamValue<LineParams> = {
     count: 10,
-    from: { x: 1, y: 1 },
-    to: { x: -1, y: -1 },
+    from: { x: 0, y: 0 },
+    to: { x: 1, y: 1 },
     vezier: 0
 };
 

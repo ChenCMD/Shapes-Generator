@@ -31,7 +31,7 @@ const defaultParams: ParamValue<PolygonParams> = {
     ellipse: 100,
     rotate: 0,
     corner: 5,
-    jump: 2,
+    jump: 1,
     vezier: 0
 };
 
