@@ -1,6 +1,8 @@
 .window {
+    margin: 8px;
     background-color: var(--window-bg-color);
     border: var(--border-color) solid 1px;
     border-radius: 0.25rem;
-    min-height: 100%;
+    min-height: calc(100vh - 18px * 2);
+    max-height: calc(100vh - 18px * 2);
 }

@@ -51,16 +51,16 @@ const ShapesGenerator = (): JSX.Element => {
     }, [duplicatedPointRange, dependString]);
 
     return (
-        <div className={styles['shapes-generator']} onKeyDown={onKeyDown} tabIndex={-1}>
-            <Container fluid>
-                <Row>
-                    <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-previewer']}>
+        <>
+            <Container fluid className={styles['container']} onKeyDown={onKeyDown} tabIndex={-1}>
+                <Row noGutters>
+                    <Col xl={6} lg={6} md={12} sm={12} xs={12}>
                         <Previewer
                             shapes={points}
                             gridMode={gridMode}
                         />
                     </Col>
-                    <Col xl={6} lg={6} md={6} sm={12} xs={12} className={styles['col-user-interface']}>
+                    <Col xl={6} lg={6} md={12} sm={12} xs={12}>
                         <UserInterface
                             shapes={shapes}
                             shapesDispatch={shapesDispatch}
@@ -89,7 +89,7 @@ const ShapesGenerator = (): JSX.Element => {
                 onCloseRequest={onContextCloseRequest}
                 shapesDispatch={shapesDispatch}
             />
-        </div>
+        </>
     );
 };
 

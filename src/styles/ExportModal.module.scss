@@ -39,7 +39,7 @@
     transition-timing-function: ease-in-out;
     &.after {
         @media screen and (max-width: 575px) {
-            width: 70%;
+            width: 96%;
         }
         @media screen and (min-width: 576px) {
             width: 60%;

@@ -1,15 +1,7 @@
-.shapes-generator {
-    padding: 7px;
+.container {
+    padding: 10px 8px;
     &:focus {
         outline: none;
         border: none;
     }
-}
-
-.col-previewer {
-    padding: 8px !important;
-}
-
-.col-user-interface {
-    padding: 0 8px 8px 8px !important;
 }

@@ -3,8 +3,8 @@
     border-style: solid;
     border-width: 1px;
     border-color: var(--border-color);
-    min-height: 250px;
-    max-height: 430px;
+    min-height: calc(50vh - 10px - 8px * 2);
+    max-height: calc(50vh - 10px - 8px * 2);
     border-radius: 0.25rem;
     overflow: auto;
     scrollbar-width: thin;

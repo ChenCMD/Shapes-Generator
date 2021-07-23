@@ -23,7 +23,7 @@ interface UserInterfaceProps {
 
 const UserInterface = ({ shapes, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openExportModal }: UserInterfaceProps): JSX.Element => (
     <Container fluid className={styles['user-interface']}>
-        <Row>
+        <Row noGutters>
             <Col className={styles['col-inspector']}>
                 <Inspector
                     shapes={shapes}
@@ -31,7 +31,7 @@ const UserInterface = ({ shapes, shapesDispatch, gridMode, setGridMode, duplicat
                 />
             </Col>
         </ Row>
-        <Row>
+        <Row noGutters>
             <Col xl={5} lg={5} md={12} sm={5} xs={12} className={styles['col-shape-list']}>
                 <ShapeList
                     shapes={shapes.map(shape => ({ name: shape.name, uuid: shape.uuid, isSelected: shape.isSelected }))}
