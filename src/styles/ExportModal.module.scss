@@ -39,18 +39,23 @@
     transition-timing-function: ease-in-out;
     &.after {
         @media screen and (max-width: 575px) {
+            // xs
             width: 96%;
         }
         @media screen and (min-width: 576px) {
+            // sm
             width: 60%;
         }
         @media screen and (min-width: 768px) {
+            // md
             width: 50%;
         }
         @media screen and (min-width: 992px) {
+            // lg
             width: 40%;
         }
         @media screen and (min-width: 1200px) {
+            // xl
             width: 30%;
         }
     }

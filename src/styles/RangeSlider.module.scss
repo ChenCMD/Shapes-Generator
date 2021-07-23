@@ -1,14 +1,34 @@
+.container {
+    padding: 0;
+    margin: 0 5px 0 0;
+}
+
+.input {
+    color: var(--text-color);
+    width: 100%;
+    line-height: 1.5;
+    padding: 2px 0 2px 2px;
+    border: none;
+    outline: none;
+    background-color: var(--input-bg-color);
+    border-radius: 0.25rem;
+}
+
+.unit {
+    color: var(--text-color);
+    height: 100%;
+    line-height: 1.5;
+    text-align: center;
+    padding: 2px 0 2px 0;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: 0 1px;
+}
+
 .value {
     color: var(--text-color);
     padding: 0 10px 0 0;
     text-align: right;
-    &.split-line {
-        border-style: solid;
-        border-color: var(--border-color);
-        padding: 0 5px 0 0;
-        margin: 0 5px 0 0;
-        border-width: 0 1px 0 0 ;
-    }
 }
 
 .slider {
@@ -18,4 +38,57 @@
     align-items: center;
     justify-content: flex-end;
     height: 100%;
+}
+
+.col-xxl {
+    @media screen and (min-width: 1500px) {
+        &-1 {
+            flex: 0 0 (100% / 12 * 1);
+            max-width: (100% / 12 * 1);
+        }
+        &-2 {
+            flex: 0 0 (100% / 12 * 2);
+            max-width: (100% / 12 * 2);
+        }
+        &-3 {
+            flex: 0 0 (100% / 12 * 3);
+            max-width: (100% / 12 * 3);
+        }
+        &-4 {
+            flex: 0 0 (100% / 12 * 4);
+            max-width: (100% / 12 * 4);
+        }
+        &-5 {
+            flex: 0 0 (100% / 12 * 5);
+            max-width: (100% / 12 * 5);
+        }
+        &-6 {
+            flex: 0 0 (100% / 12 * 6);
+            max-width: (100% / 12 * 6);
+        }
+        &-7 {
+            flex: 0 0 (100% / 12 * 7);
+            max-width: (100% / 12 * 7);
+        }
+        &-8 {
+            flex: 0 0 (100% / 12 * 8);
+            max-width: (100% / 12 * 8);
+        }
+        &-9 {
+            flex: 0 0 (100% / 12 * 9);
+            max-width: (100% / 12 * 9);
+        }
+        &-10 {
+            flex: 0 0 (100% / 12 * 10);
+            max-width: (100% / 12 * 10);
+        }
+        &-11 {
+            flex: 0 0 (100% / 12 * 11);
+            max-width: (100% / 12 * 11);
+        }
+        &-12 {
+            flex: 0 0 (100% / 12 * 12);
+            max-width: (100% / 12 * 12);
+        }
+    }
 }

@@ -20,3 +20,9 @@
 .container {
     margin: 5px auto 5px auto;
 }
+
+.xxl {
+    @media screen and (min-width: 1500px) {
+        flex: 0 0 (100% / 3);
+    }
+}

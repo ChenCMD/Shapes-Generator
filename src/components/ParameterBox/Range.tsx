@@ -25,10 +25,10 @@ const RangeParameterBox = ({ arg, data, index, shapesDispatch }: RangeParameterB
     return (
         <div className={styles['window']} title={data.description}>
             <div className={styles['name']}>{data.name}</div>
-            <RangeSlider className={styles['slider']} hasSplitLine
+            <RangeSlider className={styles['slider']} allowDirectInput
                 min={data.min} max={data.max} step={data.step}
                 value={argValue} setValue={onChange} unit={data.unit}
-                layoutOffset={1}
+                layoutOffset={{xs:2, lg: 0, xl: 2, xxl: 3}}
             />
         </div>
     );
