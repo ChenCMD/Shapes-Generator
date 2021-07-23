@@ -9,7 +9,7 @@
 }
 
 .list {
-    max-height: 420px;
+    max-height: calc(50vh - 10px - 8px * 2 - 30px);
     padding-bottom: 1px;
     margin-bottom: 5px;
     overflow:auto;
