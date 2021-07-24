@@ -17,16 +17,9 @@ interface ShapeListItemProps {
 
 const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSelect, showContextMenu, shapesDispatch }: ShapeListItemProps): JSX.Element => {
     const [renameMode, setRenameMode] = useState<boolean>(false);
-    const alreadyClicked = useRef(false);
     const inputElemRef = useRef<HTMLInputElement>(null);
 
-    const onClick = useCallback(({ ctrlKey: isPushCtrl }: { ctrlKey: boolean }) => {
-        if (!alreadyClicked.current) {
-            alreadyClicked.current = true;
-            onSelect(index, isPushCtrl);
-            setTimeout(() => alreadyClicked.current = false, 200);
-        }
-    }, [index, onSelect]);
+    const onClick = useCallback(({ ctrlKey: isPushCtrl }: { ctrlKey: boolean }) => onSelect(index, isPushCtrl), [index, onSelect]);
 
     const onDoubleClick = useCallback(() => setRenameMode(true), []);
 
