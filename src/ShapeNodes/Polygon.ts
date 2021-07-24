@@ -72,4 +72,8 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams, keyof Polygon
 
         return points;
     }
+
+    public clone(): PolygonShape {
+        return new PolygonShape(`${this.name}-copy`, rfdc()(this.params));
+    }
 }

@@ -2,20 +2,19 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ShapeListItem.module.scss';
-import { stopPropagation } from '../utils/element';
 
 interface ShapeListItemProps {
     index: number
     name: string
     isSelected: boolean
     onSelect: (index: number, isPushCtrl: boolean) => void
-    onRename: (index: number, newID: string) => void
     onMoveSelect: (index: number, to: -1 | 1) => void
+    onDuplicate: (index: number) => void
     showContextMenu: (index: number, e: React.MouseEvent<HTMLElement, MouseEvent>) => void
     shapesDispatch: ShapesDispatch
 }
 
-const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSelect, showContextMenu, shapesDispatch }: ShapeListItemProps): JSX.Element => {
+const ShapeListItem = ({ index, name, isSelected, onSelect, onMoveSelect, onDuplicate, showContextMenu, shapesDispatch }: ShapeListItemProps): JSX.Element => {
     const [renameMode, setRenameMode] = useState<boolean>(false);
     const inputElemRef = useRef<HTMLInputElement>(null);
 
@@ -25,9 +24,9 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
 
     const onExitRenameMode = useCallback(() => {
         if (inputElemRef.current?.value)
-            onRename(index, inputElemRef.current.value);
+            shapesDispatch({ type: 'rename', index, newName: inputElemRef.current.value });
         setRenameMode(false);
-    }, [index, onRename]);
+    }, [index, shapesDispatch]);
 
     const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
         e.stopPropagation();
@@ -40,12 +39,14 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
                 return setRenameMode(false);
             case 'Delete':
                 return shapesDispatch({ type: 'delete' });
+            case 'D':
+                return e.shiftKey && onDuplicate(index);
             case 'ArrowUp':
                 return onMoveSelect(index, -1);
             case 'ArrowDown':
                 return onMoveSelect(index, +1);
         }
-    }, [index, onExitRenameMode, onMoveSelect, renameMode, shapesDispatch]);
+    }, [index, onDuplicate, onExitRenameMode, onMoveSelect, renameMode, shapesDispatch]);
 
     const onContextMenu = useCallback((e: React.MouseEvent<HTMLElement, MouseEvent>) => showContextMenu(index, e), [index, showContextMenu]);
 
@@ -63,8 +64,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onRename, onMoveSele
             id={`shape-list-item-${index}`}
             ref={inputElemRef}
             onBlur={onExitRenameMode}
-            tabIndex={index === 0 ? 0 : -1}
-            onKeyDown={stopPropagation}
+            tabIndex={index === 0 ? 0 : -1} // stopPropagationは一つ親でやってるので要らない
         />
     );
     const textElem = (

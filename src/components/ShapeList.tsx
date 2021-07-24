@@ -30,8 +30,9 @@ const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: S
         shapesDispatch({ type: 'move', index, to });
     }, [shapesDispatch]);
 
-    const onRename = useCallback((index: number, newName: string) => {
-        shapesDispatch({ type: 'rename', index, newName });
+    const onDuplicate = useCallback((index: number) => {
+        setFocusItem(index + 1);
+        shapesDispatch({ type: 'duplicate', index });
     }, [shapesDispatch]);
 
     const showContextMenu = useCallback((index, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -48,8 +49,8 @@ const ShapeList = ({ shapes, shapesLength, shapesDispatch, setContextTarget }: S
             name={shape.name}
             isSelected={shape.isSelected}
             onSelect={onSelect}
-            onRename={onRename}
             onMoveSelect={onMoveSelect}
+            onDuplicate={onDuplicate}
             showContextMenu={showContextMenu}
             shapesDispatch={shapesDispatch}
         />

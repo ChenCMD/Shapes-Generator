@@ -30,6 +30,11 @@ interface RenameAction {
     newName: string
 }
 
+interface DuplicateAction {
+    type: 'duplicate'
+    index: number
+}
+
 interface UpdateParamAction {
     type: 'update'
     index: number
@@ -41,7 +46,7 @@ interface DeleteAction {
     type: 'delete'
 }
 
-type Action = AddAction | AddManyAction | SelectAction | MoveAction | RenameAction | UpdateParamAction | DeleteAction;
+type Action = AddAction | AddManyAction | SelectAction | MoveAction | RenameAction | DuplicateAction | UpdateParamAction | DeleteAction;
 
 const selectionChanger = (target: Shape, selected: boolean) => {
     target.isSelected = selected;
@@ -79,6 +84,15 @@ const createReducer: ((onChange: () => void) => React.Reducer<[shapes: Shape[], 
                 onChange();
                 shapes[action.index].name = action.newName;
                 return [[...shapes], selectLog];
+            }
+            case 'duplicate': {
+                onChange();
+                const newShapes = shapes.map(v => selectionChanger(v, false));
+                newShapes.splice(action.index + 1, 0, selectionChanger(shapes[action.index].clone(), true));
+                return [
+                    newShapes,
+                    [action.index + 1]
+                ];
             }
             case 'update': {
                 onChange();

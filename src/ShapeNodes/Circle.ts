@@ -50,4 +50,8 @@ export class CircleShape extends AbstractShapeNode<CircleParams, keyof CirclePar
 
         return points;
     }
+
+    public clone(): CircleShape {
+        return new CircleShape(`${this.name}-copy`, rfdc()(this.params));
+    }
 }

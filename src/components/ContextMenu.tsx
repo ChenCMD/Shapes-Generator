@@ -49,10 +49,8 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
 
     const onDelete = useCallback(() => shapesDispatch({ type: 'delete' }), [shapesDispatch]);
 
-    const onRename = useCallback(() => {
-        onCloseRequest();
-        document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(createKeyboardEvent('F2', false, false, false));
-    }, [index, onCloseRequest]);
+    const onRename = useCallback(() => document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(createKeyboardEvent('F2', false, false, false)), [index]);
+    const onDuplicate = useCallback(() => document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(createKeyboardEvent('D', false, false, true)), [index]);
 
     return (
         <div
@@ -60,6 +58,11 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
             onClick={onCloseRequest} onContextMenu={onContextMenu}>
             <table>
                 <tbody ref={menuRef} className={`${styles['window']}`}>
+                    <tr className={styles['item']} onClick={onDuplicate}>
+                        <td align="right" className={styles['text']}>複製</td>
+                        <td className={styles['shortcut']}>Shift + D</td>
+                    </tr>
+                    <tr><td colSpan={2}><div className={styles['line']} /></td></tr>
                     <tr className={styles['item']} onClick={onRename}>
                         <td align="right" className={styles['text']}>名前の変更</td>
                         <td className={styles['shortcut']}>F2</td>
@@ -68,10 +71,6 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
                         <td align="right" className={styles['text']}>削除</td>
                         <td className={styles['shortcut']}>Delete</td>
                     </tr>
-                    {/* <tr className={styles['item']}>
-                        <td align="right" className={styles['text']}>複製</td>
-                        <td className={styles['shortcut']}>Ctrl + D</td>
-                    </tr> */}
                 </tbody>
             </table>
         </div >

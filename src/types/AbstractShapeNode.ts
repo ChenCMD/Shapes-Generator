@@ -66,6 +66,8 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
 
     protected abstract generatePointSet(params: ParamValue<T>): IdentifiedPoint[];
 
+    public abstract clone(): AbstractShapeNode<T, P>;
+
     public toExportObject(): ExportObject {
         return {
             type: this.type,

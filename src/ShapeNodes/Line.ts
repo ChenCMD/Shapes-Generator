@@ -49,4 +49,8 @@ export class LineShape extends AbstractShapeNode<LineParams, keyof LineParams> {
 
         return points;
     }
+
+    public clone(): LineShape {
+        return new LineShape(`${this.name}-copy`, rfdc()(this.params));
+    }
 }
