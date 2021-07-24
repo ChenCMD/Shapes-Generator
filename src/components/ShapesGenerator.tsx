@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useReducer, useState } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
+import useWindowCloseWarning from '../hooks/useWindowCloseWarning';
 import createReducer from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/ShapesGenerator.module.scss';
@@ -19,24 +20,13 @@ interface ShapesGeneratorProps {
 }
 
 const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element => {
-    const immediatelyAfterExport = useRef<boolean>(true);
-    const [[shapes, latestSelect], shapesDispatch] = useReducer(createReducer(() => immediatelyAfterExport.current = false), [defaultShapes ?? [], []]);
+    const isNotSaved = useWindowCloseWarning();
+    const [[shapes, latestSelect], shapesDispatch] = useReducer(createReducer(() => isNotSaved.current = true), [defaultShapes ?? [], []]);
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
     const [isOpenImportModal, setIsOpenImportModal] = useState<boolean>(false);
     const [contextTarget, setContextTarget] = useState<{ x: number, y: number, index: number } | undefined>();
-
-    useEffect(() => {
-        const onBeforeUnload = (e: BeforeUnloadEvent) => {
-            if (!immediatelyAfterExport.current) {
-                e.preventDefault();
-                e.returnValue = '出力されていないデータが存在します。本当に閉じますか？';
-            }
-        };
-        window.addEventListener('beforeunload', onBeforeUnload);
-        return () => window.removeEventListener('beforeunload', onBeforeUnload);
-    });
 
     const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
         console.log(`root/onKeyDown: ${e.key}`);
@@ -94,7 +84,7 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
                 openExportModal={setIsOpenExportModal}
                 duplicatedPointRange={duplicatedPointRange}
                 setDuplicatedPointRange={setDuplicatedPointRange}
-                immediatelyAfterExport={immediatelyAfterExport}
+                isNotSaved={isNotSaved}
             />
             <ContextMenu
                 x={contextTarget?.x}
