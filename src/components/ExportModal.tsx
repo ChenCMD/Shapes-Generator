@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import LZString from 'lz-string';
+import React, { useCallback, useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import ReactModal from 'react-modal';
-import LZString from 'lz-string';
 import styles from '../styles/ExportModal.module.scss';
 import { ExportObject } from '../types/ExportObject';
 import { Point } from '../types/Point';

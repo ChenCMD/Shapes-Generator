@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ShapeListItem.module.scss';

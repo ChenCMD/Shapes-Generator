@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
-import { ShapesDispatch } from '../../reducers/shapesReducer';
-import { NormalParameter, Parameter } from '../../types/Parameter';
-import styles from '../../styles/ParameterBox/Normal.module.scss';
+import React, { useCallback, useState } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
+import { ShapesDispatch } from '../../reducers/shapesReducer';
+import styles from '../../styles/ParameterBox/Normal.module.scss';
+import { NormalParameter, Parameter } from '../../types/Parameter';
 import { stopPropagation } from '../../utils/element';
 
 interface NormalParameterBoxProps {

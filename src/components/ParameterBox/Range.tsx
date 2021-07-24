@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
-import { RangeParameter, Parameter } from '../../types/Parameter';
 import styles from '../../styles/ParameterBox/Range.module.scss';
+import { Parameter, RangeParameter } from '../../types/Parameter';
 import RangeSlider from '../RangeSlider';
 
 interface RangeParameterBoxProps {

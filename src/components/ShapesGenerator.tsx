@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useCallback, useReducer, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
-import createReducer from '../reducers/shapesReducer'; import { Shape } from '../ShapeNodes';
-'../reducers/shapesReducer';
+import createReducer from '../reducers/shapesReducer';
+import { Shape } from '../ShapeNodes';
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';
 import { deleteDuplicatedPoints } from '../types/Point';

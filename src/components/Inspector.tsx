@@ -8,8 +8,8 @@ import styles from '../styles/Inspector.module.scss';
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { Param } from '../types/Parameter';
 import NormalParameterBox from './ParameterBox/Normal';
-import RangeParameterBox from './ParameterBox/Range';
 import PosParameterBox from './ParameterBox/Pos';
+import RangeParameterBox from './ParameterBox/Range';
 
 interface InspectorProps {
     shapes: Shape[]

@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
-import { ShapesDispatch } from '../../reducers/shapesReducer';
-import { PosParameter, Parameter } from '../../types/Parameter';
-import styles from '../../styles/ParameterBox/Pos.module.scss';
+import React, { useCallback, useState } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
+import { ShapesDispatch } from '../../reducers/shapesReducer';
+import styles from '../../styles/ParameterBox/Pos.module.scss';
+import { Parameter, PosParameter } from '../../types/Parameter';
 import { stopPropagation } from '../../utils/element';
 
 interface PosParameterBoxProps {

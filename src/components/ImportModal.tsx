@@ -1,13 +1,13 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import ReactModal from 'react-modal';
-import styles from '../styles/ImportModal.module.scss';
 import { ShapesDispatch } from '../reducers/shapesReducer';
-import { stopPropagation } from '../utils/element';
 import { importShape } from '../ShapeNodes';
+import styles from '../styles/ImportModal.module.scss';
+import { stopPropagation } from '../utils/element';
 
 ReactModal.setAppElement('#root');
 
