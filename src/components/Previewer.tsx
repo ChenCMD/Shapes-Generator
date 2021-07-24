@@ -17,7 +17,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
 
     const padding = size[minSize] / 6;
     const centerModifier = useMemo(() => ({ x: size.x / 2, y: size.y / 2 }), [size]);
-    const maxBounds = Math.max(...shapes.flatMap(v => v.point.pos).map(Math.abs));
+    const maxBounds = Math.ceil(Math.max(...shapes.flatMap(v => v.point.pos).map(Math.abs)));
     const getMultiple = useCallback((axis: 'x' | 'y') => Math.min((size[axis] - padding * 2) / 2 / maxBounds, size[axis] / 12), [maxBounds, padding, size]);
     const posMultiple = getMultiple(minSize);
 
