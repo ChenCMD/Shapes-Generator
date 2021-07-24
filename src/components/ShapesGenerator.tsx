@@ -29,7 +29,6 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
     const [contextTarget, setContextTarget] = useState<{ x: number, y: number, index: number } | undefined>();
 
     const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
-        console.log(`root/onKeyDown: ${e.key}`);
         if (contextTarget && e.key === 'Escape') return setContextTarget(undefined);
         // こっちでは処理できないキー
         const elem = document.getElementById(`shape-list-item-${latestSelect.slice(-1)[0]}`);
