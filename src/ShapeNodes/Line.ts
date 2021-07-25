@@ -39,7 +39,9 @@ export class LineShape extends AbstractShapeNode<LineParams, keyof LineParams> {
 
         const vector = [params.to.x - params.from.x, params.to.y - params.from.y];
         const vecMagnitude = Math.sqrt(vector[0] ** 2 + vector[1] ** 2);
-        const normalizedVector = [vector[1] / vecMagnitude * params.vezier, -vector[0] / vecMagnitude * params.vezier];
+        const normalizedVector = vecMagnitude !== 0
+            ? [vector[1] / vecMagnitude * params.vezier, -vector[0] / vecMagnitude * params.vezier]
+            : [0, 0];
 
         const controlPoint: Point = [(params.from.x + params.to.x) / 2 + normalizedVector[0], (params.from.y + params.to.y) / 2 + normalizedVector[1]];
         for (let i = 0; i < params.count; i++) {
