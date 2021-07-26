@@ -70,3 +70,13 @@ export function objEntries<K extends PropertyKey, V>(obj: { [k in K]: V }): [K, 
         res.push([k, obj[k]]);
     return res;
 }
+
+// export function reasonShowPropsAreEqual<P extends { [k: string]: unknown }>(prevProps: Readonly<P>, nextProps: Readonly<P>): boolean {
+//     for (const k of Object.keys(prevProps) as (keyof P)[]) {
+//         if (!Object.is(prevProps[k], nextProps[k])) {
+//             console.log('ReRender curse:', k, '|', prevProps[k], '=>', nextProps[k]);
+//             return false;
+//         }
+//     }
+//     return true;
+// }
