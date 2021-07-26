@@ -32,7 +32,7 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
         if (contextTarget && e.key === 'Escape') return setContextTarget(undefined);
         // こっちでは処理できないキー
         const elem = document.getElementById(`shape-list-item-${latestSelect.slice(-1)[0]}`);
-        elem?.dispatchEvent(createKeyboardEvent(e.key, e.altKey, e.ctrlKey, e.shiftKey));
+        elem?.dispatchEvent(createKeyboardEvent('keydown', e.key, e.altKey, e.ctrlKey, e.shiftKey));
     }, [contextTarget, latestSelect]);
 
     const onContextCloseRequest = useCallback(() => setContextTarget(undefined), []);

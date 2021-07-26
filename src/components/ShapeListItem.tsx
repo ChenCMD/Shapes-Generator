@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
+import useOnceKeydown from '../hooks/useOnceKeydown';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ShapeListItem.module.scss';
 
@@ -28,25 +29,22 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onMoveSelect, onDupl
         setRenameMode(false);
     }, [index, shapesDispatch]);
 
-    const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
+    const keyDownCallbacks: { [k: string]: (e: React.KeyboardEvent<HTMLElement>) => void } = {};
+    const keyUpCallbacks: { [k: string]: (e: React.KeyboardEvent<HTMLElement>) => void } = {};
+    [keyDownCallbacks['Enter'], keyUpCallbacks['Enter']] = useOnceKeydown('Enter', () => renameMode ? onExitRenameMode() : setRenameMode(true));
+    [keyDownCallbacks['F2'], keyUpCallbacks['F2']] = useOnceKeydown('F2', () => setRenameMode(true));
+    [keyDownCallbacks['Escape'], keyUpCallbacks['Escape']] = useOnceKeydown('Escape', () => setRenameMode(false));
+    [keyDownCallbacks['Delete'], keyUpCallbacks['Delete']] = useOnceKeydown('Delete', () => shapesDispatch({ type: 'delete' }));
+    [keyDownCallbacks['D'], keyUpCallbacks['D']] = useOnceKeydown('D', e => e.shiftKey && onDuplicate(index));
+    [keyDownCallbacks['ArrowUp'], keyUpCallbacks['ArrowUp']] = useOnceKeydown('ArrowUp', () => onMoveSelect(index, -1));
+    [keyDownCallbacks['ArrowDown'], keyUpCallbacks['ArrowDown']] = useOnceKeydown('ArrowDown', () => onMoveSelect(index, +1));
+
+    const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         e.stopPropagation();
-        switch (e.key) {
-            case 'Enter':
-                return renameMode ? onExitRenameMode() : setRenameMode(true);
-            case 'F2':
-                return setRenameMode(true);
-            case 'Escape':
-                return setRenameMode(false);
-            case 'Delete':
-                return shapesDispatch({ type: 'delete' });
-            case 'D':
-                return e.shiftKey && onDuplicate(index);
-            case 'ArrowUp':
-                return onMoveSelect(index, -1);
-            case 'ArrowDown':
-                return onMoveSelect(index, +1);
-        }
-    }, [index, onDuplicate, onExitRenameMode, onMoveSelect, renameMode, shapesDispatch]);
+        keyDownCallbacks[e.key]?.(e);
+    };
+
+    const onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => keyUpCallbacks[e.key]?.(e);
 
     const onContextMenu = useCallback((e: React.MouseEvent<HTMLElement, MouseEvent>) => showContextMenu(index, e), [index, showContextMenu]);
 
@@ -86,6 +84,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onMoveSelect, onDupl
             active={isSelected}
             onContextMenu={onContextMenu}
             onKeyDown={onKeyDown}
+            onKeyUp={onKeyUp}
         >
             {renameMode ? renameElem : textElem}
         </ListGroup.Item >

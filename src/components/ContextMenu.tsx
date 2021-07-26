@@ -49,8 +49,12 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
 
     const onDelete = useCallback(() => shapesDispatch({ type: 'delete' }), [shapesDispatch]);
 
-    const onRename = useCallback(() => document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(createKeyboardEvent('F2', false, false, false)), [index]);
-    const onDuplicate = useCallback(() => document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(createKeyboardEvent('D', false, false, true)), [index]);
+    const dispatchKeyEvent = useCallback((key: string) => {
+        document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(createKeyboardEvent('keydown', key, false, false, false));
+        document.getElementById(`shape-list-item-${index}`)?.dispatchEvent(createKeyboardEvent('keyup', key, false, false, false));
+    }, [index]);
+    const onRename = useCallback(() => dispatchKeyEvent('F2'), [dispatchKeyEvent]);
+    const onDuplicate = useCallback(() => dispatchKeyEvent('D'), [dispatchKeyEvent]);
 
     return (
         <div
