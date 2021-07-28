@@ -40,10 +40,11 @@ export class CircleShape extends AbstractShapeNode<CircleParams, keyof CirclePar
         const points: IdentifiedPoint[] = [];
         const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
 
-        for (let theta = params.start; theta < 360 + params.start; theta += 360 / params.count) {
+        for (let i = 0; i < params.count; i++) {
+            const theta = toRadians(360 / params.count * i + params.start);
             const p: Point = rotateMatrix2D([
-                params.center.x + Math.sin(toRadians(theta)) * params.radius,
-                params.center.y + -Math.cos(toRadians(theta)) * params.radius
+                params.center.x + Math.sin(theta) * params.radius,
+                params.center.y + -Math.cos(theta) * params.radius
             ], params.rotate);
             addPoint(rotateMatrix2D([p[0], p[1] * (params.ellipse / 100)], -params.rotate));
         }

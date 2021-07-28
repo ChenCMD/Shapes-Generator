@@ -55,16 +55,17 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams, keyof Polygon
 
             const controlPoint: Point = [(from[0] + to[0]) / 2 + normalizedVector[0], (from[1] + to[1]) / 2 + normalizedVector[1]];
             for (let i = 0; i < params.count; i++) {
-                const t = i / (params.count);
+                const t = i / params.count;
                 addPoint(calcPoint(calcPoint(from, controlPoint, t), calcPoint(controlPoint, to, t), t));
             }
         };
 
         const corners: Point[] = [];
-        for (let theta = params.start; theta < 360 + params.start; theta += 360 / params.corner) {
+        for (let i = 0; i < params.corner; i++) {
+            const theta = toRadians(360 / params.corner * i + params.start);
             const p: Point = rotateMatrix2D([
-                params.center.x + Math.sin(toRadians(theta)) * params.radius,
-                params.center.y + -Math.cos(toRadians(theta)) * params.radius
+                params.center.x + Math.sin(theta) * params.radius,
+                params.center.y + -Math.cos(theta) * params.radius
             ], params.rotate);
             corners.push(rotateMatrix2D([p[0], p[1] * (params.ellipse / 100)], -params.rotate));
         }
