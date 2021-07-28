@@ -8,7 +8,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
     // Set<P>にしないのはAbstractShapeNode#setParameterでのvalidationが面倒になるため。
     private validateParams: Set<string>;
     private _uuid: string;
-    private _pointSet: IdentifiedPoint[] = [];
+    private _points: IdentifiedPoint[] = [];
     public isSelected = false;
 
     public constructor(
@@ -30,8 +30,8 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
         return this._params;
     }
 
-    public get pointSet(): IdentifiedPoint[] {
-        return this._pointSet;
+    public get points(): IdentifiedPoint[] {
+        return this._points;
     }
 
     private isParameterKey(argName: string): argName is P {
@@ -61,7 +61,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
     }
 
     private updatePointSet(): void {
-        this._pointSet = this.generatePointSet(this.params);
+        this._points = this.generatePointSet(this.params);
     }
 
     protected abstract generatePointSet(params: ParamValue<T>): IdentifiedPoint[];

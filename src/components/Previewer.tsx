@@ -3,10 +3,10 @@ import { Circle, Layer, Line, Stage } from 'react-konva';
 import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
 import { GridMode } from '../types/GridMode';
-import { IdentifiedPoint } from '../types/Point';
+import { ProcessedPoints } from '../types/Point';
 
 interface PreviewerProps {
-    shapes: { selected: boolean, point: IdentifiedPoint }[]
+    shapes: ProcessedPoints[]
     gridMode: GridMode
 }
 
@@ -17,7 +17,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
 
     const padding = size[minSize] / 6;
     const centerModifier = useMemo(() => ({ x: size.x / 2, y: size.y / 2 }), [size]);
-    const maxBounds = Math.ceil(Math.max(...shapes.flatMap(v => v.point.pos).map(Math.abs)));
+    const maxBounds = Math.ceil(Math.max(...shapes.flatMap(v => v.points.flatMap(v2 => v2.pos)).map(Math.abs)));
     const getMultiple = useCallback((axis: 'x' | 'y') => Math.min((size[axis] - padding * 2) / 2 / maxBounds, size[axis] / 12), [maxBounds, padding, size]);
     const posMultiple = getMultiple(minSize);
 
@@ -25,22 +25,22 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     if (posMultiple && maxBounds < 250) {
         points.push(...shapes
             .sort((a, b) => {
-                if (a.selected === b.selected) return 0;
-                if (a.selected) return 1;
-                if (b.selected) return -1;
+                if (a.isSelected === b.isSelected) return 0;
+                if (a.isSelected) return 1;
+                if (b.isSelected) return -1;
                 return 0;
             })
-            .map(({ selected, point: { pos: [x, y], id } }) => (
+            .flatMap(({ isSelected, points: p }) => p.map(({ pos: [x, y], id }) => (
                 <Circle
                     x={x * posMultiple + centerModifier.x}
                     y={y * posMultiple + centerModifier.y}
                     radius={0.15 * posMultiple}
                     fill='rgb(212, 212, 212)'
                     strokeWidth={2}
-                    stroke={selected ? '#007bff' : ''}
+                    stroke={isSelected ? '#007bff' : ''}
                     key={id}
                 />
-            ))
+            )))
         );
     }
 

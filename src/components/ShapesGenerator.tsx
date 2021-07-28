@@ -37,14 +37,10 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
 
     const onContextCloseRequest = useCallback(() => setContextTarget(undefined), []);
 
-    const dependString = useMemo(() => shapes.map(v => `${v.isSelected ? 1 : 0}${v.pointSet.map(v2 => v2.id).join('+')}`).join('+'), [shapes]);
-    const points = useMemo(() => {
-        const res = shapes.flatMap(shape => shape.pointSet.map(v => ({ selected: shape.isSelected, point: v })));
-        return duplicatedPointRange === 0
-            ? res
-            : deleteDuplicatedPoints(res, duplicatedPointRange);
+    const dependString = useMemo(() => shapes.map(v => `${v.isSelected ? 1 : 0}${v.points.map(v2 => v2.id).join('+')}`).join('+'), [shapes]);
+    const points = useMemo(() => duplicatedPointRange === 0 ? [...shapes] : deleteDuplicatedPoints(shapes, duplicatedPointRange),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [duplicatedPointRange, dependString]);
+        [duplicatedPointRange, dependString]);
 
     return (
         <>
@@ -78,7 +74,7 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
             />
             <ExportModal
                 importStrings={shapes.map(v => v.toExportObject())}
-                points={points.map(v => v.point.pos)}
+                points={points}
                 isOpen={isOpenExportModal}
                 openExportModal={setIsOpenExportModal}
                 duplicatedPointRange={duplicatedPointRange}
