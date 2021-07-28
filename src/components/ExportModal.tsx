@@ -69,20 +69,6 @@ const ExportModal = ({ openExportModal, importStrings, points, isOpen, duplicate
             <Container fluid className={styles['container']}>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>出力データを図形名で区切る</div>
-                        <ToggleButtonGroup type="radio" name="options" defaultValue={hasNameComment.toString()} value={hasNameComment.toString()}>
-                            <ToggleButton className={styles['button']} value={'false'} onChange={onChangeHasNameComment}>
-                                OFF
-                            </ToggleButton>
-                            <ToggleButton className={styles['button']} value={'true'} onChange={onChangeHasNameComment}>
-                                ON
-                            </ToggleButton>
-                        </ToggleButtonGroup>
-                    </Col>
-                </Row>
-                <Row><Col><hr className={styles['line']} /></Col></Row>
-                <Row noGutters>
-                    <Col className={styles['col']}>
                         <div className={styles['text']}>Particle</div>
                         <input className={styles['input']} onChange={e => setParticle(e.target.value)} value={particle} onKeyDown={stopPropagation} />
                     </Col>
@@ -96,6 +82,20 @@ const ExportModal = ({ openExportModal, importStrings, points, isOpen, duplicate
                             value={particleSpeed}
                             setValue={setParticleSpeed}
                         />
+                    </Col>
+                </Row>
+                <Row><Col><hr className={styles['line']} /></Col></Row>
+                <Row noGutters>
+                    <Col className={styles['col']}>
+                        <div className={styles['text']}>出力データを図形名で区切る</div>
+                        <ToggleButtonGroup type="radio" name="options" defaultValue={hasNameComment.toString()} value={hasNameComment.toString()}>
+                            <ToggleButton className={styles['button']} value={'false'} onChange={onChangeHasNameComment}>
+                                OFF
+                            </ToggleButton>
+                            <ToggleButton className={styles['button']} value={'true'} onChange={onChangeHasNameComment}>
+                                ON
+                            </ToggleButton>
+                        </ToggleButtonGroup>
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
