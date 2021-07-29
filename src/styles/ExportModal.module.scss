@@ -46,18 +46,18 @@
             // sm
             width: 60%;
         }
-        @media screen and (min-width: 768px) {
-            // md
-            width: 50%;
-        }
+        // @media screen and (min-width: 768px) {
+        //     // md
+        //     width: 70%;
+        // }
         @media screen and (min-width: 992px) {
             // lg
-            width: 40%;
+            width: 60%;
         }
-        @media screen and (min-width: 1200px) {
-            // xl
-            width: 30%;
-        }
+        // @media screen and (min-width: 1200px) {
+        //     // xl
+        //     width: 50%;
+        // }
     }
     &.before {
         width: 0%;

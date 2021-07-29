@@ -70,7 +70,7 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
                         </Col>
                         <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
                             <Button onClick={importKey === '' ? openUploader : onImport}>
-                                {importKey === '' ? 'Import from mcfunction' : 'Import from Key'}
+                                {importKey === '' ? 'from mcfunction' : 'from Key'}
                             </Button>
                         </Col>
                     </Row>

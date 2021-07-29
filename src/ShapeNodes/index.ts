@@ -35,3 +35,7 @@ export function importShape(importKey: string): Shape[] {
         return [];
     }
 }
+
+export function generateExportKey(exportObjects: ExportObject[]): string {
+    return LZString.compressToEncodedURIComponent(JSON.stringify(exportObjects));
+}

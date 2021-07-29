@@ -1,4 +1,3 @@
-import LZString from 'lz-string';
 import React, { useCallback, useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import Col from 'react-bootstrap/esm/Col';
@@ -7,6 +6,8 @@ import Row from 'react-bootstrap/esm/Row';
 import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
 import ReactModal from 'react-modal';
+import useTextToClipboard from '../hooks/useTextToClipboard';
+import { generateExportKey } from '../ShapeNodes';
 import styles from '../styles/ExportModal.module.scss';
 import { ExportObject } from '../types/ExportObject';
 import { Point, ProcessedPoints } from '../types/Point';
@@ -26,27 +27,34 @@ interface ExportModalProps {
     isNotSaved: React.MutableRefObject<boolean>
 }
 
-const ExportModal = ({ openExportModal, importStrings, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }: ExportModalProps): JSX.Element => {
+const ExportModal = ({ openExportModal, importStrings: exportObjects, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }: ExportModalProps): JSX.Element => {
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [hasNameComment, setHasNameComment] = useState<boolean>(true);
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);
 
-    const onExport = useCallback(() => {
-        isNotSaved.current = false;
-        const importStr = `# [ImportKey]: ${LZString.compressToEncodedURIComponent(JSON.stringify(importStrings))}`;
+    const generateExportData = useCallback(() => {
+        const importStr = `# [ImportKey]: ${generateExportKey(exportObjects)}`;
         const mkCmd = (pos: Point) => `particle ${particle.trim()} ^${toStr(pos[0])} ^ ^${toStr(pos[1])} 0 0 0 ${toStr(particleSpeed)} 1`;
-        const content = [importStr, ...points.flatMap(v => [
+        return [importStr, ...points.flatMap(v => [
             ...(hasNameComment ? [`# ${v.name}`] : []),
             ...v.points.map(({ pos: [x, y] }) => mkCmd([round(x, exportAcc), round(y, exportAcc)]))
         ])].join('\n');
+    }, [exportAcc, exportObjects, hasNameComment, particle, particleSpeed, points]);
 
-        const blob = new File([content], 'particle.mcfunction', { type: 'text/plain' });
+    const onExportToMcf = useCallback(() => {
+        isNotSaved.current = false;
+        const blob = new File([generateExportData()], 'particle.mcfunction', { type: 'text/plain' });
         const a = document.createElement('a');
         a.href = window.URL.createObjectURL(blob);
         a.download = 'particle.mcfunction';
         a.click();
-    }, [isNotSaved, importStrings, points, particle, particleSpeed, hasNameComment, exportAcc]);
+    }, [isNotSaved, generateExportData]);
+
+    const textToClipboard = useTextToClipboard();
+    const onExportToClipboard = useCallback(() => {
+        textToClipboard(generateExportData());
+    }, [generateExportData, textToClipboard]);
 
     const onChangeHasNameComment = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setHasNameComment(e.target.value === 'true'), []);
     const onRequestClose = useCallback(() => openExportModal(false), [openExportModal]);
@@ -131,11 +139,14 @@ const ExportModal = ({ openExportModal, importStrings, points, isOpen, duplicate
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
-                    <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
+                    <Col className={styles['col']} xl={4} lg={4} md={6} sm={6} xs={12}>
                         <Button onClick={onRequestClose}>Cancel</Button>
                     </Col>
-                    <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
-                        <Button onClick={onExport}>Export</Button>
+                    <Col className={styles['col']} xl={4} lg={4} md={6} sm={6} xs={12}>
+                        <Button onClick={onExportToMcf}>to mcfunction</Button>
+                    </Col>
+                    <Col className={styles['col']} xl={4} lg={4} md={6} sm={6} xs={12}>
+                        <Button onClick={onExportToClipboard}>to Clipboard</Button>
                     </Col>
                 </Row>
             </Container>
