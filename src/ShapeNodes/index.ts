@@ -1,4 +1,5 @@
 import LZString from 'lz-string';
+import { showNotification } from '../components/ShapesGenerator';
 import { ExportObject } from '../types/ExportObject';
 import { CircleShape } from './Circle';
 import { LineShape } from './Line';
@@ -21,7 +22,7 @@ export function getShape(id: string, type: ShapeType): Shape {
 export function importShape(importKey: string): Shape[] {
     const rawExportObjects = LZString.decompressFromEncodedURIComponent(importKey);
     if (!rawExportObjects) {
-        console.error('import keyが不正です'); // TODO エラー表示作る
+        showNotification('error', 'import keyが不正です');
         return [];
     }
     try {
@@ -29,9 +30,9 @@ export function importShape(importKey: string): Shape[] {
         return parsedExportObjects.map(v => new shapes[v.type](v.name, v.params));
     } catch (e) {
         if (e instanceof SyntaxError)
-            console.error('import keyが不正です'); // TODO エラー表示作る
+            showNotification('error', 'import keyが不正です');
         else
-            console.error('importで想定しない問題が発生しました。', e); // TODO エラー表示作る
+            showNotification('error', `importで想定しない問題が発生しました。 ${e.toString()}`);
         return [];
     }
 }

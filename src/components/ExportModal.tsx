@@ -14,6 +14,7 @@ import { Point, ProcessedPoints } from '../types/Point';
 import { round, toFracString as toStr } from '../utils/common';
 import { stopPropagation } from '../utils/element';
 import RangeSlider from './RangeSlider';
+import { showNotification } from './ShapesGenerator';
 
 ReactModal.setAppElement('#root');
 
@@ -54,6 +55,7 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
     const textToClipboard = useTextToClipboard();
     const onExportToClipboard = useCallback(() => {
         textToClipboard(generateExportData());
+        showNotification('success', 'copy success!');
     }, [generateExportData, textToClipboard]);
 
     const onChangeHasNameComment = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setHasNameComment(e.target.value === 'true'), []);

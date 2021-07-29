@@ -24,8 +24,7 @@ module.exports = {
         rules: [
             // scssのローダ設定
             {
-                test: [/\.css$/, /\.scss$/],
-                exclude: /node_modules/,
+                test: [/\.scss$/],
                 loader: [
                     MiniCssExtractPlugin.loader,
                     'css-loader?modules',
@@ -37,6 +36,13 @@ module.exports = {
                         }
                     }
                 ],
+            },
+            {
+                test: [/\.css$/],
+                loader: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ]
             },
             // js,ts,tsxのローダ設定
             {

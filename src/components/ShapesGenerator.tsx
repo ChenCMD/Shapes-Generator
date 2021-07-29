@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useReducer, useState } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
+import { toast, ToastContainer } from 'react-toastify';
 import useWindowCloseWarning from '../hooks/useWindowCloseWarning';
 import createReducer from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
@@ -14,6 +15,18 @@ import ExportModal from './ExportModal';
 import ImportModal from './ImportModal';
 import Previewer from './Previewer';
 import UserInterface from './UserInterface';
+
+export const showNotification = (type: 'info' | 'success' | 'warning' | 'error'| 'dark', message: string): void => {
+    toast[type](message, {
+        position: 'bottom-left',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+    });
+};
 
 interface ShapesGeneratorProps {
     defaultShapes?: Shape[]
@@ -41,7 +54,6 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
     const points = useMemo(() => duplicatedPointRange === 0 ? [...shapes] : deleteDuplicatedPoints(shapes, duplicatedPointRange),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [duplicatedPointRange, dependString]);
-
     return (
         <>
             <Container fluid className={styles['container']} onKeyDown={onKeyDown} tabIndex={-1}>
@@ -87,6 +99,18 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
                 index={contextTarget?.index}
                 onCloseRequest={onContextCloseRequest}
                 shapesDispatch={shapesDispatch}
+            />
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover
+                limit={5}
             />
         </>
     );

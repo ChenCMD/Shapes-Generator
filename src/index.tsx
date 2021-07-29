@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ShapesGenerator from './components/ShapesGenerator';
 import { importShape } from './ShapeNodes';
 import './styles/global.scss';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const params = window.location.search.substring(1).split('&').reduce<Record<string, string>>((obj, param) => {
     const [key, val] = param.split('=');
