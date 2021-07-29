@@ -5,4 +5,9 @@
     border-radius: 0.25rem;
     min-height: calc(100vh - 18px * 2);
     max-height: calc(100vh - 18px * 2);
+    @media screen and (max-width: 991px) {
+        // xs
+        min-height: calc(100vw - 34px);
+        max-height: calc(100vw - 34px);
+    }
 }

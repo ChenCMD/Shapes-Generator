@@ -40,11 +40,11 @@
     &.after {
         @media screen and (max-width: 575px) {
             // xs
-            width: 96%;
+            width: max(96%, 350px);
         }
         @media screen and (min-width: 576px) {
             // sm
-            width: 60%;
+            width: 420px;
         }
         // @media screen and (min-width: 768px) {
         //     // md
@@ -52,11 +52,11 @@
         // }
         @media screen and (min-width: 992px) {
             // lg
-            width: 60%;
+            width: 576px;
         }
         // @media screen and (min-width: 1200px) {
         //     // xl
-        //     width: 50%;
+        //     width: 700px;
         // }
     }
     &.before {

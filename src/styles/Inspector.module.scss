@@ -17,6 +17,11 @@
         background-color: var(--scrollbar-color);
         border-radius: 0.25rem;
     }
+    @media screen and (max-width: 575px) {
+        // xs
+        min-height: 247px;
+        max-height: 247px;
+    }
 }
 
 .container {
