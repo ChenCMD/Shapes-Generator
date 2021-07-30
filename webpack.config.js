@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // CSSをJSにバンドルせずに出力するため
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = {
+module.exports = (_, option) => ({
     entry: path.resolve(__dirname, 'src/index.tsx'),
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -27,7 +27,12 @@ module.exports = {
                 test: [/\.scss$/],
                 loader: [
                     MiniCssExtractPlugin.loader,
-                    'css-loader?modules',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: option.mode === 'production' || { localIdentName: '[name]_[local]_[hash:base64:5]' }
+                        }
+                    },
                     'postcss-loader',
                     {
                         loader: 'sass-loader',
@@ -62,4 +67,4 @@ module.exports = {
             filename: `app-${Date.now()}.css`
         })
     ]
-}
+})
