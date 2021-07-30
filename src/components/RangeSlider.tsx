@@ -4,7 +4,19 @@ import Container from 'react-bootstrap/esm/Container';
 import Form from 'react-bootstrap/esm/Form';
 import Row from 'react-bootstrap/esm/Row';
 import styles from '../styles/RangeSlider.module.scss';
+import { reverseObjProperty } from '../utils/common';
 import { stopPropagation } from '../utils/element';
+
+interface Offset { xs?: number, sm?: number, md?: number, lg?: number, xl?: number, xxl?: number }
+const colWrap = (base: number, offset: Offset & { xs: number }, child: JSX.Element) => (
+    <Col xs={base + offset.xs}
+        sm={offset.sm === undefined ? undefined : (base + offset.sm)} md={offset.md === undefined ? undefined : (base + offset.md)}
+        lg={offset.lg === undefined ? undefined : (base + offset.lg)} xl={offset.xl === undefined ? undefined : (base + offset.xl)}
+        className={offset.xxl === undefined ? undefined : (styles as { [k: string]: string })[`col-xxl-${base + offset.xxl}`]}
+    >
+        {child}
+    </Col>
+);
 
 interface RangeSliderProps {
     min: number
@@ -13,13 +25,13 @@ interface RangeSliderProps {
     value: number
     setValue: (value: number) => void
     unit?: string
-    spIndicateZeroVal?: string
+    specialZeroVal?: string
     className?: string
     allowDirectInput?: true
-    layoutOffset?: number | { xs?: number, sm?: number, md?: number, lg?: number, xl?: number, xxl?: number }
+    layoutOffset?: number | Offset
 }
 
-const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndicateZeroVal, allowDirectInput, layoutOffset }: RangeSliderProps): JSX.Element => {
+const RangeSlider = ({ className, min, step, value, setValue, max, unit, specialZeroVal, allowDirectInput, layoutOffset }: RangeSliderProps): JSX.Element => {
     const onChange = useCallback((e: { target: { value: string } }) => setValue(parseFloat(e.target.value)), [setValue]);
 
     const size = React.useMemo(() => {
@@ -28,37 +40,21 @@ const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndic
     }, [layoutOffset]);
 
     const viewer = allowDirectInput
-        ? (
-            <Container fluid className={styles['container']}>
-                <Row noGutters>
-                    <Col xs={12 - (unit ? 4 : 0)}>
-                        <input className={styles['input']} type='number' onChange={onChange} value={value} onKeyDown={stopPropagation} />
-                    </Col>
-                    {unit ? (<Col xs={4}><div className={styles['unit']}>{unit}</div></Col>) : <></>}
-                </Row>
-            </Container>
-        )
-        : (
-            <div className={styles['value']}>
-                {spIndicateZeroVal !== undefined && value === 0 ? spIndicateZeroVal : `${value}${unit ?? ''}`}
-            </div>
-        );
+        ? (<Container fluid className={styles['container']}>
+            <Row noGutters>
+                <Col xs={12 - (unit ? 4 : 0)}>
+                    <input className={styles['input']} type='number' onChange={onChange} value={value} onKeyDown={stopPropagation} />
+                </Col>
+                {unit ? (<Col xs={4}><div className={styles['unit']}>{unit}</div></Col>) : <></>}
+            </Row>
+        </Container>)
+        : (<div className={styles['value']}>{specialZeroVal !== undefined && value === 0 ? specialZeroVal : `${value}${unit ?? ''}`}</div>);
 
     return (
         <Container className={className}>
             <Row noGutters>
-                <Col xs={2 + size.xs}
-                    sm={size.sm === undefined ? undefined : (2 + size.sm)} md={size.md === undefined ? undefined : (2 + size.md)}
-                    lg={size.lg === undefined ? undefined : (2 + size.lg)} xl={size.xl === undefined ? undefined : (2 + size.xl)}
-                    className={size.xxl === undefined ? undefined : (styles as { [k: string]: string })[`col-xxl-${2 + size.xxl}`]}
-                >
-                    {viewer}
-                </Col>
-                <Col xs={10 - size.xs}
-                    sm={size.sm === undefined ? undefined : (10 - size.sm)} md={size.md === undefined ? undefined : (10 - size.md)}
-                    lg={size.lg === undefined ? undefined : (10 - size.lg)} xl={size.xl === undefined ? undefined : (10 - size.xl)}
-                    className={size.xxl === undefined ? undefined : (styles as { [k: string]: string })[`col-xxl-${10 - size.xxl}`]}
-                >
+                {colWrap(2, size, viewer)}
+                {colWrap(10, reverseObjProperty(size), (
                     <Form.Control
                         className={styles['slider']}
                         type="range"
@@ -68,7 +64,7 @@ const RangeSlider = ({ className, min, step, value, setValue, max, unit, spIndic
                         max={max.toString()}
                         step={step.toString()}
                     />
-                </Col>
+                ))}
             </Row>
         </Container>
     );

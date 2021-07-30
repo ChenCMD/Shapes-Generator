@@ -72,7 +72,7 @@ const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointR
                             value={duplicatedPointRange}
                             setValue={setDuplicatedPointRange}
                             unit="m"
-                            spIndicateZeroVal="OFF"
+                            specialZeroVal="OFF"
                         />
                     </Col>
                 </Row>

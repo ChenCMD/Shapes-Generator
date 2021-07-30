@@ -129,7 +129,7 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
                             value={duplicatedPointRange}
                             setValue={setDuplicatedPointRange}
                             unit="m"
-                            spIndicateZeroVal="OFF"
+                            specialZeroVal="OFF"
                         />
                     </Col>
                 </Row>

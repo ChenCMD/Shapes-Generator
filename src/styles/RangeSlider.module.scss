@@ -13,7 +13,10 @@
     border: none;
     outline: none;
     background-color: var(--input-bg-color);
-    border-radius: 0.25rem;
+    border-radius: 0.25rem 0 0 0.25rem;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: 0 1px 0 0;
 }
 
 .unit {
@@ -24,7 +27,7 @@
     padding: 2px 0 2px 0;
     border-style: solid;
     border-color: var(--border-color);
-    border-width: 0 1px;
+    border-width: 0 1px 0 0;
 }
 
 .value {

@@ -71,6 +71,14 @@ export function objEntries<K extends PropertyKey, V>(obj: { [k in K]: V }): [K, 
     return res;
 }
 
+export function reverseObjProperty<T extends { [k in PropertyKey]: unknown }>(obj: T): T {
+    for (const k of Object.getOwnPropertyNames(obj) as (keyof T)[]) {
+        if (typeof obj[k] === 'number')
+            obj[k] = -obj[k] as T[keyof T];
+    }
+    return obj;
+}
+
 // export function reasonShowPropsAreEqual<P extends { [k: string]: unknown }>(prevProps: Readonly<P>, nextProps: Readonly<P>): boolean {
 //     for (const k of Object.keys(prevProps) as (keyof P)[]) {
 //         if (!Object.is(prevProps[k], nextProps[k])) {
