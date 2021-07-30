@@ -9,6 +9,7 @@ import { importShape } from '../ShapeNodes';
 import styles from '../styles/ImportModal.module.scss';
 import { stopPropagation } from '../utils/element';
 import FileUploader from './FileUploader';
+import { showNotification } from './ShapesGenerator';
 
 ReactModal.setAppElement('#root');
 
@@ -32,7 +33,7 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
         files[0].text().then(text => {
             const key = text.match(/(?<=\[ImportKey\]: ).*(?=\r?\n)/);
             if (!key) {
-                console.error('importKeyが存在しません'); // TODO エラー表示作る
+                showNotification('error', 'importKeyが存在しません');
                 return;
             }
             shapesDispatch({ type: 'addMany', shapes: importShape(key[0]) });
