@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { NormalParameter, Param, ParamMetaData as PolygonParamMetaData, ParamValue } from '../types/Parameter';
+import { NormalParameter, Param, ParamMetaData, ParamValue } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { mod, rotateMatrix2D, toRadians } from '../utils/common';
 import { CircleParams } from './Circle';
@@ -11,7 +11,7 @@ export interface PolygonParams extends CircleParams {
     vezier: NormalParameter
 }
 
-const paramMetaData: PolygonParamMetaData<PolygonParams> = {
+const paramMetaData: ParamMetaData<PolygonParams> = {
     count: { name: '各線の生成数', description: '一つの線当たりいくつの点で生成するか', unit: '個', validation: { min: 1 } },
     center: { type: 'pos', name: '中心点', description: '多角形の中心点', unit: '' },
     radius: { name: '半径', description: '中心よりどれだけ離れた位置に角を作るか', unit: 'm', validation: { min: 0.0001 } },

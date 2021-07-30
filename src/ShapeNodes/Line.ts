@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { NormalParameter, Param, ParamMetaData as LineParamMetaData, ParamValue as LineParamValue, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
+import { NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { mod } from '../utils/common';
 
@@ -12,7 +12,7 @@ export interface LineParams {
     vezier: NormalParameter
 }
 
-const paramMetaData: LineParamMetaData<LineParams> = {
+const paramMetaData: ParamMetaData<LineParams> = {
     count: { name: '生成数', description: 'いくつの点で生成するか', unit: '個', validation: { min: 1 } },
     from: { type: 'pos', name: '始点', description: '線の始点', unit: '' },
     to: { type: 'pos', name: '終点X', description: '線の終点', unit: '' },
@@ -20,7 +20,7 @@ const paramMetaData: LineParamMetaData<LineParams> = {
     vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
 };
 
-const defaultParams: LineParamValue<LineParams> = {
+const defaultParams: ParamValue<LineParams> = {
     count: 10,
     from: { x: 0, y: 0 },
     to: { x: 1, y: 1 },
