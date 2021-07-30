@@ -1,9 +1,14 @@
-.window {
-    margin: 10px 0 10px 0;
-    width: 100%;
-    border-width: 1px;
-    border: 1px solid var(--border-color);
-    border-radius: 0.25rem;
+:global {
+    :local(.window) {
+        margin: 10px 0 10px 0;
+        width: 100%;
+        border-width: 1px;
+        border: 1px solid var(--border-color);
+        border-radius: 0.25rem;
+        &.error {
+            border-color: rgb(255, 0, 0);
+        }
+    }
 }
 
 .name {

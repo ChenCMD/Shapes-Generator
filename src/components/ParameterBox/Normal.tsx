@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
 import styles from '../../styles/ParameterBox/Normal.module.scss';
-import { NormalParameter, Parameter } from '../../types/Parameter';
+import { NormalParameter, Parameter, validateParam } from '../../types/Parameter';
 import { stopPropagation } from '../../utils/element';
 
 interface NormalParameterBoxProps {
@@ -15,21 +15,20 @@ interface NormalParameterBoxProps {
 }
 
 const NormalParameterBox = ({ arg, data, index, shapesDispatch }: NormalParameterBoxProps): JSX.Element => {
+    const windowRef = useRef<HTMLDivElement>(null);
     const [argValue, setArgValue] = useState<string>(data.value.toString());
     const onChange = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLInputElement>) => {
         setArgValue(newParam);
-        if (!(/^[+,-]?(?:[1-9]\d*|0)(?:\.\d+)?$/.test(newParam)))
-            return;
-        const parsedParam = parseFloat(newParam);
-        if ((data.validation?.min && parsedParam < data.validation.min))
-            return;
-        if (data.validation?.max && data.validation.max < parsedParam)
-            return;
-        shapesDispatch({ type: 'update', index, arg, newParam: parsedParam });
+        if (validateParam(newParam, data.validation)) {
+            windowRef.current?.classList.remove('error');
+            shapesDispatch({ type: 'update', index, arg, newParam: parseFloat(newParam) });
+        } else {
+            windowRef.current?.classList.add('error');
+        }
     }, [arg, data.validation, index, shapesDispatch]);
 
     return (
-        <div className={styles['window']} title={data.description}>
+        <div ref={windowRef} className={styles['window']} title={data.description}>
             <div className={styles['name']}>{data.name}</div>
             <Container fluid className={styles['container']}>
                 <Row noGutters>
