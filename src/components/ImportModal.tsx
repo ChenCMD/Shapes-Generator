@@ -41,6 +41,7 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
         });
     }, [onRequestClose, shapesDispatch]);
 
+    const onChangeKeyInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setImportKey(e.target.value.trim()), []);
     return (
         <ReactModal
             isOpen={isOpen}
@@ -61,7 +62,7 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
                     <Row noGutters>
                         <Col className={styles['col']}>
                             <div className={styles['text']}>Import Key</div>
-                            <input className={styles['input']} onChange={e => setImportKey(e.target.value)} value={importKey} onKeyDown={stopPropagation} />
+                            <input className={styles['input']} onChange={onChangeKeyInput} value={importKey} onKeyDown={stopPropagation} />
                         </Col>
                     </Row>
                     <Row><Col><hr className={styles['line']} /></Col></Row>
