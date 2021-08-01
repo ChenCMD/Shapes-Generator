@@ -21,11 +21,16 @@ const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
         if (!shape.isSelected) return;
         // TODO 複数選択時の挙動
         return shape.getParameterMap().map(([arg, param]) => {
-            const colWrap = (elem: JSX.Element) => (<Col key={`${shape.uuid}-${param.name}`} className={styles['xxl']} xl={6} lg={12} md={4} sm={6} xs={12}>{elem}</Col>);
+            const colWrap = (elem: JSX.Element) => (<Col key={`${shape.uuid}-${arg}`} className={styles['xxl']} xl={6} lg={12} md={4} sm={6} xs={12}>{elem}</Col>);
+            const props = { type: shape.type, arg, index: i, shapesDispatch };
             switch (param.type) {
-                case 'pos': return colWrap(<PosParameterBox arg={arg} data={param} index={i} shapesDispatch={shapesDispatch}/>);
-                case 'range': return colWrap(<RangeParameterBox arg={arg} data={param} index={i} shapesDispatch={shapesDispatch} />);
-                case 'normal': default: return colWrap(<NormalParameterBox arg={arg} data={param} index={i} shapesDispatch={shapesDispatch} />);
+                case 'pos':
+                    return colWrap(<PosParameterBox {...props} data={param} />);
+                case 'range':
+                    return colWrap(<RangeParameterBox {...props} data={param} />);
+                case 'normal':
+                default:
+                    return colWrap(<NormalParameterBox {...props} data={param} />);
             }
         });
     }).filter(v => v !== undefined) as JSX.Element[];

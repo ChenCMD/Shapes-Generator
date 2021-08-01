@@ -18,8 +18,6 @@ export interface RangeParameter {
 }
 
 interface ParamMetaDataBase {
-    name: string
-    description: string
     unit?: string
     validation?: {
         min?: number

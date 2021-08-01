@@ -7,6 +7,7 @@ import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
 import ReactModal from 'react-modal';
 import useTextToClipboard from '../hooks/useTextToClipboard';
+import { locale } from '../locales';
 import { generateExportKey } from '../ShapeNodes';
 import styles from '../styles/ExportModal.module.scss';
 import { ExportObject } from '../types/ExportObject';
@@ -79,14 +80,14 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
             <Container fluid className={styles['container']}>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>Particle</div>
+                        <div className={styles['text']}>{locale('export.particle')}</div>
                         <input className={styles['input']} onChange={e => setParticle(e.target.value)} value={particle} onKeyDown={stopPropagation} />
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>Particle: Speed</div>
+                        <div className={styles['text']}>{locale('export.particle-speed')}</div>
                         <RangeSlider
                             min={0} step={0.01} max={1}
                             value={particleSpeed}
@@ -97,13 +98,13 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>出力データを図形名で区切る</div>
+                        <div className={styles['text']}>{locale('export.separate-export-data')}</div>
                         <ToggleButtonGroup type="radio" name="options" defaultValue={hasNameComment.toString()} value={hasNameComment.toString()}>
                             <ToggleButton className={styles['button']} value={'false'} onChange={onChangeHasNameComment}>
-                                OFF
+                                {locale('off')}
                             </ToggleButton>
                             <ToggleButton className={styles['button']} value={'true'} onChange={onChangeHasNameComment}>
-                                ON
+                                {locale('on')}
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Col>
@@ -111,44 +112,46 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>出力の精度</div>
+                        <div className={styles['text']}>{locale('export.coordinate-accuracy')}</div>
                         <RangeSlider
                             min={1} step={1} max={5}
                             value={exportAcc}
                             setValue={setExportAcc}
-                            unit="桁"
+                            unit={locale('digit')}
                         />
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>重複点の削除</div>
+                        <div className={styles['text']}>{locale('delete-duplicate-points')}</div>
                         <RangeSlider
                             min={0} step={0.05} max={0.5}
                             value={duplicatedPointRange}
                             setValue={setDuplicatedPointRange}
                             unit="m"
-                            specialZeroVal="OFF"
+                            specialZeroVal={locale('off')}
                         />
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>出力されるParticle数: {points.reduce((s, v) => s + v.points.length, 0)}</div>
+                        <div className={styles['text']}>
+                            {locale('export.export-', locale('particle-amount'))}: {points.reduce((s, v) => s + v.points.length, 0)}
+                        </div>
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']} xl={4} lg={4} md={6} sm={6} xs={12}>
-                        <Button onClick={onRequestClose}>Cancel</Button>
+                        <Button onClick={onRequestClose}>{locale('cancel')}</Button>
                     </Col>
                     <Col className={styles['col']} xl={4} lg={4} md={6} sm={6} xs={12}>
-                        <Button onClick={onExportToMcf}>to mcfunction</Button>
+                        <Button onClick={onExportToMcf}>{locale('export.to-mcfunction')}</Button>
                     </Col>
                     <Col className={styles['col']} xl={4} lg={4} md={6} sm={6} xs={12}>
-                        <Button onClick={onExportToClipboard}>to Clipboard</Button>
+                        <Button onClick={onExportToClipboard}>{locale('export.to-clipboard')}</Button>
                     </Col>
                 </Row>
             </Container>

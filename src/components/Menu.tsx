@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
+import { locale } from '../locales';
 import styles from '../styles/Menu.module.scss';
 import { GridMode } from '../types/GridMode';
 import RangeSlider from './RangeSlider';
@@ -49,16 +50,16 @@ const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointR
             <Container fluid className={styles['container']}>
                 <Row className={styles['row']}>
                     <Col>
-                        <div className={styles['text']}>グリッド</div>
+                        <div className={styles['text']}>{locale('menu.grid')}</div>
                         <ToggleButtonGroup type="radio" name="options" defaultValue={gridMode} value={gridMode}>
                             <ToggleButton className={styles['button']} value={0} onChange={onGridModeChange}>
-                                Off
+                                {locale('menu.grid.off')}
                             </ToggleButton>
                             <ToggleButton className={styles['button']} value={1} onChange={onGridModeChange}>
-                                Block
+                                {locale('menu.grid.block')}
                             </ToggleButton>
                             <ToggleButton className={styles['button']} value={2} onChange={onGridModeChange}>
-                                Double
+                                {locale('menu.grid.double')}
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Col>
@@ -66,20 +67,20 @@ const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointR
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row className={styles['row']}>
                     <Col>
-                        <div className={styles['text']}>重複点の削除</div>
+                        <div className={styles['text']}>{locale('delete-duplicate-points')}</div>
                         <RangeSlider
                             min={0} step={0.05} max={0.5}
                             value={duplicatedPointRange}
                             setValue={setDuplicatedPointRange}
                             unit="m"
-                            specialZeroVal="OFF"
+                            specialZeroVal={locale('off')}
                         />
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row className={styles['row']}>
-                    <Col><Button onClick={onImport}>Import</Button></Col>
-                    <Col><Button onClick={onExport}>Export</Button></Col>
+                    <Col><Button onClick={onImport}>{locale('menu.import')}</Button></Col>
+                    <Col><Button onClick={onExport}>{locale('menu.export')}</Button></Col>
                 </Row>
                 {/* <Row>
                     <Col>

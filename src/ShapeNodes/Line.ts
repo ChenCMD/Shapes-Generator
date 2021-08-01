@@ -13,11 +13,11 @@ export interface LineParams {
 }
 
 const paramMetaData: ParamMetaData<LineParams> = {
-    count: { name: '生成数', description: 'いくつの点で生成するか', unit: '個', validation: { min: 1 } },
-    from: { type: 'pos', name: '始点', description: '線の始点', unit: '' },
-    to: { type: 'pos', name: '終点X', description: '線の終点', unit: '' },
-    offset: { type: 'range', name: 'オフセット', description: '点の補正値', unit: '%', min: 0, step: 1, max: 100 },
-    vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
+    count: { unit: 'unit.points', validation: { min: 1 } },
+    from: { type: 'pos', unit: '' },
+    to: { type: 'pos', unit: '' },
+    offset: { type: 'range', unit: 'unit.per', min: 0, step: 1, max: 100 },
+    vezier: {}
 };
 
 const defaultParams: ParamValue<LineParams> = {

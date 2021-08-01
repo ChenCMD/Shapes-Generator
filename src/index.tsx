@@ -4,6 +4,7 @@ import ShapesGenerator from './components/ShapesGenerator';
 import { importShape } from './ShapeNodes';
 import './styles/global.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { setupLanguage } from './locales';
 
 const params = window.location.search.substring(1).split('&').reduce<Record<string, string>>((obj, param) => {
     const [key, val] = param.split('=');
@@ -12,9 +13,11 @@ const params = window.location.search.substring(1).split('&').reduce<Record<stri
 }, {});
 if (params.theme) document.documentElement.setAttribute('theme', params.theme);
 
-ReactDOM.render(
-    <React.StrictMode>
-        <ShapesGenerator defaultShapes={params['key'] ? importShape(params.key) : undefined} />
-    </React.StrictMode>,
-    document.getElementById('root')
-);
+setupLanguage(params['lang'], 'ja').then(() => {
+    ReactDOM.render(
+        <React.StrictMode>
+            <ShapesGenerator defaultShapes={params['key'] ? importShape(params.key) : undefined} />
+        </React.StrictMode>,
+        document.getElementById('root')
+    );
+});

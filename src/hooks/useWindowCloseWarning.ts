@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { locale } from '../locales';
 
 const useWindowCloseWarning = (): React.MutableRefObject<boolean> => {
     const isShowWarning = useRef<boolean>(false);
@@ -7,7 +8,7 @@ const useWindowCloseWarning = (): React.MutableRefObject<boolean> => {
         const onBeforeUnload = (e: BeforeUnloadEvent) => {
             if (isShowWarning.current) {
                 e.preventDefault();
-                e.returnValue = '出力されていないデータが存在します。本当に閉じますか？';
+                e.returnValue = locale('close-warning');
             }
         };
         window.addEventListener('beforeunload', onBeforeUnload);

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import useWindowSize from '../hooks/useWindowSize';
+import { locale } from '../locales';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ContextMenu.module.scss';
 import { createKeyboardEvent, getParentsId } from '../utils/element';
@@ -63,16 +64,16 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
             <table>
                 <tbody ref={menuRef} className={`${styles['window']}`}>
                     <tr className={styles['item']} onClick={onDuplicate}>
-                        <td align="right" className={styles['text']}>複製</td>
+                        <td align="right" className={styles['text']}>{locale('context-menu.duplicate')}</td>
                         <td className={styles['shortcut']}>Shift + D</td>
                     </tr>
                     <tr><td colSpan={2}><div className={styles['line']} /></td></tr>
                     <tr className={styles['item']} onClick={onRename}>
-                        <td align="right" className={styles['text']}>名前の変更</td>
+                        <td align="right" className={styles['text']}>{locale('context-menu.rename')}</td>
                         <td className={styles['shortcut']}>F2</td>
                     </tr>
                     <tr className={styles['item']} onClick={onDelete}>
-                        <td align="right" className={styles['text']}>削除</td>
+                        <td align="right" className={styles['text']}>{locale('context-menu.delete')}</td>
                         <td className={styles['shortcut']}>Delete</td>
                     </tr>
                 </tbody>

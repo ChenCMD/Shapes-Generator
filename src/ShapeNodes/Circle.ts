@@ -14,12 +14,12 @@ export interface CircleParams {
 }
 
 const paramMetaData: ParamMetaData<CircleParams> = {
-    count: { name: '生成数', description: 'いくつの点で生成するか', unit: '個', validation: { min: 1 } },
-    center: { type: 'pos', name: '中心点', description: '円の中心点', unit: '' },
-    radius: { name: '半径', description: '中心よりどれだけ離れた位置で円を作るか', unit: 'm', validation: { min: 0.0001 } },
-    start: { type: 'range', name: '開始角', description: '円を始める角度', unit: '°', min: 0, max: 360, step: 1 },
-    ellipse: { type: 'range', name: '楕円補正値', description: '楕円の歪みの強さ', unit: '%', min: 0, max: 100, step: 1 },
-    rotate: { type: 'range', name: '楕円角', description: '楕円の歪みを与える角度', unit: '°', min: 0, max: 360, step: 1 }
+    count: { unit: 'unit.points', validation: { min: 1 } },
+    center: { type: 'pos', unit: '' },
+    radius: { unit: 'unit.meter', validation: { min: 0.0001 } },
+    start: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
+    ellipse: { type: 'range', unit: 'unit.per', min: 0, max: 100, step: 1 },
+    rotate: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 }
 };
 
 const defaultParams: ParamValue<CircleParams> = {

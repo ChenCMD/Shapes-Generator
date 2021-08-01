@@ -12,7 +12,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
     public isSelected = false;
 
     public constructor(
-        private type: ShapeType,
+        public readonly type: ShapeType,
         private readonly paramMetaData: ParamMetaData<T>,
         public name: string,
         private _params: ParamValue<T>

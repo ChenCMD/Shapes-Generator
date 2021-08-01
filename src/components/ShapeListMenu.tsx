@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { locale } from '../locales';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { getShape, ShapeType } from '../ShapeNodes';
 import styles from '../styles/ShapeListMenu.module.scss';
@@ -18,7 +19,7 @@ const ShapeListMenu = ({ shapesDispatch }: ShapeListMenuProps): JSX.Element => {
     const addShapes = useCallback(() => {
         const cnt = addCount[shapePulldown] + 1;
         setAddCount({ ...addCount, [shapePulldown]: cnt });
-        shapesDispatch({ type: 'add', shape: getShape(`${shapePulldown} ${cnt}`, shapePulldown) });
+        shapesDispatch({ type: 'add', shape: getShape(`${locale(`shape.${shapePulldown}`)} ${cnt}`, shapePulldown) });
     }, [addCount, shapePulldown, shapesDispatch]);
 
     const onChangeTargetShape = useCallback((e: { target: { value: string } }) => setShapePulldown(e.target.value as ShapeType), []);
@@ -26,9 +27,9 @@ const ShapeListMenu = ({ shapesDispatch }: ShapeListMenuProps): JSX.Element => {
     return (
         <div className={styles['menu']}>
             <select className={styles['pulldown']} value={shapePulldown} onChange={onChangeTargetShape}>
-                <option className={styles['option']} value="line">line</option>
-                <option className={styles['option']} value="circle">circle</option>
-                <option className={styles['option']} value="polygon">polygon</option>
+                <option className={styles['option']} value="line">{locale('shape.line')}</option>
+                <option className={styles['option']} value="circle">{locale('shape.circle')}</option>
+                <option className={styles['option']} value="polygon">{locale('shape.polygon')}</option>
             </select>
             <button className={styles['add']} onClick={addShapes} >+</button>
         </div>

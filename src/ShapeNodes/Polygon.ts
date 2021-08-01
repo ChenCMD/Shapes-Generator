@@ -12,15 +12,15 @@ export interface PolygonParams extends CircleParams {
 }
 
 const paramMetaData: ParamMetaData<PolygonParams> = {
-    count: { name: '各線の生成数', description: '一つの線当たりいくつの点で生成するか', unit: '個', validation: { min: 1 } },
-    center: { type: 'pos', name: '中心点', description: '多角形の中心点', unit: '' },
-    radius: { name: '半径', description: '中心よりどれだけ離れた位置に角を作るか', unit: 'm', validation: { min: 0.0001 } },
-    start: { type: 'range', name: '開始角', description: '多角形を始める角度', unit: '°', min: 0, max: 360, step: 1 },
-    ellipse: { type: 'range', name: '楕円補正値', description: '楕円の歪みの強さ', unit: '%', min: 0, max: 100, step: 1 },
-    rotate: { type: 'range', name: '楕円角', description: '楕円の歪みを与える角度', unit: '°', min: 0, max: 360, step: 1 },
-    corner: { name: '角の数', description: '', validation: { min: 1 } },
-    jump: { name: '紐づける角の遠さ', description: '角をいくつ先の角と紐づけていくか 2以上で星などの複雑な図形を生成できます' },
-    vezier: { name: 'ベジェ補正値', description: '始点から見て+で右に, -で左に離れた位置を制御点にします' }
+    count: { unit: 'unit.points', validation: { min: 1 } },
+    center: { type: 'pos', unit: '' },
+    radius: { unit: 'm', validation: { min: 0.0001 } },
+    start: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
+    ellipse: { type: 'range', unit: 'unit.per', min: 0, max: 100, step: 1 },
+    rotate: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
+    corner: { validation: { min: 1 } },
+    jump: {},
+    vezier: {}
 };
 
 const defaultParams: ParamValue<PolygonParams> = {

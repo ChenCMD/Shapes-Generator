@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import ReactModal from 'react-modal';
+import { locale } from '../locales';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { importShape } from '../ShapeNodes';
 import styles from '../styles/ImportModal.module.scss';
@@ -33,7 +34,7 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
         files[0].text().then(text => {
             const key = text.match(/(?<=\[ImportKey\]: ).*(?=\r?\n)/);
             if (!key) {
-                showNotification('error', 'importKeyが存在しません');
+                showNotification('error', locale('error.import-key-does-not-exists'));
                 return;
             }
             shapesDispatch({ type: 'addMany', shapes: importShape(key[0]) });
@@ -61,18 +62,18 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
                 <Container fluid className={styles['container']}>
                     <Row noGutters>
                         <Col className={styles['col']}>
-                            <div className={styles['text']}>Import Key</div>
+                            <div className={styles['text']}>{locale('import.import-key')}</div>
                             <input className={styles['input']} onChange={onChangeKeyInput} value={importKey} onKeyDown={stopPropagation} />
                         </Col>
                     </Row>
                     <Row><Col><hr className={styles['line']} /></Col></Row>
                     <Row noGutters>
                         <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
-                            <Button onClick={onRequestClose}>Cancel</Button>
+                            <Button onClick={onRequestClose}>{locale('cancel')}</Button>
                         </Col>
                         <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
                             <Button onClick={importKey === '' ? openUploader : onImport}>
-                                {importKey === '' ? 'from mcfunction' : 'from Key'}
+                                {locale(importKey === '' ? 'import.from-mcfunction' : 'import.from-key')}
                             </Button>
                         </Col>
                     </Row>
