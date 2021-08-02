@@ -32,17 +32,21 @@ interface ExportModalProps {
 const ExportModal = ({ openExportModal, importStrings: exportObjects, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }: ExportModalProps): JSX.Element => {
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [hasNameComment, setHasNameComment] = useState<boolean>(true);
+    const [isCustomCommandMode, setCustomCommandMode] = useState<boolean>(false);
+    const [customCommand, setCustomCommand] = useState<string>('setblock ^${x} ^ ^${y} glass');
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);
 
     const generateExportData = useCallback(() => {
         const importStr = `# [ImportKey]: ${generateExportKey(exportObjects)}`;
-        const mkCmd = (pos: Point) => `particle ${particle.trim()} ^${toStr(pos[0])} ^ ^${toStr(pos[1])} 0 0 0 ${toStr(particleSpeed)} 1`;
+        const mkCmd = (pos: Point) => isCustomCommandMode
+            ? customCommand.replace(/\$\{x\}/g, toStr(pos[0])).replace(/\$\{y\}/g, toStr(pos[1]))
+            : `particle ${particle.trim()} ^${toStr(pos[0])} ^ ^${toStr(pos[1])} 0 0 0 ${toStr(particleSpeed)} 1`;
         return [importStr, ...points.flatMap(v => [
             ...(hasNameComment ? [`# ${v.name}`] : []),
             ...v.points.map(({ pos: [x, y] }) => mkCmd([round(x, exportAcc), round(y, exportAcc)]))
         ])].join('\n');
-    }, [exportAcc, exportObjects, hasNameComment, particle, particleSpeed, points]);
+    }, [customCommand, exportAcc, exportObjects, hasNameComment, isCustomCommandMode, particle, particleSpeed, points]);
 
     const onExportToMcf = useCallback(() => {
         isNotSaved.current = false;
@@ -61,6 +65,8 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
     }, [isNotSaved, generateExportData, textToClipboard]);
 
     const onRequestClose = useCallback(() => openExportModal(false), [openExportModal]);
+    const onChangeCommandMode = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setCustomCommandMode(e.target.value === 'true'), []);
+    const onChangeCustomCommand = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setCustomCommand(e.target.value), []);
     const onChangeParticle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setParticle(e.target.value), []);
     const onChangeHasNameComment = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setHasNameComment(e.target.value === 'true'), []);
 
@@ -82,25 +88,52 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
             <Container fluid className={styles['container']}>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>{locale('export.particle')}</div>
-                        <input className={styles['input']}
-                            onChange={onChangeParticle}
-                            value={particle} onKeyDown={stopPropagation}
-                        />
+                        <div className={styles['text']}>{locale('export.command-mode')}</div>
+                        <ToggleButtonGroup type="radio" name="options" defaultValue={isCustomCommandMode.toString()} value={isCustomCommandMode.toString()}>
+                            <ToggleButton className={styles['button']} value={'false'} onChange={onChangeCommandMode}>
+                                {locale('off')}
+                            </ToggleButton>
+                            <ToggleButton className={styles['button']} value={'true'} onChange={onChangeCommandMode}>
+                                {locale('on')}
+                            </ToggleButton>
+                        </ToggleButtonGroup>
                     </Col>
-                </Row>
-                <Row><Col><hr className={styles['line']} /></Col></Row>
-                <Row noGutters>
-                    <Col className={styles['col']}>
-                        <div className={styles['text']}>{locale('export.particle-speed')}</div>
-                        <RangeSlider
-                            min={0} step={0.01} max={1}
-                            value={particleSpeed}
-                            setValue={setParticleSpeed}
-                        />
-                    </Col>
-                </Row>
-                <Row><Col><hr className={styles['line']} /></Col></Row>
+                </Row>{
+                    isCustomCommandMode
+                        ? (
+                            <Row noGutters>
+                                <Col className={styles['col']}>
+                                    <input className={styles['input']}
+                                        onChange={onChangeCustomCommand}
+                                        value={customCommand} onKeyDown={stopPropagation}
+                                    />
+                                </Col>
+                            </Row>
+                        )
+                        : (<>
+                            <Row><Col><hr className={styles['line']} /></Col></Row>
+                            <Row noGutters>
+                                <Col className={styles['col']}>
+                                    <div className={styles['text']}>{locale('export.particle')}</div>
+                                    <input className={styles['input']}
+                                        onChange={onChangeParticle}
+                                        value={particle} onKeyDown={stopPropagation}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row><Col><hr className={styles['line']} /></Col></Row>
+                            <Row noGutters>
+                                <Col className={styles['col']}>
+                                    <div className={styles['text']}>{locale('export.particle-speed')}</div>
+                                    <RangeSlider
+                                        min={0} step={0.01} max={1}
+                                        value={particleSpeed}
+                                        setValue={setParticleSpeed}
+                                    />
+                                </Col>
+                            </Row>
+                        </>)
+                }<Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>{locale('export.separate-export-data')}</div>
@@ -143,7 +176,7 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>
-                            {locale('export.export-', locale('particle-amount'))}: {points.reduce((s, v) => s + v.points.length, 0)}
+                            {locale('export.export-particle-amount')}: {points.reduce((s, v) => s + v.points.length, 0)}
                         </div>
                     </Col>
                 </Row>
