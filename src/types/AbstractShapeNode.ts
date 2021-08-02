@@ -1,3 +1,4 @@
+import rfdc from 'rfdc';
 import uuid from 'uuidjs';
 import { ShapeType } from '../ShapeNodes';
 import { ExportObject } from './ExportObject';
@@ -7,17 +8,20 @@ import { IdentifiedPoint } from './Point';
 export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P extends string> {
     // Set<P>にしないのはAbstractShapeNode#setParameterでのvalidationが面倒になるため。
     private validateParams: Set<string>;
+    private _params: ParamValue<T>;
     private _uuid: string;
     private _points: IdentifiedPoint[] = [];
     public isSelected = false;
 
     public constructor(
         public readonly type: ShapeType,
+        defaultParams: ParamValue<T>,
         private readonly paramMetaData: ParamMetaData<T>,
         public name: string,
-        private _params: ParamValue<T>
+        params: ParamValue<{ [k: string]: Param }>
     ) {
         this.validateParams = new Set(Object.keys(paramMetaData));
+        this._params = { ...rfdc()(defaultParams), ...params };
         this._uuid = uuid.generate();
         this.updatePointSet();
     }

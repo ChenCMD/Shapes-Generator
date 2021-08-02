@@ -32,8 +32,8 @@ const defaultParams: ParamValue<CircleParams> = {
 };
 
 export class CircleShape extends AbstractShapeNode<CircleParams, keyof CircleParams> {
-    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = rfdc()(defaultParams)) {
-        super('circle', paramMetaData, name, params as ParamValue<CircleParams>);
+    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}) {
+        super('circle', defaultParams, paramMetaData, name, params);
     }
 
     protected generatePointSet(params: ParamValue<CircleParams>): IdentifiedPoint[] {
