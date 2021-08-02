@@ -55,12 +55,14 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
 
     const textToClipboard = useTextToClipboard();
     const onExportToClipboard = useCallback(() => {
+        isNotSaved.current = false;
         textToClipboard(generateExportData());
         showNotification('success', 'copy success!');
-    }, [generateExportData, textToClipboard]);
+    }, [isNotSaved, generateExportData, textToClipboard]);
 
-    const onChangeHasNameComment = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setHasNameComment(e.target.value === 'true'), []);
     const onRequestClose = useCallback(() => openExportModal(false), [openExportModal]);
+    const onChangeParticle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setParticle(e.target.value), []);
+    const onChangeHasNameComment = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setHasNameComment(e.target.value === 'true'), []);
 
     return (
         <ReactModal
@@ -81,7 +83,10 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>{locale('export.particle')}</div>
-                        <input className={styles['input']} onChange={e => setParticle(e.target.value)} value={particle} onKeyDown={stopPropagation} />
+                        <input className={styles['input']}
+                            onChange={onChangeParticle}
+                            value={particle} onKeyDown={stopPropagation}
+                        />
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
