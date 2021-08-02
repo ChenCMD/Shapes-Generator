@@ -59,10 +59,10 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
 
     return (
         <div
-            className={`${styles['overlay']}`} ref={overlayRef} id="context-menu"
+            className={styles['overlay']} ref={overlayRef} id="context-menu"
             onClick={onCloseRequest} onContextMenu={onContextMenu}>
             <table>
-                <tbody ref={menuRef} className={`${styles['window']}`}>
+                <tbody ref={menuRef} className={styles['window']}>
                     <tr className={styles['item']} onClick={onDuplicate}>
                         <td align="right" className={styles['text']}>{locale('context-menu.duplicate')}</td>
                         <td className={styles['shortcut']}>Shift + D</td>
