@@ -23,7 +23,6 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
 
     const points: JSX.Element[] = [];
     if (posMultiple && maxBounds < 250) {
-        console.log(shapes.map(v => v.isManipulateShape));
         points.push(...shapes
             .sort((a, b) => {
                 if (a.isSelected === b.isSelected) return 0;
