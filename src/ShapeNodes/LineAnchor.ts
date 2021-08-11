@@ -1,6 +1,7 @@
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { Manipulatable, ManipulateShape, NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
+import { UUID } from '../types/UUID';
 import { mod } from '../utils/common';
 
 export interface LineAnchorParams extends ManipulateShape {
@@ -30,8 +31,8 @@ const defaultParams: ParamValue<LineAnchorParams> = {
 };
 
 export class LineAnchorShape extends AbstractShapeNode<LineAnchorParams, keyof LineAnchorParams> {
-    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}) {
-        super('line-anchor', defaultParams, paramMetaData, name, params, true);
+    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}, uuid?: UUID) {
+        super('line-anchor', defaultParams, paramMetaData, name, params, true, uuid);
     }
 
     protected generatePointSet(params: ParamValue<LineAnchorParams>): IdentifiedPoint[] {

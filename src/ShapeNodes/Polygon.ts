@@ -1,6 +1,7 @@
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { NormalParameter, Param, ParamMetaData, ParamValue } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
+import { UUID } from '../types/UUID';
 import { mod, rotateMatrix2D, toRadians } from '../utils/common';
 import { CircleParams } from './Circle';
 
@@ -35,8 +36,8 @@ const defaultParams: ParamValue<PolygonParams> = {
 };
 
 export class PolygonShape extends AbstractShapeNode<PolygonParams, keyof PolygonParams> {
-    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}) {
-        super('polygon', defaultParams, paramMetaData, name, params);
+    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}, uuid?: UUID) {
+        super('polygon', defaultParams, paramMetaData, name, params, false, uuid);
     }
 
     protected generatePointSet(params: ParamValue<PolygonParams>): IdentifiedPoint[] {

@@ -1,6 +1,7 @@
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { NormalParameter, Param, ParamMetaData, ParamValue } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
+import { UUID } from '../types/UUID';
 import { mod, rotateMatrix2D, toRadians } from '../utils/common';
 import { CircleAnchorParams } from './CircleAnchor';
 
@@ -37,8 +38,8 @@ const defaultParams: ParamValue<PolygonAnchorParams> = {
 };
 
 export class PolygonAnchorShape extends AbstractShapeNode<PolygonAnchorParams, keyof PolygonAnchorParams> {
-    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}) {
-        super('polygon-anchor', defaultParams, paramMetaData, name, params, true);
+    public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}, uuid?: UUID) {
+        super('polygon-anchor', defaultParams, paramMetaData, name, params, true, uuid);
     }
 
     protected generatePointSet(params: ParamValue<PolygonAnchorParams>): IdentifiedPoint[] {

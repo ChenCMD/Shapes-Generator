@@ -34,7 +34,5 @@ export function deleteDuplicatedPoints(shapes: ProcessedPoints[], threshold: num
         }
     }
     res.push(...shapes.filter(v => v.isManipulateShape && v.isSelected));
-    console.log(res.map(v => v.isManipulateShape));
-    console.log(res.map(v => ({ ...v })).map(v => v.isManipulateShape));
     return res.map(v => ({ ...v, points: v.points.filter(v2 => !v2.isDuplicated) })) as ProcessedPoints[];
 }

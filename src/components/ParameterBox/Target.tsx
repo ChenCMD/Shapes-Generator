@@ -7,6 +7,7 @@ import { ShapesDispatch } from '../../reducers/shapesReducer';
 import { Shape, ShapeType } from '../../ShapeNodes';
 import styles from '../../styles/ParameterBox/Target.module.scss';
 import { Parameter, TargetParameter, validateParam } from '../../types/Parameter';
+import { UUID } from '../../types/UUID';
 
 interface TargetParameterBoxProps {
     type: ShapeType
@@ -19,17 +20,12 @@ interface TargetParameterBoxProps {
 
 const TargetParameterBox = ({ type, arg, data, index, shapes, shapesDispatch }: TargetParameterBoxProps): JSX.Element => {
     const windowRef = useRef<HTMLDivElement>(null);
-    const [targetShape, setTargetShape] = useState<string>(data.value.target);
+    const [targetShape, setTargetShape] = useState<UUID | ''>(data.value.target);
     const [targetArg, setTargetArg] = useState<string>(data.value.target ? data.value.arg : '');
     const onChangeTargetShape = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLSelectElement>) => {
-        setTargetShape(newParam);
-        if (validateParam(newParam, data.validation)) {
-            windowRef.current?.classList.remove('error');
-            shapesDispatch({ type: 'update', index, arg, newParam: { target: newParam, arg: targetArg } });
-        } else {
-            windowRef.current?.classList.add('error');
-        }
-    }, [arg, data.validation, index, shapesDispatch, targetArg]);
+        setTargetShape(newParam as UUID);
+        shapesDispatch({ type: 'update', index, arg, newParam: { target: newParam as UUID, arg: targetArg } });
+    }, [arg, index, shapesDispatch, targetArg]);
     const onChangeTargetArg = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLSelectElement>) => {
         setTargetArg(newParam);
         if (validateParam(newParam, data.validation)) {

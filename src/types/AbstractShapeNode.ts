@@ -1,15 +1,15 @@
 import rfdc from 'rfdc';
-import uuid from 'uuidjs';
 import { ShapeType } from '../ShapeNodes';
 import { ExportObject } from './ExportObject';
 import { ParamMetaData, Param, ParamValue, Parameter, TargetParameter, isManipulateParam, isManipulatable, Manipulatable, RawParam, ManipulateShape } from './Parameter';
 import { IdentifiedPoint, Point } from './Point';
+import { generateUUID, UUID } from './UUID';
 
 export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P extends string> {
     // Set<P>にしないのはAbstractShapeNode#setParameterでのvalidationが面倒になるため。
     private validateParams: Set<string>;
     private _params: ParamValue<T>;
-    private _uuid: string;
+    private _uuid: UUID;
     private _points: IdentifiedPoint[] = [];
     public isSelected = false;
 
@@ -19,15 +19,16 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
         private readonly paramMetaData: ParamMetaData<T>,
         public name: string,
         params: ParamValue<{ [k: string]: Param }>,
-        public readonly isManipulateShape = false
+        public readonly isManipulateShape: boolean,
+        _uuid?: UUID
     ) {
         this.validateParams = new Set(Object.keys(paramMetaData));
         this._params = { ...rfdc()(defaultParams), ...params };
-        this._uuid = uuid.generate();
+        this._uuid = _uuid ?? generateUUID();
         this.updatePointSet();
     }
 
-    public get uuid(): string {
+    public get uuid(): UUID {
         return this._uuid;
     }
 
@@ -70,7 +71,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
         disManipulateAction(this._params.target);
     }
 
-    public setParameter(argName: string, value: unknown, manipulateAction: (points: Point[], oldTarget: TargetParameter['value'] | undefined, target: TargetParameter['value'] | undefined) => void): void {
+    public setParameter(argName: string, value: unknown, manipulateAction: (points: Point[], from: UUID, prev: TargetParameter['value'] | undefined, next: TargetParameter['value'] | undefined) => void): void {
         if (!this.isParameterKey(argName)) return;
         if (!this.isParameterValue(argName, value)) {
             if (!this.paramMetaData[argName].manipulatable) return;
@@ -86,7 +87,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
         this._params[argName] = value;
         this.updatePointSet();
         if (this.isManipulate(this._params)) {
-            manipulateAction(this._points.map(v => v.pos),
+            manipulateAction(this._points.map(v => v.pos), this._uuid,
                 (prevTarget?.target && prevTarget?.arg) ? prevTarget : undefined,
                 (this._params['target'].target && this._params['target'].arg) ? this._params['target'] : undefined
             );
@@ -101,7 +102,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
         return params;
     }
 
-    public disManipulate(argName: string, manipulateAction: (points: Point[], oldTarget: TargetParameter['value'] | undefined, target: TargetParameter['value'] | undefined) => void): void {
+    public disManipulate(argName: string, manipulateAction: (points: Point[], from: UUID, prev: TargetParameter['value'] | undefined, next: TargetParameter['value'] | undefined) => void): void {
         if (!this.isParameterKey(argName)) return;
         const value = this._params[argName];
         if (!isManipulateParam(this.paramMetaData[argName], value)) return;
@@ -134,6 +135,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
     public toExportObject(): ExportObject {
         return {
             type: this.type,
+            uuid: this.uuid,
             name: this.name,
             params: this._params
         };

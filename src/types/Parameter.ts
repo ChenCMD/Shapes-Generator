@@ -1,3 +1,5 @@
+import { UUID } from './UUID';
+
 export interface NormalParameter {
     type?: 'normal'
     value: number
@@ -19,7 +21,7 @@ export interface RangeParameter {
 
 export interface TargetParameter {
     type: 'target'
-    value: { target: string, arg: string }
+    value: { target: UUID | '', arg: string }
 }
 
 interface ParamMetaDataBase {
@@ -41,7 +43,7 @@ interface ManipulateValue<T extends RawParam['value'] = RawParam['value']> {
     value: {
         manipulate: true
         value: T[]
-        manipulatedFrom: string
+        from: UUID
         old: T
     }
 }
