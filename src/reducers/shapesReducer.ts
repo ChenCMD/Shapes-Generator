@@ -1,5 +1,7 @@
 import React from 'react';
 import { Shape } from '../ShapeNodes';
+import { RawParam, TargetParameter } from '../types/Parameter';
+import { Point } from '../types/Point';
 import { mod } from '../utils/common';
 
 interface AddAction {
@@ -39,7 +41,7 @@ interface UpdateParamAction {
     type: 'update'
     index: number
     arg: string
-    newParam: number | { x: number, y: number }
+    newParam: RawParam['value']
 }
 
 interface DeleteAction {
@@ -89,18 +91,39 @@ const createReducer: ((onChange: () => void) => React.Reducer<[shapes: Shape[], 
                 onChange();
                 const newShapes = shapes.map(v => selectionChanger(v, false));
                 newShapes.splice(action.index + 1, 0, selectionChanger(shapes[action.index].clone(), true));
-                return [
-                    newShapes,
-                    [action.index + 1]
-                ];
+                return [newShapes, [action.index + 1]];
             }
             case 'update': {
                 onChange();
-                shapes[action.index].setParameter(action.arg, action.newParam);
+                const manipulateCallback = (points: Point[], prev: TargetParameter['value'] | undefined, next: TargetParameter['value'] | undefined) => {
+                    prev && shapes.find(v => v.uuid === prev.target)?.disManipulate(prev.arg, manipulateCallback);
+                    if (!next) return;
+                    const target = shapes.find(v => v.uuid === next.target);
+                    target?.setParameter(next.arg, {
+                        manipulate: true,
+                        manipulatedFrom: target.uuid,
+                        value: points.map(([x, y]) => ({ x, y })),
+                        old: undefined
+                    }, manipulateCallback);
+                };
+                shapes[action.index].setParameter(action.arg, action.newParam, manipulateCallback);
                 return [[...shapes], selectLog];
             }
             case 'delete': {
                 onChange();
+                const manipulateCallback = (points: Point[], prev: TargetParameter['value'] | undefined, next: TargetParameter['value'] | undefined) => {
+                    prev && shapes.find(v => v.uuid === prev.target)?.disManipulate(prev.arg, manipulateCallback);
+                    if (!next) return;
+                    const target = shapes.find(v => v.uuid === next.target);
+                    target?.setParameter(next.arg, {
+                        manipulate: true,
+                        manipulatedFrom: target.uuid,
+                        value: points.map(([x, y]) => ({ x, y })),
+                        old: undefined
+                    }, manipulateCallback);
+                };
+                shapes.find(shape => shape.isSelected)
+                    ?.destroy(t => shapes.find(v => v.uuid === t.target)?.disManipulate(t.arg, manipulateCallback));
                 return [shapes.filter(shape => !shape.isSelected), []];
             }
         }

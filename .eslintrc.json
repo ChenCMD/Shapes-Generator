@@ -96,7 +96,6 @@
                 "after": true
             }
         ],
-        "no-nested-ternary": "warn",
         "no-unneeded-ternary": "warn",
         "quotes": [
             "warn",

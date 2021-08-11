@@ -3,17 +3,31 @@ import { showNotification } from '../components/ShapesGenerator';
 import { locale } from '../locales';
 import { ExportObject } from '../types/ExportObject';
 import { CircleShape } from './Circle';
+import { CircleAnchorShape } from './CircleAnchor';
 import { LineShape } from './Line';
+import { LineAnchorShape } from './LineAnchor';
 import { PolygonShape } from './Polygon';
+import { PolygonAnchorShape } from './PolygonAnchor';
 
-export type ShapeType = 'line' | 'circle' | 'polygon';
-export type Shape = LineShape | CircleShape | PolygonShape;
-type ShapeConstructor = typeof LineShape | typeof CircleShape | typeof PolygonShape;
+export const shapeTypes = [
+    'line',
+    'circle',
+    'polygon',
+    'line-anchor',
+    'circle-anchor',
+    'polygon-anchor'
+] as const;
+export type ShapeType = typeof shapeTypes[number];
+export type Shape = LineShape | CircleShape | PolygonShape | LineAnchorShape | CircleAnchorShape | PolygonAnchorShape;
+type ShapeConstructor = typeof LineShape | typeof CircleShape | typeof PolygonShape | typeof LineAnchorShape | typeof CircleAnchorShape | typeof PolygonAnchorShape;
 
 const shapes: Record<ShapeType, ShapeConstructor> = {
     line: LineShape,
     circle: CircleShape,
-    polygon: PolygonShape
+    polygon: PolygonShape,
+    'line-anchor': LineAnchorShape,
+    'circle-anchor': CircleAnchorShape,
+    'polygon-anchor': PolygonAnchorShape
 };
 
 export function getShape(id: string, type: ShapeType): Shape {

@@ -23,6 +23,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
 
     const points: JSX.Element[] = [];
     if (posMultiple && maxBounds < 250) {
+        console.log(shapes.map(v => v.isManipulateShape));
         points.push(...shapes
             .sort((a, b) => {
                 if (a.isSelected === b.isSelected) return 0;
@@ -30,14 +31,20 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
                 if (b.isSelected) return -1;
                 return 0;
             })
-            .flatMap(({ isSelected, points: p }) => p.map(({ pos: [x, y], id }) => (
+            .flatMap(({ isSelected, isManipulateShape, points: p }) => p.map(({ pos: [x, y], id }) => (
                 <Circle
                     x={x * posMultiple + centerModifier.x}
                     y={y * posMultiple + centerModifier.y}
-                    radius={0.15 * posMultiple}
-                    fill='rgb(212, 212, 212)'
+                    radius={(isManipulateShape ? 0.1 : 0.15) * posMultiple}
+                    fill={isManipulateShape ? 'rgb(212, 212, 0)' : 'rgb(212, 212, 212)'}
                     strokeWidth={2}
-                    stroke={isSelected ? '#007bff' : ''}
+                    stroke={
+                        isManipulateShape
+                            ? 'rgb(212, 212, 0)'
+                            : isSelected
+                                ? 'rgb(0, 128, 255)'
+                                : ''
+                    }
                     key={id}
                 />
             )))

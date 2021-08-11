@@ -16,7 +16,7 @@ import ImportModal from './ImportModal';
 import Previewer from './Previewer';
 import UserInterface from './UserInterface';
 
-export const showNotification = (type: 'info' | 'success' | 'warning' | 'error'| 'dark', message: string): void => {
+export const showNotification = (type: 'info' | 'success' | 'warning' | 'error' | 'dark', message: string): void => {
     toast[type](message, {
         position: 'bottom-left',
         autoClose: 5000,
@@ -51,7 +51,10 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
     const onContextCloseRequest = useCallback(() => setContextTarget(undefined), []);
 
     const dependString = useMemo(() => shapes.map(v => `${v.isSelected ? 1 : 0}${v.points.map(v2 => v2.id).join('+')}`).join('+'), [shapes]);
-    const points = useMemo(() => duplicatedPointRange === 0 ? [...shapes] : deleteDuplicatedPoints(shapes, duplicatedPointRange),
+    const [points, pointsWithoutManipulate] = useMemo(() => {
+        const p = deleteDuplicatedPoints(shapes, duplicatedPointRange);
+        return [p, p.filter(v => !v.isManipulateShape)];
+    },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [duplicatedPointRange, dependString]);
     return (
@@ -67,6 +70,7 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
                     <Col xl={6} lg={6} md={12} sm={12} xs={12}>
                         <UserInterface
                             shapes={shapes}
+                            latestSelect={latestSelect}
                             shapesDispatch={shapesDispatch}
                             gridMode={gridMode}
                             setGridMode={setGridMode}
@@ -86,7 +90,7 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
             />
             <ExportModal
                 importStrings={shapes.map(v => v.toExportObject())}
-                points={points}
+                points={pointsWithoutManipulate}
                 isOpen={isOpenExportModal}
                 openExportModal={setIsOpenExportModal}
                 duplicatedPointRange={duplicatedPointRange}

@@ -2,15 +2,15 @@ import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { NormalParameter, Param, ParamMetaData, ParamValue } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { mod, rotateMatrix2D, toRadians } from '../utils/common';
-import { CircleParams } from './Circle';
+import { CircleAnchorParams } from './CircleAnchor';
 
-export interface PolygonParams extends CircleParams {
+export interface PolygonAnchorParams extends CircleAnchorParams {
     corner: NormalParameter
     jump: NormalParameter
     vezier: NormalParameter
 }
 
-const paramMetaData: ParamMetaData<PolygonParams> = {
+const paramMetaData: ParamMetaData<PolygonAnchorParams> = {
     count: { unit: 'unit.points', validation: { min: 1 } },
     center: { type: 'pos', unit: '', manipulatable: true },
     radius: { unit: 'unit.meter', validation: { min: 0.0001 } },
@@ -19,11 +19,12 @@ const paramMetaData: ParamMetaData<PolygonParams> = {
     rotate: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
     corner: { validation: { min: 1 } },
     jump: {},
-    vezier: {}
+    vezier: {},
+    target: { type: 'target' }
 };
 
-const defaultParams: ParamValue<PolygonParams> = {
-    count: 20,
+const defaultParams: ParamValue<PolygonAnchorParams> = {
+    count: 5,
     center: { value: { x: 0, y: 0 } },
     radius: 5,
     start: 0,
@@ -31,15 +32,16 @@ const defaultParams: ParamValue<PolygonParams> = {
     rotate: 0,
     corner: 5,
     jump: 1,
-    vezier: 0
+    vezier: 0,
+    target: { arg: '', target: '' }
 };
 
-export class PolygonShape extends AbstractShapeNode<PolygonParams, keyof PolygonParams> {
+export class PolygonAnchorShape extends AbstractShapeNode<PolygonAnchorParams, keyof PolygonAnchorParams> {
     public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}) {
-        super('polygon', defaultParams, paramMetaData, name, params);
+        super('polygon-anchor', defaultParams, paramMetaData, name, params, true);
     }
 
-    protected generatePointSet(params: ParamValue<PolygonParams>): IdentifiedPoint[] {
+    protected generatePointSet(params: ParamValue<PolygonAnchorParams>): IdentifiedPoint[] {
         const points: IdentifiedPoint[] = [];
         const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
 
@@ -74,7 +76,7 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams, keyof Polygon
         return points;
     }
 
-    public clone(): PolygonShape {
-        return new PolygonShape(`${this.name}-copy`, this.getParams());
+    public clone(): PolygonAnchorShape {
+        return new PolygonAnchorShape(`${this.name}-copy`, this.getParams());
     }
 }

@@ -5,11 +5,10 @@ import Row from 'react-bootstrap/esm/Row';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/Inspector.module.scss';
-import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { Param } from '../types/Parameter';
 import NormalParameterBox from './ParameterBox/Normal';
 import PosParameterBox from './ParameterBox/Pos';
 import RangeParameterBox from './ParameterBox/Range';
+import TargetParameterBox from './ParameterBox/Target';
 
 interface InspectorProps {
     shapes: Shape[]
@@ -17,7 +16,7 @@ interface InspectorProps {
 }
 
 const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
-    const paramBoxes = shapes.flatMap(<T extends { [key in P]: Param }, P extends string, S extends AbstractShapeNode<T, P>>(shape: S, i: number) => {
+    const paramBoxes = shapes.flatMap((shape: Shape, i: number) => {
         if (!shape.isSelected) return;
         // TODO 複数選択時の挙動
         return shape.getParameterMap().map(([arg, param]) => {
@@ -28,6 +27,8 @@ const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
                     return colWrap(<PosParameterBox {...props} data={param} />);
                 case 'range':
                     return colWrap(<RangeParameterBox {...props} data={param} />);
+                case 'target':
+                    return colWrap(<TargetParameterBox {...props} data={param} shapes={shapes} />);
                 case 'normal':
                 default:
                     return colWrap(<NormalParameterBox {...props} data={param} />);

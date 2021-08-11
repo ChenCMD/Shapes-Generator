@@ -12,6 +12,7 @@ import ShapeList from './ShapeList';
 
 interface UserInterfaceProps {
     shapes: Shape[]
+    latestSelect: number[]
     shapesDispatch: ShapesDispatch
     gridMode: GridMode
     setGridMode: (mode: GridMode) => void
@@ -22,7 +23,7 @@ interface UserInterfaceProps {
     openExportModal: (isOpen: boolean) => void
 }
 
-const UserInterface = ({ shapes, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openImportModal, openExportModal }: UserInterfaceProps): JSX.Element => (
+const UserInterface = ({ shapes, latestSelect, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openImportModal, openExportModal }: UserInterfaceProps): JSX.Element => (
     <Container fluid className={styles['user-interface']}>
         <Row noGutters>
             <Col className={styles['col-inspector']}>
@@ -37,6 +38,7 @@ const UserInterface = ({ shapes, shapesDispatch, gridMode, setGridMode, duplicat
                 <ShapeList
                     shapes={shapes.map(shape => ({ name: shape.name, uuid: shape.uuid, isSelected: shape.isSelected }))}
                     shapesLength={shapes.length}
+                    latestSelect={latestSelect}
                     shapesDispatch={shapesDispatch}
                     setContextTarget={setContextTarget}
                 />

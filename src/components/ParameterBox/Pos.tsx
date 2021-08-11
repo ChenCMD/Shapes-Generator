@@ -6,7 +6,7 @@ import { locale } from '../../locales';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
 import { ShapeType } from '../../ShapeNodes';
 import styles from '../../styles/ParameterBox/Pos.module.scss';
-import { Parameter, PosParameter, validateParam } from '../../types/Parameter';
+import { getPosParameterValue, Parameter, PosParameter, validateParam } from '../../types/Parameter';
 import { stopPropagation } from '../../utils/element';
 
 interface PosParameterBoxProps {
@@ -19,8 +19,9 @@ interface PosParameterBoxProps {
 
 const PosParameterBox = ({ type, arg, data, index, shapesDispatch }: PosParameterBoxProps): JSX.Element => {
     const windowRef = useRef<HTMLDivElement>(null);
-    const [argValueX, setArgValueX] = useState<string>(data.value.x.toString());
-    const [argValueY, setArgValueY] = useState<string>(data.value.y.toString());
+    const { x: valueX, y: valueY } = getPosParameterValue(data);
+    const [argValueX, setArgValueX] = useState<string>(valueX);
+    const [argValueY, setArgValueY] = useState<string>(valueY);
     const onChangeX = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLInputElement>) => {
         setArgValueX(newParam);
         if (validateParam(newParam, data.validation)) {
@@ -46,13 +47,27 @@ const PosParameterBox = ({ type, arg, data, index, shapesDispatch }: PosParamete
             <Container fluid className={styles['container']}>
                 <Row noGutters>
                     <Col xs={1}><div className={styles['unit-x']}>X</div></Col>
-                    <Col xs={5}>
-                        <input className={styles['input']} type='number' onChange={onChangeX} value={argValueX} onKeyDown={stopPropagation} />
-                    </Col>
+                    <Col xs={5}>{
+                        valueX !== 'manipulated' ? (
+                            <input className={styles['input']}
+                                type='number' onChange={onChangeX}
+                                value={argValueX} onKeyDown={stopPropagation}
+                            />
+                        ) : (
+                            <div className={styles['input']}>{locale('manipulated')}</div>
+                        )
+                    }</Col>
                     <Col xs={1}><div className={styles['unit-y']}>Y</div></Col>
-                    <Col xs={5}>
-                        <input className={styles['input']} type='number' onChange={onChangeY} value={argValueY} onKeyDown={stopPropagation} />
-                    </Col>
+                    <Col xs={5}>{
+                        valueX !== 'manipulated' ? (
+                            <input className={styles['input']}
+                                type='number' onChange={onChangeY}
+                                value={argValueY} onKeyDown={stopPropagation}
+                            />
+                        ) : (
+                            <div className={styles['input']}>{locale('manipulated')}</div>
+                        )
+                    }</Col>
                 </Row>
             </Container>
         </div>
