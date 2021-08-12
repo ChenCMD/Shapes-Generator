@@ -46,10 +46,11 @@ export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams, key
             for (let i = 0; i < params.count; i++) {
                 const theta = toRadians(360 / params.count * i + params.start);
                 const p: Point = rotateMatrix2D([
-                    center.x + Math.sin(theta) * params.radius,
-                    center.y + -Math.cos(theta) * params.radius
+                    Math.sin(theta) * params.radius,
+                    -Math.cos(theta) * params.radius
                 ], params.rotate);
-                addPoint(rotateMatrix2D([p[0], p[1] * (params.ellipse / 100)], -params.rotate));
+                const [rotatedX, rotatedY] = rotateMatrix2D([p[0], p[1] * (params.ellipse / 100)], -params.rotate);
+                addPoint([rotatedX + center.x, rotatedY + center.y]);
             }
         }
 

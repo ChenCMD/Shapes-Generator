@@ -24,7 +24,7 @@ export const showNotification = (type: 'info' | 'success' | 'warning' | 'error' 
         closeOnClick: true,
         pauseOnHover: true,
         draggable: false,
-        progress: undefined,
+        progress: undefined
     });
 };
 
