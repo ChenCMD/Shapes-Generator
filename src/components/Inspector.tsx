@@ -16,15 +16,15 @@ interface InspectorProps {
 }
 
 const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
-    const paramBoxes = shapes.flatMap((shape: Shape, i: number) => {
+    const paramBoxes = shapes.flatMap((shape: Shape, index: number) => {
         if (!shape.isSelected) return;
         // TODO 複数選択時の挙動
         return shape.getParameterMap().map(([arg, param]) => {
             const colWrap = (elem: JSX.Element) => (<Col key={`${shape.uuid}-${arg}`} className={styles['xxl']} xl={6} lg={12} md={4} sm={6} xs={12}>{elem}</Col>);
-            const props = { type: shape.type, arg, index: i, shapesDispatch };
+            const props = { type: shape.type, arg, index, shapesDispatch };
             switch (param.type) {
                 case 'pos':
-                    return colWrap(<PosParameterBox {...props} data={param} />);
+                    return colWrap(<PosParameterBox {...props} data={param} indexMap={shapes.map(v => v.uuid)} />);
                 case 'range':
                     return colWrap(<RangeParameterBox {...props} data={param} />);
                 case 'target':

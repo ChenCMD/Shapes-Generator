@@ -100,7 +100,7 @@ const createReducer: ((onChange: () => void) => React.Reducer<[shapes: Shape[], 
                     prev && shapes.find(v => v.uuid === prev.target)?.disManipulate(prev.arg, manipulateCallback);
                     next && shapes.find(v => v.uuid === next.target)?.setParameter(next.arg, {
                         manipulate: true,
-                        fromUUID: from,
+                        from: from,
                         value: points.map(([x, y]) => ({ x, y })),
                         old: undefined
                     }, manipulateCallback);
