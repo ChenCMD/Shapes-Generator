@@ -34,24 +34,23 @@ const PosParameterBox = ({ type, arg, data, index, indexMap, shapesDispatch }: P
         shapesDispatch({ type: 'select', index: targetIdx, isRetentionOld: false });
     }, [data, indexMap, shapesDispatch]);
 
+    const commonChange = useCallback((param: { x?: string, y?: string }) => {
+        const newParam = { x: parseFloat(param.x ?? argValueX), y: parseFloat(param.y ?? argValueY) };
+        if (validateParam(newParam.x, data.validation) && validateParam(newParam.y, data.validation)) {
+            windowRef.current?.classList.remove('error');
+            shapesDispatch({ type: 'update', index, arg, newParam });
+        } else {
+            windowRef.current?.classList.add('error');
+        }
+    }, [arg, argValueX, argValueY, data.validation, index, shapesDispatch]);
     const onChangeX = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLInputElement>) => {
         setArgValueX(newParam);
-        if (validateParam(newParam, data.validation)) {
-            windowRef.current?.classList.remove('error');
-            shapesDispatch({ type: 'update', index, arg, newParam: { x: parseFloat(newParam), y: parseFloat(argValueY) } });
-        } else {
-            windowRef.current?.classList.add('error');
-        }
-    }, [arg, argValueY, data.validation, index, shapesDispatch]);
+        commonChange({ x: newParam });
+    }, [commonChange]);
     const onChangeY = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLInputElement>) => {
         setArgValueY(newParam);
-        if (validateParam(newParam, data.validation)) {
-            windowRef.current?.classList.remove('error');
-            shapesDispatch({ type: 'update', index, arg, newParam: { x: parseFloat(argValueX), y: parseFloat(newParam) } });
-        } else {
-            windowRef.current?.classList.add('error');
-        }
-    }, [arg, argValueX, data.validation, index, shapesDispatch]);
+        commonChange({ y: newParam });
+    }, [commonChange]);
 
     const isManipulated = valueX === 'manipulated';
     const whenManipulated = <T, U>(a: T, b: U) => isManipulated ? a : b;
