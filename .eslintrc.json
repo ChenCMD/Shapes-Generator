@@ -65,6 +65,12 @@
         "react/prop-types": "off",
         "@typescript-eslint/semi": "warn",
         "no-case-declarations": "off",
+        "no-constant-condition": [
+            "error",
+            {
+                "checkLoops": false
+            }
+        ],
         "curly": [
             "warn",
             "multi-or-nest",

@@ -1,0 +1,45 @@
+:global {
+    :local(.window) {
+        margin: 10px 0 10px 0;
+        width: 100%;
+        border-width: 1px;
+        border: 1px solid var(--border-color);
+        border-radius: 0.25rem;
+        &.error {
+            border-color: rgb(255, 0, 0);
+        }
+    }
+}
+
+.name {
+    color: var(--text-color);
+    line-height: 1.5;
+    padding: 2px 0 2px 2px;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: var(--border-color);
+}
+
+.container {
+    padding: 0;
+}
+
+.group {
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.button {
+    padding: 0 !important;
+    border: none !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    height: 28px !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    margin: 0 !important;
+    &-left {
+        @extend .button;
+        border-right: 1px solid var(--border-color);
+    }
+}

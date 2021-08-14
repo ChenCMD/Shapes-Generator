@@ -1,8 +1,8 @@
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { NormalParameter, Param, ParamMetaData, ParamValue } from '../types/Parameter';
+import { BoolParameter, NormalParameter, Param, ParamMetaData, ParamValue } from '../types/Parameter';
 import { calcPoint, createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
-import { toRadians, rotateMatrix2D, mod } from '../utils/math';
+import { toRadians, rotateMatrix2D, mod, sampleDensely, spreadSamplesOver } from '../utils/math';
 import { CircleAnchorParams } from './CircleAnchor';
 import { PolygonParams } from './Polygon';
 
@@ -10,6 +10,7 @@ export interface PolygonAnchorParams extends CircleAnchorParams {
     corner: NormalParameter
     jump: NormalParameter
     vezier: NormalParameter
+    isBezierEquallySpaced: BoolParameter
 }
 
 const paramMetaData: ParamMetaData<PolygonAnchorParams> = {
@@ -22,7 +23,8 @@ const paramMetaData: ParamMetaData<PolygonAnchorParams> = {
     corner: { validation: { min: 1 } },
     jump: {},
     vezier: {},
-    target: { type: 'target' }
+    target: { type: 'target' },
+    isBezierEquallySpaced: { type: 'boolean' }
 };
 
 const defaultParams: ParamValue<PolygonAnchorParams> = {
@@ -35,7 +37,8 @@ const defaultParams: ParamValue<PolygonAnchorParams> = {
     corner: 5,
     jump: 1,
     vezier: 0,
-    target: { arg: '', target: '' }
+    target: { arg: '', target: '' },
+    isBezierEquallySpaced: false
 };
 
 export class PolygonAnchorShape extends AbstractShapeNode<PolygonAnchorParams, keyof PolygonAnchorParams> {
@@ -45,7 +48,7 @@ export class PolygonAnchorShape extends AbstractShapeNode<PolygonAnchorParams, k
 
     protected generatePointSet(params: ParamValue<PolygonParams>): IdentifiedPoint[] {
         const points: IdentifiedPoint[] = [];
-        const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
+        const addPoint = (...pos: Point[]) => points.push(...pos.map(p => createIdentifiedPoint(this.uuid, p)));
 
         const drawLine = (from: Point, to: Point) => {
             const calcBezierPoint = (t: number, ...p: Point[]): Point => {
@@ -62,9 +65,14 @@ export class PolygonAnchorShape extends AbstractShapeNode<PolygonAnchorParams, k
             };
 
             const controlPoint = calcPoint(from, to, normalizedVector, (a, b, c) => (a + b) / 2 + c);
-            for (let i = 0; i < params.count; i++) {
-                const t = i / params.count;
-                addPoint(calcBezierPoint(t, from, controlPoint, to));
+            if (params.isBezierEquallySpaced) {
+                const samples = sampleDensely(t => calcBezierPoint(t, from, controlPoint, to));
+                addPoint(...spreadSamplesOver(samples, params.count, true));
+            } else {
+                for (let i = 0; i < params.count; i++) {
+                    const t = i / params.count;
+                    addPoint(calcBezierPoint(t, from, controlPoint, to));
+                }
             }
         };
 
@@ -80,7 +88,7 @@ export class PolygonAnchorShape extends AbstractShapeNode<PolygonAnchorParams, k
                     x: p.x,
                     y: p.y * (params.ellipse / 100)
                 }, -params.rotate);
-                addPoint(calcPoint(rotatedPoint, center, (a, b) => a + b));
+                corners.push(calcPoint(rotatedPoint, center, (a, b) => a + b));
             }
             for (const [i, corner] of corners.entries()) drawLine(corner, corners[mod(i + params.jump, corners.length)]);
         }

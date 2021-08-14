@@ -9,6 +9,7 @@ import NormalParameterBox from './ParameterBox/Normal';
 import PosParameterBox from './ParameterBox/Pos';
 import RangeParameterBox from './ParameterBox/Range';
 import TargetParameterBox from './ParameterBox/Target';
+import BoolParameterBox from './ParameterBox/Bool';
 
 interface InspectorProps {
     shapes: Shape[]
@@ -29,6 +30,8 @@ const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
                     return colWrap(<RangeParameterBox {...props} data={param} />);
                 case 'target':
                     return colWrap(<TargetParameterBox {...props} data={param} shapes={shapes} />);
+                case 'boolean':
+                    return colWrap(<BoolParameterBox {...props} data={param} />);
                 case 'normal':
                 default:
                     return colWrap(<NormalParameterBox {...props} data={param} />);

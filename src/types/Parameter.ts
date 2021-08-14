@@ -19,6 +19,11 @@ export interface RangeParameter {
     step: number
 }
 
+export interface BoolParameter {
+    type: 'boolean'
+    value: boolean
+}
+
 export interface TargetParameter {
     type: 'target'
     value: { target: UUID | '', arg: string }
@@ -37,7 +42,7 @@ export interface ManipulateShape {
     target: TargetParameter
 }
 
-export type RawParam = NormalParameter | PosParameter | RangeParameter | TargetParameter;
+export type RawParam = NormalParameter | PosParameter | RangeParameter | BoolParameter | TargetParameter;
 
 interface ManipulateValue<T extends RawParam['value'] = RawParam['value']> {
     value: {
@@ -106,6 +111,7 @@ export function isManipulateParam(metaData: MetaData, v: unknown): v is Manipula
         const checkElem = (arr: unknown[]): boolean => {
             if (type === 'normal' || type === 'range') return arr.every((v2: unknown) => typeof v2 === 'number');
             if (type === 'pos') return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'x' in v2 && 'y' in v2);
+            if (type === 'boolean') return arr.every((v2: unknown) => typeof v2 === 'boolean');
             if (type === 'target') return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'target' in v2 && 'arg' in v2);
             return false;
         };

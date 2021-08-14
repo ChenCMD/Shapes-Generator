@@ -3,6 +3,7 @@ import { Manipulatable, ManipulateShape, NormalParameter, Param, ParamMetaData, 
 import { calcPoint, createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
 import { toRadians, rotateMatrix2D } from '../utils/math';
+import { CircleParams } from './Circle';
 
 export interface CircleAnchorParams extends ManipulateShape {
     count: NormalParameter
@@ -38,7 +39,7 @@ export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams, key
         super('circle-anchor', defaultParams, paramMetaData, name, params, true, uuid);
     }
 
-    protected generatePointSet(params: ParamValue<CircleAnchorParams>): IdentifiedPoint[] {
+    protected generatePointSet(params: ParamValue<CircleParams>): IdentifiedPoint[] {
         const points: IdentifiedPoint[] = [];
         const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
 

@@ -53,6 +53,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
                 const checkElem = (arr: unknown[]): boolean => {
                     if (type === 'normal' || type === 'range') return arr.every((v2: unknown) => typeof v2 === 'number');
                     if (type === 'pos') return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'x' in v2 && 'y' in v2);
+                    if (type === 'boolean') return arr.every((v2: unknown) => typeof v2 === 'boolean');
                     if (type === 'target') return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'target' in v2 && 'arg' in v2);
                     return false;
                 };
@@ -62,6 +63,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
         }
         if (type === 'normal' || type === 'range') return typeof v === 'number';
         if (type === 'pos') return typeof v === 'object' && !!v && 'x' in v && 'y' in v;
+        if (type === 'boolean') return typeof v === 'boolean';
         if (type === 'target') return typeof v === 'object' && !!v && 'target' in v && 'arg' in v;
         return false;
     }
