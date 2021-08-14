@@ -36,36 +36,57 @@ export function getShape(id: string, type: ShapeType): Shape {
     return new shapes[type](id);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function dataFixer(data: unknown, fixer: (k: string, v: unknown) => [k: string, v: unknown]): any {
+    if (Array.isArray(data)) return data.map(v => dataFixer(v, fixer));
+    if (((v: unknown): v is { [k: string]: unknown } => typeof v === 'object' && !!v)(data)) {
+        const res: { [k: string]: unknown } = {};
+        for (const k of Object.getOwnPropertyNames(data)) {
+            const [k2, v2] = fixer(k, data[k]);
+            res[k2] = dataFixer(v2, fixer);
+        }
+        return res;
+    }
+    return data;
+}
+
+const keyFixMap: { [k: string]: string } = {
+    vezier: 'bezier'
+};
+
 export function importShape(importKey: string): Shape[] {
     const rawExportObjects = LZString.decompressFromEncodedURIComponent(importKey);
     if (!rawExportObjects) {
         showNotification('error', locale('error.invalid.import-key'));
         return [];
     }
+    const uuidMap = new Map<UUID, UUID>();
+    const replaceUUID = (uuid: UUID | undefined) => {
+        if (!uuid) return uuid;
+        if (uuidMap.has(uuid)) return uuidMap.get(uuid);
+        const newUUID = generateUUID();
+        uuidMap.set(uuid, newUUID);
+        return newUUID;
+    };
     try {
-        const parsedExportObjects: ExportObject[] = JSON.parse(rawExportObjects);
-        const uuidMap = new Map<UUID, UUID>();
-        const replaceUUID = (uuid: UUID | undefined) => {
-            if (!uuid) return uuid;
-            if (uuidMap.has(uuid)) return uuidMap.get(uuid);
-            const newUUID = generateUUID();
-            uuidMap.set(uuid, newUUID);
-            return newUUID;
-        };
-        const walkParams = (obj: { [k: string]: unknown }) => {
-            for (const k in obj) {
-                const value = obj[k];
-                if (typeof value === 'object' && value) walkParams(value as { [k: string]: unknown });
-                if (typeof value === 'string' && isUUID(value)) obj[k] = replaceUUID(value);
-            }
-            return obj;
-        };
-        return parsedExportObjects.map(v => new shapes[v.type](v.name, walkParams(v.params) as ParamValue<{ [k: string]: Param }>, replaceUUID(v.uuid)));
+        const parsedExportObjects: ExportObject[] = dataFixer(
+            JSON.parse(rawExportObjects),
+            (key, val) => [
+                keyFixMap[key] ?? key,
+                [
+                    (v: unknown) => typeof v === 'string' && isUUID(v) && replaceUUID(v),
+                    (v: unknown, k: string) => (k === 'center' || k === 'from' || k === 'to') && typeof v === 'object' && !!v && 'x' in v && 'y' in v && { value: v }
+                ].map(f => f(val, key)).filter(v => v)[0] || val
+            ]
+        );
+        console.log(parsedExportObjects);
+        return parsedExportObjects.map(v => new shapes[v.type](v.name, v.params as ParamValue<{ [k: string]: Param }>, v.uuid));
     } catch (e) {
+        console.log(e.stack);
         if (e instanceof SyntaxError)
             showNotification('error', locale('error.invalid.import-key'));
         else
-            showNotification('error', `${locale('error.import-unknown-problem')} ${e.toString()}`);
+            showNotification('error', locale('error.import-unknown-problem'));
         return [];
     }
 }

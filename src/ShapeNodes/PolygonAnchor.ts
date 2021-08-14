@@ -9,7 +9,7 @@ import { PolygonParams } from './Polygon';
 export interface PolygonAnchorParams extends CircleAnchorParams {
     corner: NormalParameter
     jump: NormalParameter
-    vezier: NormalParameter
+    bezier: NormalParameter
     isBezierEquallySpaced: BoolParameter
 }
 
@@ -22,7 +22,7 @@ const paramMetaData: ParamMetaData<PolygonAnchorParams> = {
     rotate: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
     corner: { validation: { min: 1 } },
     jump: {},
-    vezier: {},
+    bezier: {},
     target: { type: 'target' },
     isBezierEquallySpaced: { type: 'boolean' }
 };
@@ -36,7 +36,7 @@ const defaultParams: ParamValue<PolygonAnchorParams> = {
     rotate: 0,
     corner: 5,
     jump: 1,
-    vezier: 0,
+    bezier: 0,
     target: { arg: '', target: '' },
     isBezierEquallySpaced: false
 };
@@ -60,8 +60,8 @@ export class PolygonAnchorShape extends AbstractShapeNode<PolygonAnchorParams, k
             const vector = calcPoint(from, to, (a, b) => b - a);
             const vecMagnitude = Math.sqrt(vector.x ** 2 + vector.y ** 2);
             const normalizedVector = {
-                x: vecMagnitude && vector.y / vecMagnitude * params.vezier,
-                y: vecMagnitude && -vector.x / vecMagnitude * params.vezier
+                x: vecMagnitude && vector.y / vecMagnitude * params.bezier,
+                y: vecMagnitude && -vector.x / vecMagnitude * params.bezier
             };
 
             const controlPoint = calcPoint(from, to, normalizedVector, (a, b, c) => (a + b) / 2 + c);

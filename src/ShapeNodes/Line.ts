@@ -9,7 +9,7 @@ export interface LineParams {
     from: Manipulatable<PosParameter>
     to: Manipulatable<PosParameter>
     offset: RangeParameter
-    vezier: NormalParameter
+    bezier: NormalParameter
     isBezierEquallySpaced: BoolParameter
 }
 
@@ -18,7 +18,7 @@ const paramMetaData: ParamMetaData<LineParams> = {
     from: { type: 'pos', unit: '', manipulatable: true },
     to: { type: 'pos', unit: '', manipulatable: true },
     offset: { type: 'range', unit: 'unit.per', min: 0, step: 1, max: 100 },
-    vezier: {},
+    bezier: {},
     isBezierEquallySpaced: { type: 'boolean' }
 };
 
@@ -27,7 +27,7 @@ const defaultParams: ParamValue<LineParams> = {
     from: { value: { x: 0, y: 0 } },
     to: { value: { x: 1, y: 1 } },
     offset: 0,
-    vezier: 0,
+    bezier: 0,
     isBezierEquallySpaced: false
 };
 
@@ -63,8 +63,8 @@ export class LineShape extends AbstractShapeNode<LineParams, keyof LineParams> {
             const vector = calcPoint(from, to, (a, b) => b - a);
             const vecMagnitude = Math.sqrt(vector.x ** 2 + vector.y ** 2);
             const normalizedVector = {
-                x: vecMagnitude && vector.y / vecMagnitude * params.vezier,
-                y: vecMagnitude && -vector.x / vecMagnitude * params.vezier
+                x: vecMagnitude && vector.y / vecMagnitude * params.bezier,
+                y: vecMagnitude && -vector.x / vecMagnitude * params.bezier
             };
 
             const controlPoint = calcPoint(from, to, normalizedVector, (a, b, c) => (a + b) / 2 + c);
