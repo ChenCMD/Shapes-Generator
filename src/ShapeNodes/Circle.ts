@@ -1,6 +1,6 @@
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { Manipulatable, NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
-import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
+import { calcPoint, createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
 import { toRadians, rotateMatrix2D } from '../utils/math';
 
@@ -43,12 +43,15 @@ export class CircleShape extends AbstractShapeNode<CircleParams, keyof CirclePar
         for (const center of params.center.manipulate ? params.center.value : [params.center.value]) {
             for (let i = 0; i < params.count; i++) {
                 const theta = toRadians(360 / params.count * i + params.start);
-                const p: Point = rotateMatrix2D([
-                    Math.sin(theta) * params.radius,
-                    -Math.cos(theta) * params.radius
-                ], params.rotate);
-                const [rotatedX, rotatedY] = rotateMatrix2D([p[0], p[1] * (params.ellipse / 100)], -params.rotate);
-                addPoint([rotatedX + center.x, rotatedY + center.y]);
+                const p: Point = rotateMatrix2D({
+                    x: Math.sin(theta) * params.radius,
+                    y: -Math.cos(theta) * params.radius
+                }, params.rotate);
+                const rotatedPoint = rotateMatrix2D({
+                    x: p.x,
+                    y: p.y * (params.ellipse / 100)
+                }, -params.rotate);
+                addPoint(calcPoint(rotatedPoint, center, (a, b) => a + b));
             }
         }
 

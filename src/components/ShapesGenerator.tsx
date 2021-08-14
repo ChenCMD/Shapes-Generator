@@ -8,7 +8,7 @@ import createReducer from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';
-import { deleteDuplicatedPoints } from '../types/Point';
+import { deleteDuplicatedPoints, Point } from '../types/Point';
 import { createKeyboardEvent } from '../utils/element';
 import ContextMenu from './ContextMenu';
 import ExportModal from './ExportModal';
@@ -39,7 +39,7 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
     const [isOpenImportModal, setIsOpenImportModal] = useState<boolean>(false);
-    const [contextTarget, setContextTarget] = useState<{ x: number, y: number, index: number } | undefined>();
+    const [contextTarget, setContextTarget] = useState<Point & { index: number } | undefined>();
 
     const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
         if (contextTarget && e.key === 'Escape') return setContextTarget(undefined);

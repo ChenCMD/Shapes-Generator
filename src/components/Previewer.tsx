@@ -3,7 +3,7 @@ import { Circle, Layer, Line, Stage } from 'react-konva';
 import Measure from 'react-measure';
 import styles from '../styles/Previewer.module.scss';
 import { GridMode } from '../types/GridMode';
-import { ProcessedPoints } from '../types/Point';
+import { calcPoint, ProcessedPoints } from '../types/Point';
 
 interface PreviewerProps {
     shapes: ProcessedPoints[]
@@ -16,8 +16,8 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     const rawStyle = window.getComputedStyle(document.documentElement);
 
     const padding = size[minSize] / 6;
-    const centerModifier = useMemo(() => ({ x: size.x / 2, y: size.y / 2 }), [size]);
-    const maxBounds = Math.ceil(Math.max(...shapes.flatMap(v => v.points.flatMap(v2 => v2.pos)).map(Math.abs)));
+    const centerModifier = useMemo(() => calcPoint(size, p => p / 2,), [size]);
+    const maxBounds = Math.ceil(Math.max(...shapes.flatMap(v => v.points.flatMap(v2 => [v2.pos.x, v2.pos.y])).map(Math.abs)));
     const getMultiple = useCallback((axis: 'x' | 'y') => Math.min((size[axis] - padding * 2) / 2 / maxBounds, size[axis] / 12), [maxBounds, padding, size]);
     const posMultiple = getMultiple(minSize);
 
@@ -30,10 +30,9 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
                 if (b.isSelected) return -1;
                 return 0;
             })
-            .flatMap(({ isSelected, isManipulateShape, points: p }) => p.map(({ pos: [x, y], id }) => (
+            .flatMap(({ isSelected, isManipulateShape, points: p }) => p.map(({ pos, id }) => (
                 <Circle
-                    x={x * posMultiple + centerModifier.x}
-                    y={y * posMultiple + centerModifier.y}
+                    {...calcPoint(pos, centerModifier, (a, b) => a * posMultiple + b)}
                     radius={(isManipulateShape ? 0.1 : 0.15) * posMultiple}
                     fill={isManipulateShape ? 'rgb(212, 212, 0)' : 'rgb(212, 212, 212)'}
                     strokeWidth={2}

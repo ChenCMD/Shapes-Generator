@@ -11,7 +11,7 @@ import { locale } from '../locales';
 import { generateExportKey } from '../ShapeNodes';
 import styles from '../styles/ExportModal.module.scss';
 import { ExportObject } from '../types/ExportObject';
-import { Point, ProcessedPoints } from '../types/Point';
+import { calcPoint, Point, ProcessedPoints } from '../types/Point';
 import { toFracString as toStr } from '../utils/common';
 import { stopPropagation } from '../utils/element';
 import { round } from '../utils/math';
@@ -41,11 +41,11 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
     const generateExportData = useCallback(() => {
         const importStr = `# [ImportKey]: ${generateExportKey(exportObjects)}`;
         const mkCmd = (pos: Point) => isCustomCommandMode
-            ? customCommand.replace(/\$\{x\}/g, toStr(pos[0])).replace(/\$\{y\}/g, toStr(pos[1]))
-            : `particle ${particle.trim()} ^${toStr(pos[0])} ^ ^${toStr(pos[1])} 0 0 0 ${toStr(particleSpeed)} 1`;
+            ? customCommand.replace(/\$\{x\}/g, toStr(pos.x)).replace(/\$\{y\}/g, toStr(pos.y))
+            : `particle ${particle.trim()} ^${toStr(pos.x)} ^ ^${toStr(pos.y)} 0 0 0 ${toStr(particleSpeed)} 1`;
         return [importStr, ...points.flatMap(v => [
             ...(hasNameComment ? [`# ${v.name}`] : []),
-            ...v.points.map(({ pos: [x, y] }) => mkCmd([round(x, exportAcc), round(y, exportAcc)]))
+            ...v.points.map(({ pos }) => mkCmd(calcPoint(pos, p => round(p, exportAcc))))
         ])].join('\n');
     }, [customCommand, exportAcc, exportObjects, hasNameComment, isCustomCommandMode, particle, particleSpeed, points]);
 
