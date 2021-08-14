@@ -12,8 +12,9 @@ import { generateExportKey } from '../ShapeNodes';
 import styles from '../styles/ExportModal.module.scss';
 import { ExportObject } from '../types/ExportObject';
 import { Point, ProcessedPoints } from '../types/Point';
-import { round, toFracString as toStr } from '../utils/common';
+import { toFracString as toStr } from '../utils/common';
 import { stopPropagation } from '../utils/element';
+import { round } from '../utils/math';
 import RangeSlider from './RangeSlider';
 import { showNotification } from './ShapesGenerator';
 

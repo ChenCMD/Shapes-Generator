@@ -4,7 +4,6 @@ import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/ShapeList.module.scss';
-import { mod } from '../utils/common';
 import ShapeListItem from './ShapeListItem';
 import ShapeListMenu from './ShapeListMenu';
 
@@ -17,7 +16,7 @@ interface ShapeListProps {
 }
 
 const ShapeList = ({ shapes, shapesLength, latestSelect, shapesDispatch, setContextTarget }: ShapeListProps): JSX.Element => {
-    useEffect(() => document.getElementById(`shape-list-item-${mod(latestSelect[0], shapesLength)}`)?.focus(), [latestSelect, shapesLength]);
+    useEffect(() => document.getElementById(`shape-list-item-${latestSelect[0]}`)?.focus(), [latestSelect]);
     useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapesLength]);
 
     const onSelect = useCallback((index: number, isRetentionOld: boolean) => shapesDispatch({ type: 'select', index, isRetentionOld }), [shapesDispatch]);

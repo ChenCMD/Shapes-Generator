@@ -2,7 +2,7 @@ import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { NormalParameter, Param, ParamMetaData, ParamValue } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
-import { mod, rotateMatrix2D, toRadians } from '../utils/common';
+import { toRadians, rotateMatrix2D, mod } from '../utils/math';
 import { CircleParams } from './Circle';
 
 export interface PolygonParams extends CircleParams {

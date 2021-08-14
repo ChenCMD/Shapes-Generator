@@ -2,7 +2,7 @@ import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { Manipulatable, ManipulateShape, NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
-import { mod } from '../utils/common';
+import { mod } from '../utils/math';
 
 export interface LineAnchorParams extends ManipulateShape {
     count: NormalParameter

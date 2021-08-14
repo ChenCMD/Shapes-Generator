@@ -3,7 +3,7 @@ import { Shape } from '../ShapeNodes';
 import { RawParam, TargetParameter } from '../types/Parameter';
 import { Point } from '../types/Point';
 import { UUID } from '../types/UUID';
-import { mod } from '../utils/common';
+import { mod } from '../utils/math';
 
 interface AddAction {
     type: 'add'

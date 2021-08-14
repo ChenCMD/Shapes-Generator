@@ -2,7 +2,7 @@ import { AbstractShapeNode } from '../types/AbstractShapeNode';
 import { Manipulatable, ManipulateShape, NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
 import { createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
-import { rotateMatrix2D, toRadians } from '../utils/common';
+import { toRadians, rotateMatrix2D } from '../utils/math';
 
 export interface CircleAnchorParams extends ManipulateShape {
     count: NormalParameter
