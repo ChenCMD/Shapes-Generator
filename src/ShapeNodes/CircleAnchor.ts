@@ -1,8 +1,8 @@
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { Manipulatable, ManipulateShape, NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
+import { BoolParameter, Manipulatable, ManipulateShape, NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
 import { calcPoint, createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
-import { toRadians, rotateMatrix2D } from '../utils/math';
+import { toRadians, rotateMatrix2D, sampleDensely, spreadSamplesOver } from '../utils/math';
 import { CircleParams } from './Circle';
 
 export interface CircleAnchorParams extends ManipulateShape {
@@ -12,6 +12,7 @@ export interface CircleAnchorParams extends ManipulateShape {
     start: RangeParameter
     ellipse: RangeParameter
     rotate: RangeParameter
+    isBezierEquallySpaced: BoolParameter
 }
 
 const paramMetaData: ParamMetaData<CircleAnchorParams> = {
@@ -21,7 +22,8 @@ const paramMetaData: ParamMetaData<CircleAnchorParams> = {
     start: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
     ellipse: { type: 'range', unit: 'unit.per', min: 0, max: 100, step: 1 },
     rotate: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
-    target: { type: 'target' }
+    target: { type: 'target' },
+    isBezierEquallySpaced: { type: 'boolean' }
 };
 
 const defaultParams: ParamValue<CircleAnchorParams> = {
@@ -31,7 +33,8 @@ const defaultParams: ParamValue<CircleAnchorParams> = {
     start: 0,
     ellipse: 100,
     rotate: 0,
-    target: { target: '', arg: '' }
+    target: { target: '', arg: '' },
+    isBezierEquallySpaced: false
 };
 
 export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams, keyof CircleAnchorParams> {
@@ -41,12 +44,12 @@ export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams, key
 
     protected generatePointSet(params: ParamValue<CircleParams>): IdentifiedPoint[] {
         const points: IdentifiedPoint[] = [];
-        const addPoint = (pos: Point) => points.push(createIdentifiedPoint(this.uuid, pos));
+        const addPoint = (...pos: Point[]) => points.push(...pos.map(p => createIdentifiedPoint(this.uuid, p)));
 
         for (const center of params.center.manipulate ? params.center.value : [params.center.value]) {
-            for (let i = 0; i < params.count; i++) {
-                const theta = toRadians(360 / params.count * i + params.start);
-                const p: Point = rotateMatrix2D({
+            const pointAt = (t: number) => {
+                const theta = toRadians(360 / params.count * (params.count * t) + params.start);
+                const p = rotateMatrix2D({
                     x: Math.sin(theta) * params.radius,
                     y: -Math.cos(theta) * params.radius
                 }, params.rotate);
@@ -54,7 +57,18 @@ export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams, key
                     x: p.x,
                     y: p.y * (params.ellipse / 100)
                 }, -params.rotate);
-                addPoint(calcPoint(rotatedPoint, center, (a, b) => a + b));
+                return calcPoint(rotatedPoint, center, (a, b) => a + b);
+            };
+            if (params.isBezierEquallySpaced) {
+                const samples = [
+                    ...sampleDensely(t => pointAt(t / 2)).map(v => (v.t / 0.5, v)),
+                    ...sampleDensely(t => pointAt(t / 2 + 0.5)).map(v => (v.t / 0.5 + 0.5, v))
+                ];
+                console.log(samples);
+                addPoint(...spreadSamplesOver(samples, params.count, true));
+            } else {
+                for (let i = 0; i < params.count; i++)
+                    addPoint(pointAt(i / params.count));
             }
         }
 

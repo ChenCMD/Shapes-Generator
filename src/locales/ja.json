@@ -49,6 +49,8 @@
     "shape.circle.ellipse.description": "楕円の歪みの強さ",
     "shape.circle.rotate.name": "楕円角",
     "shape.circle.rotate.description": "楕円の歪みを与える角度",
+    "shape.circle.isBezierEquallySpaced.name": "楕円等間隔化",
+    "shape.circle.isBezierEquallySpaced.description": "有効化すると、楕円補正によって歪んだ点間の距離を等間隔に補正します",
     "shape.polygon": "多角形",
     "shape.polygon.count.name": "各線の生成数",
     "shape.polygon.count.description": "一つの線当たりいくつの点で生成するか",
