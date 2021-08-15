@@ -1,7 +1,8 @@
 import rfdc from 'rfdc';
 import { ShapeType } from '../ShapeNodes';
 import { ExportObject } from './ExportObject';
-import { ParamMetaData, Param, ParamValue, Parameter, TargetParameter, isManipulateParam, isManipulatable, Manipulatable, RawParam, ManipulateShape } from './Parameter';
+import { ManipulateShape, isManipulatable, isManipulateParam, Manipulatable } from './Manipulate';
+import { ParamMetaData, Param, ParamValue, Parameter, TargetParameter, RawParam } from './Parameter';
 import { IdentifiedPoint, Point } from './Point';
 import { generateUUID, UUID } from './UUID';
 

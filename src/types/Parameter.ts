@@ -1,3 +1,4 @@
+import { Manipulatable } from './Manipulate';
 import { UUID } from './UUID';
 
 export interface NormalParameter {
@@ -38,37 +39,18 @@ interface ParamMetaDataBase {
     }
 }
 
-export interface ManipulateShape {
-    target: TargetParameter
-}
-
 export type RawParam = NormalParameter | PosParameter | RangeParameter | BoolParameter | TargetParameter;
-
-interface ManipulateValue<T extends RawParam['value'] = RawParam['value']> {
-    value: {
-        manipulate: true
-        value: T[]
-        from: UUID
-        old: T
-    }
-}
-
-export type Manipulatable<T extends { type?: RawParam['type'] }> = (
-    T extends { value: RawParam['value'] }
-    ? Omit<T, 'value'> & (
-        | { value: { manipulate?: false, value: T['value'] } }
-        | ManipulateValue<T['value']>
-    )
-    : T
-) & { manipulatable: true };
 
 export type Param<T extends { type?: RawParam['type'] } = RawParam> = RawParam | Manipulatable<T>;
 
-type MetaData<T extends { type?: RawParam['type'] } = Param> = T extends Manipulatable<infer U>
+export type MetaData<T extends { type?: RawParam['type'] } = Param> = T extends Manipulatable<infer U>
     ? Omit<ParamMetaDataBase, 'manipulatable'> & Manipulatable<Omit<U, 'value'>>
     : ParamMetaDataBase & Omit<T, 'value'>;
+
 export type ParamMetaData<T extends { [k in keyof T]: Param }> = { [k in keyof T]: MetaData<T[k]> };
+
 export type ParamValue<T extends { [k in keyof T]: Param }> = { [k in keyof T]: T[k]['value'] };
+
 export type Parameter<T extends RawParam = RawParam> = (T & ParamMetaDataBase) | (T extends PosParameter
     ? Omit<ParamMetaDataBase, 'manipulatable'> & Manipulatable<T>
     : never);
@@ -95,27 +77,4 @@ export function validateParam(value: string | number, validation: ParamMetaDataB
         return false;
 
     return true;
-}
-
-export function isManipulatable(v: unknown): v is Manipulatable<RawParam>['value'];
-export function isManipulatable(v: unknown, metaData: MetaData): v is Manipulatable<RawParam>['value'];
-export function isManipulatable(v: unknown, metaData?: MetaData): v is Manipulatable<RawParam>['value'] {
-    return metaData
-        ? !!metaData.manipulatable
-        : typeof v === 'object' && !!v && 'value' in v;
-}
-
-export function isManipulateParam(metaData: MetaData, v: unknown): v is ManipulateValue<RawParam['value']>['value'] {
-    const type = metaData.type ?? 'normal';
-    if (metaData.manipulatable && isManipulatable(v) && v.manipulate) {
-        const checkElem = (arr: unknown[]): boolean => {
-            if (type === 'normal' || type === 'range') return arr.every((v2: unknown) => typeof v2 === 'number');
-            if (type === 'pos') return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'x' in v2 && 'y' in v2);
-            if (type === 'boolean') return arr.every((v2: unknown) => typeof v2 === 'boolean');
-            if (type === 'target') return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'target' in v2 && 'arg' in v2);
-            return false;
-        };
-        return checkElem(v.value);
-    }
-    return false;
 }

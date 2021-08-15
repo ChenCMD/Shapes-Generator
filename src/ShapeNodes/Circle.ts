@@ -1,5 +1,6 @@
 import { AbstractShapeNode } from '../types/AbstractShapeNode';
-import { BoolParameter, Manipulatable, NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
+import { Manipulatable } from '../types/Manipulate';
+import { BoolParameter, NormalParameter, Param, ParamMetaData, ParamValue, PosParameter, RangeParameter } from '../types/Parameter';
 import { calcPoint, createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
 import { toRadians, rotateMatrix2D, sampleDensely, spreadSamplesOver } from '../utils/math';
