@@ -34,7 +34,7 @@ const defaultParams: ParamValue<LineAnchorParams> = {
     isBezierEquallySpaced: false
 };
 
-export class LineAnchorShape extends AbstractShapeNode<LineAnchorParams, keyof LineAnchorParams> {
+export class LineAnchorShape extends AbstractShapeNode<LineAnchorParams> {
     public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}, uuid?: UUID) {
         super('line-anchor', defaultParams, paramMetaData, name, params, true, uuid);
     }

@@ -35,7 +35,7 @@ const defaultParams: ParamValue<CircleParams> = {
     isBezierEquallySpaced: false
 };
 
-export class CircleShape extends AbstractShapeNode<CircleParams, keyof CircleParams> {
+export class CircleShape extends AbstractShapeNode<CircleParams> {
     public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}, uuid?: UUID) {
         super('circle', defaultParams, paramMetaData, name, params, false, uuid);
     }

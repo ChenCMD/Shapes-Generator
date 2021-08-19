@@ -38,7 +38,7 @@ const defaultParams: ParamValue<PolygonParams> = {
     isBezierEquallySpaced: false
 };
 
-export class PolygonShape extends AbstractShapeNode<PolygonParams, keyof PolygonParams> {
+export class PolygonShape extends AbstractShapeNode<PolygonParams> {
     public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}, uuid?: UUID) {
         super('polygon', defaultParams, paramMetaData, name, params, false, uuid);
     }

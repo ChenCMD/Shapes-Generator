@@ -38,7 +38,7 @@ const defaultParams: ParamValue<CircleAnchorParams> = {
     isBezierEquallySpaced: false
 };
 
-export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams, keyof CircleAnchorParams> {
+export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams> {
     public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}, uuid?: UUID) {
         super('circle-anchor', defaultParams, paramMetaData, name, params, true, uuid);
     }

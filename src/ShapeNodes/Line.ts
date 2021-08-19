@@ -32,7 +32,7 @@ const defaultParams: ParamValue<LineParams> = {
     isBezierEquallySpaced: false
 };
 
-export class LineShape extends AbstractShapeNode<LineParams, keyof LineParams> {
+export class LineShape extends AbstractShapeNode<LineParams> {
     public constructor(name: string, params: ParamValue<{ [k: string]: Param }> = {}, uuid?: UUID) {
         super('line', defaultParams, paramMetaData, name, params, false, uuid);
     }

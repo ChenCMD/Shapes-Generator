@@ -6,7 +6,7 @@ import { ParamMetaData, Param, ParamValue, Parameter, TargetParameter, RawParam 
 import { IdentifiedPoint, Point } from './Point';
 import { generateUUID, UUID } from './UUID';
 
-export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P extends string> {
+export abstract class AbstractShapeNode<T extends { [key in keyof T]: Param }> {
     // Set<P>にしないのはAbstractShapeNode#setParameterでのvalidationが面倒になるため。
     private validateParams: Set<string>;
     private _params: ParamValue<T>;
@@ -41,11 +41,11 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
         return this.isManipulateShape;
     }
 
-    private isParameterKey(argName: string): argName is P {
+    private isParameterKey(argName: string): argName is Extract<keyof T, string> {
         return this.validateParams.has(argName);
     }
 
-    private isParameterValue(argName: P, v: unknown): v is T[P]['value'] {
+    private isParameterValue(argName: keyof T, v: unknown): v is T[keyof T]['value'] {
         // normal | range -> number, pos -> { x: number, y: number };
         const type = this.paramMetaData[argName].type ?? 'normal';
         if (this.paramMetaData[argName].manipulatable) {
@@ -133,7 +133,7 @@ export abstract class AbstractShapeNode<T extends { [key in P]: Param }, P exten
 
     protected abstract generatePointSet(params: ParamValue<T>): IdentifiedPoint[];
 
-    public abstract clone(): AbstractShapeNode<T, P>;
+    public abstract clone(): AbstractShapeNode<T>;
 
     public toExportObject(): ExportObject {
         return {
