@@ -79,7 +79,6 @@ export function importShape(importKey: string): Shape[] {
                 ].map(f => f(val, key)).filter(v => v)[0] || val
             ]
         );
-        console.log(parsedExportObjects);
         return parsedExportObjects.map(v => new shapes[v.type](v.name, v.params as ParamValue<{ [k: string]: Param }>, v.uuid));
     } catch (e) {
         console.log(e.stack);
