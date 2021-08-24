@@ -1,6 +1,7 @@
 import LZString from 'lz-string';
 import { showNotification } from '../components/ShapesGenerator';
 import { locale } from '../locales';
+import { migrate } from '../schema';
 import { ExportObject } from '../types/ExportObject';
 import { Param, ParamValue } from '../types/Parameter';
 import { generateUUID, isUUID, UUID } from '../types/UUID';
@@ -36,52 +37,51 @@ export function getShape(id: string, type: ShapeType): Shape {
     return new shapes[type](id);
 }
 
+function uuidReplacer(uuid: UUID | undefined, uuidMap: Map<UUID, UUID>): UUID | undefined {
+    if (!uuid) return uuid;
+    if (uuidMap.has(uuid)) return uuidMap.get(uuid)!;
+    const newUUID = generateUUID();
+    uuidMap.set(uuid, newUUID);
+    return newUUID;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function dataFixer(data: unknown, fixer: (k: string, v: unknown) => [k: string, v: unknown]): any {
-    if (Array.isArray(data)) return data.map(v => dataFixer(v, fixer));
+function uuidFixer(data: unknown, uuidMap: Map<UUID, UUID>): any {
+    if (Array.isArray(data)) return data.map(v => uuidFixer(v, uuidMap));
     if (((v: unknown): v is { [k: string]: unknown } => typeof v === 'object' && !!v)(data)) {
         const res: { [k: string]: unknown } = {};
-        for (const k of Object.getOwnPropertyNames(data)) {
-            const [k2, v2] = fixer(k, data[k]);
-            res[k2] = dataFixer(v2, fixer);
-        }
+        for (const k of Object.getOwnPropertyNames(data))
+            res[k] = uuidFixer(data[k], uuidMap);
         return res;
     }
+    if (typeof data === 'string' && isUUID(data))
+        return uuidReplacer(data, uuidMap);
     return data;
 }
 
-const keyFixMap: { [k: string]: string } = {
-    vezier: 'bezier'
-};
+const currentDataVersion = 2;
 
 export function importShape(importKey: string): Shape[] {
-    const rawExportObjects = LZString.decompressFromEncodedURIComponent(importKey);
+    const [, encodedObject, version] = /^([A-Za-z0-9+\-$]+)(?:_(\d+))?$/.exec(importKey) ?? [undefined, undefined, undefined];
+    if (!encodedObject) {
+        showNotification('error', locale('error.invalid.import-key'));
+        return [];
+    }
+    const rawExportObjects = LZString.decompressFromEncodedURIComponent(encodedObject);
     if (!rawExportObjects) {
         showNotification('error', locale('error.invalid.import-key'));
         return [];
     }
-    const uuidMap = new Map<UUID, UUID>();
-    const replaceUUID = (uuid: UUID | undefined) => {
-        if (!uuid) return uuid;
-        if (uuidMap.has(uuid)) return uuidMap.get(uuid);
-        const newUUID = generateUUID();
-        uuidMap.set(uuid, newUUID);
-        return newUUID;
-    };
     try {
-        const parsedExportObjects: ExportObject[] = dataFixer(
-            JSON.parse(rawExportObjects),
-            (key, val) => [
-                keyFixMap[key] ?? key,
-                [
-                    (v: unknown) => typeof v === 'string' && isUUID(v) && replaceUUID(v),
-                    (v: unknown, k: string) => (k === 'center' || k === 'from' || k === 'to') && typeof v === 'object' && !!v && 'x' in v && 'y' in v && { value: v }
-                ].map(f => f(val, key)).filter(v => v)[0] || val
-            ]
+        const parsedExportObjects: ExportObject[] = uuidFixer(
+            migrate(JSON.parse(rawExportObjects), parseInt(version || '1'), currentDataVersion),
+            new Map<UUID, UUID>()
         );
-        return parsedExportObjects.map(v => new shapes[v.type](v.name, v.params as ParamValue<{ [k: string]: Param }>, v.uuid));
+        return parsedExportObjects.map(
+            v => new shapes[v.type](v.name, v.params as ParamValue<{ [k: string]: Param }>, v.uuid)
+        );
     } catch (e) {
-        console.log(e.stack);
+        console.error(e.stack);
         if (e instanceof SyntaxError)
             showNotification('error', locale('error.invalid.import-key'));
         else
@@ -91,5 +91,5 @@ export function importShape(importKey: string): Shape[] {
 }
 
 export function generateExportKey(exportObjects: ExportObject[]): string {
-    return LZString.compressToEncodedURIComponent(JSON.stringify(exportObjects));
+    return `${LZString.compressToEncodedURIComponent(JSON.stringify(exportObjects))}_${currentDataVersion}`;
 }
