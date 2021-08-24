@@ -4,7 +4,6 @@ import { BoolParameter, NormalParameter, Param, ParamMetaData, ParamValue, PosPa
 import { calcPoint, createIdentifiedPoint, IdentifiedPoint, Point } from '../types/Point';
 import { UUID } from '../types/UUID';
 import { toRadians, rotateMatrix2D, sampleDensely, spreadSamplesOver } from '../utils/math';
-import { CircleParams } from './Circle';
 
 export interface CircleAnchorParams extends ManipulateShape {
     count: NormalParameter
@@ -13,7 +12,7 @@ export interface CircleAnchorParams extends ManipulateShape {
     start: RangeParameter
     ellipse: RangeParameter
     rotate: RangeParameter
-    isBezierEquallySpaced: BoolParameter
+    isEllipseEquallySpaced: BoolParameter
 }
 
 const paramMetaData: ParamMetaData<CircleAnchorParams> = {
@@ -24,7 +23,7 @@ const paramMetaData: ParamMetaData<CircleAnchorParams> = {
     ellipse: { type: 'range', unit: 'unit.per', min: 0, max: 100, step: 1 },
     rotate: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
     target: { type: 'target' },
-    isBezierEquallySpaced: { type: 'boolean' }
+    isEllipseEquallySpaced: { type: 'boolean' }
 };
 
 const defaultParams: ParamValue<CircleAnchorParams> = {
@@ -35,7 +34,7 @@ const defaultParams: ParamValue<CircleAnchorParams> = {
     ellipse: 100,
     rotate: 0,
     target: { target: '', arg: '' },
-    isBezierEquallySpaced: false
+    isEllipseEquallySpaced: false
 };
 
 export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams> {
@@ -43,7 +42,7 @@ export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams> {
         super('circle-anchor', defaultParams, paramMetaData, name, params, true, uuid);
     }
 
-    protected generatePointSet(params: ParamValue<CircleParams>): IdentifiedPoint[] {
+    protected generatePointSet(params: ParamValue<CircleAnchorParams>): IdentifiedPoint[] {
         const points: IdentifiedPoint[] = [];
         const addPoint = (...pos: Point[]) => points.push(...pos.map(p => createIdentifiedPoint(this.uuid, p)));
 
@@ -60,12 +59,11 @@ export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams> {
                 }, -params.rotate);
                 return calcPoint(rotatedPoint, center, (a, b) => a + b);
             };
-            if (params.isBezierEquallySpaced) {
+            if (params.isEllipseEquallySpaced) {
                 const samples = [
                     ...sampleDensely(t => pointAt(t / 2)).map(v => (v.t / 0.5, v)),
                     ...sampleDensely(t => pointAt(t / 2 + 0.5)).map(v => (v.t / 0.5 + 0.5, v))
                 ];
-                console.log(samples);
                 addPoint(...spreadSamplesOver(samples, params.count, true));
             } else {
                 for (let i = 0; i < params.count; i++)

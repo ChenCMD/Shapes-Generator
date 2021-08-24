@@ -21,11 +21,11 @@ export abstract class AbstractShapeNode<T extends { [key in keyof T]: Param }> {
         public name: string,
         params: ParamValue<{ [k: string]: Param }>,
         public readonly isManipulateShape: boolean,
-        _uuid?: UUID
+        uuid?: UUID
     ) {
         this.validateParams = new Set(Object.keys(paramMetaData));
         this._params = { ...rfdc()(defaultParams), ...params };
-        this._uuid = _uuid ?? generateUUID();
+        this._uuid = uuid ?? generateUUID();
         this.updatePointSet();
     }
 

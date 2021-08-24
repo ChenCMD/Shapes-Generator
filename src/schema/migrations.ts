@@ -32,5 +32,22 @@ export const migrations: Migration[] = [
                 }
             };
         })
+    },
+    {
+        version: 2,
+        migrator: (schema: { [k: string]: unknown }[]): { [k: string]: unknown }[] => schema.map(v => {
+            if (typeof v.type !== 'string' || !isObject(v.params)) nonCalledError();
+            const { isBezierEquallySpaced, ...params } = v.params;
+            return {
+                ...v,
+                params: {
+                    ...params,
+                    ...['circle', 'circle-anchor'].includes(v.type)
+                        ? { isEllipseEquallySpaced: isBezierEquallySpaced }
+                        : { isBezierEquallySpaced }
+                }
+            };
+
+        })
     }
 ];

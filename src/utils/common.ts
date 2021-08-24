@@ -1,3 +1,7 @@
+export function camelCaseToSnakeCase(str: string): string {
+    return str.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
+}
+
 export function toFracString(n: number | string): string {
     const str = String(n);
     const match = str.match(/^([+-]?)0*((?:[1-9][0-9]*)?)(?:\.([0-9]*[1-9]|)0*)?(?:[eE]([+-]?[0-9]+))?$/);

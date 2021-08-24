@@ -59,7 +59,7 @@ function uuidFixer(data: unknown, uuidMap: Map<UUID, UUID>): any {
     return data;
 }
 
-const currentDataVersion = 2;
+const currentDataVersion = 3;
 
 export function importShape(importKey: string): Shape[] {
     const [, encodedObject, version] = /^([A-Za-z0-9+\-$]+)(?:_(\d+))?$/.exec(importKey) ?? [undefined, undefined, undefined];

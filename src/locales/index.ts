@@ -1,3 +1,4 @@
+import { camelCaseToSnakeCase } from '../utils/common';
 import jaLocale from './ja.json';
 
 const locales: Record<string, Record<string, string>> = { '': jaLocale, 'ja': jaLocale };
@@ -18,8 +19,9 @@ export async function setupLanguage(lang: string | undefined, defaultLang: strin
 }
 
 export function locale<P extends { toString(): string }>(key: string, ...params: P[]): string {
-    const value: string | undefined = locales[language][key] ?? locales['ja'][key];
-    return resolveLocalePlaceholders(value, params) ?? (console.warn(`Unknown locale key "${key}"`), 'missing locale');
+    const snakedKey = camelCaseToSnakeCase(key);
+    const value: string | undefined = locales[language][snakedKey] ?? locales['ja'][snakedKey];
+    return resolveLocalePlaceholders(value, params) ?? (console.warn(`Unknown locale key "${snakedKey}"`), 'missing locale');
 }
 
 function resolveLocalePlaceholders<P extends { toString(): string }>(val: string | undefined, params?: P[]): string | undefined {

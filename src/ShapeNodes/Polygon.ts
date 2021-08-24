@@ -9,6 +9,7 @@ export interface PolygonParams extends CircleParams {
     corner: NormalParameter
     jump: NormalParameter
     bezier: NormalParameter
+    isEllipseEquallySpaced: BoolParameter
     isBezierEquallySpaced: BoolParameter
 }
 
@@ -22,6 +23,7 @@ const paramMetaData: ParamMetaData<PolygonParams> = {
     corner: { validation: { min: 1 } },
     jump: {},
     bezier: {},
+    isEllipseEquallySpaced: { type: 'boolean' },
     isBezierEquallySpaced: { type: 'boolean' }
 };
 
@@ -35,6 +37,7 @@ const defaultParams: ParamValue<PolygonParams> = {
     corner: 5,
     jump: 1,
     bezier: 0,
+    isEllipseEquallySpaced: false,
     isBezierEquallySpaced: false
 };
 
@@ -74,10 +77,9 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams> {
         };
 
         for (const center of params.center.manipulate ? params.center.value : [params.center.value]) {
-            const corners: Point[] = [];
-            for (let i = 0; i < params.corner; i++) {
-                const theta = toRadians(360 / params.corner * i + params.start);
-                const p: Point = rotateMatrix2D({
+            const pointAt = (t: number) => {
+                const theta = toRadians(360 / params.count * (params.count * t) + params.start);
+                const p = rotateMatrix2D({
                     x: Math.sin(theta) * params.radius,
                     y: -Math.cos(theta) * params.radius
                 }, params.rotate);
@@ -85,7 +87,18 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams> {
                     x: p.x,
                     y: p.y * (params.ellipse / 100)
                 }, -params.rotate);
-                corners.push(calcPoint(rotatedPoint, center, (a, b) => a + b));
+                return calcPoint(rotatedPoint, center, (a, b) => a + b);
+            };
+            const corners: Point[] = [];
+            if (params.isEllipseEquallySpaced) {
+                const samples = [
+                    ...sampleDensely(t => pointAt(t / 2)).map(v => (v.t / 0.5, v)),
+                    ...sampleDensely(t => pointAt(t / 2 + 0.5)).map(v => (v.t / 0.5 + 0.5, v))
+                ];
+                corners.push(...spreadSamplesOver(samples, params.corner, true));
+            } else {
+                for (let i = 0; i < params.corner; i++)
+                    corners.push(pointAt(i / params.corner));
             }
             for (const [i, corner] of corners.entries()) drawLine(corner, corners[mod(i + params.jump, corners.length)]);
         }

@@ -12,7 +12,7 @@ export interface CircleParams {
     start: RangeParameter
     ellipse: RangeParameter
     rotate: RangeParameter
-    isBezierEquallySpaced: BoolParameter
+    isEllipseEquallySpaced: BoolParameter
 }
 
 const paramMetaData: ParamMetaData<CircleParams> = {
@@ -22,7 +22,7 @@ const paramMetaData: ParamMetaData<CircleParams> = {
     start: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
     ellipse: { type: 'range', unit: 'unit.per', min: 0, max: 100, step: 1 },
     rotate: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
-    isBezierEquallySpaced: { type: 'boolean' }
+    isEllipseEquallySpaced: { type: 'boolean' }
 };
 
 const defaultParams: ParamValue<CircleParams> = {
@@ -32,7 +32,7 @@ const defaultParams: ParamValue<CircleParams> = {
     start: 0,
     ellipse: 100,
     rotate: 0,
-    isBezierEquallySpaced: false
+    isEllipseEquallySpaced: false
 };
 
 export class CircleShape extends AbstractShapeNode<CircleParams> {
@@ -57,12 +57,11 @@ export class CircleShape extends AbstractShapeNode<CircleParams> {
                 }, -params.rotate);
                 return calcPoint(rotatedPoint, center, (a, b) => a + b);
             };
-            if (params.isBezierEquallySpaced) {
+            if (params.isEllipseEquallySpaced) {
                 const samples = [
                     ...sampleDensely(t => pointAt(t / 2)).map(v => (v.t / 0.5, v)),
                     ...sampleDensely(t => pointAt(t / 2 + 0.5)).map(v => (v.t / 0.5 + 0.5, v))
                 ];
-                console.log(samples);
                 addPoint(...spreadSamplesOver(samples, params.count, true));
             } else {
                 for (let i = 0; i < params.count; i++)
