@@ -132,7 +132,6 @@
     "shape.polygon-anchor.is-bezier-equally-spaced.name": "ベジェ等間隔化",
     "shape.polygon-anchor.is-bezier-equally-spaced.description": "有効化すると、ベジェ補正によって歪んだ点間の距離を等間隔に補正します",
     "delete-duplicate-points": "重複点の削除",
-    "command-amount": "コマンド数",
     "manipulated": "操作中",
     "unit.points": "個",
     "unit.per": "%",
