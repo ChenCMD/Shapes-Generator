@@ -2,11 +2,11 @@ import React, { useCallback, useRef, useState } from 'react';
 import Container from 'react-bootstrap/esm/Container';
 import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
-import { locale } from '../../locales';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
 import { ShapeType } from '../../ShapeNodes';
 import styles from '../../styles/ParameterBox/Bool.module.scss';
 import { Parameter, BoolParameter } from '../../types/Parameter';
+import { useLocale } from '../ShapesGenerator';
 
 interface BoolParameterBoxProps {
     type: ShapeType
@@ -17,6 +17,7 @@ interface BoolParameterBoxProps {
 }
 
 const BoolParameterBox = ({ type, arg, data, index, shapesDispatch }: BoolParameterBoxProps): JSX.Element => {
+    const locale = useLocale();
     const windowRef = useRef<HTMLDivElement>(null);
     const [argValue, setArgValue] = useState<boolean>(data.value);
     const onChange = useCallback(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,13 +31,13 @@ const BoolParameterBox = ({ type, arg, data, index, shapesDispatch }: BoolParame
             <div className={styles['name']}>{locale(`shape.${type}.${arg}.name`)}</div>
             <Container fluid className={styles['container']}>
                 <ToggleButtonGroup className={styles['group']} type="radio" name="options" defaultValue={argValue.toString()} value={argValue.toString()}>
-                <ToggleButton className={styles['button-left']} value={'false'} onChange={onChange}>
-                    {locale('off')}
-                </ToggleButton>
-                <ToggleButton className={styles['button']} value={'true'} onChange={onChange}>
-                    {locale('on')}
-                </ToggleButton>
-            </ToggleButtonGroup>
+                    <ToggleButton className={styles['button-left']} value={'false'} onChange={onChange}>
+                        {locale('off')}
+                    </ToggleButton>
+                    <ToggleButton className={styles['button']} value={'true'} onChange={onChange}>
+                        {locale('on')}
+                    </ToggleButton>
+                </ToggleButtonGroup>
             </Container>
         </div>
     );

@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { locale } from '../../locales';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
 import { ShapeType } from '../../ShapeNodes';
 import styles from '../../styles/ParameterBox/Range.module.scss';
 import { Parameter, RangeParameter, validateParam } from '../../types/Parameter';
 import RangeSlider from '../RangeSlider';
+import { useLocale } from '../ShapesGenerator';
 
 interface RangeParameterBoxProps {
     type: ShapeType
@@ -15,6 +15,7 @@ interface RangeParameterBoxProps {
 }
 
 const RangeParameterBox = ({ type, arg, data, index, shapesDispatch }: RangeParameterBoxProps): JSX.Element => {
+    const locale = useLocale();
     const windowRef = useRef<HTMLDivElement>(null);
     const [argValue, setArgValue] = useState<number>(data.value);
     const onChange = useCallback((newParam: number) => {

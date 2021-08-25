@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import useWindowSize from '../hooks/useWindowSize';
-import { locale } from '../locales';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import styles from '../styles/ContextMenu.module.scss';
 import { createKeyboardEvent, getParentsId } from '../utils/element';
+import { useLocale } from './ShapesGenerator';
 
 interface ContextMenuProps {
     x?: number
@@ -14,6 +14,7 @@ interface ContextMenuProps {
 }
 
 const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMenuProps): JSX.Element => {
+    const locale = useLocale();
     const overlayRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLTableSectionElement>(null);
     const { width, height } = useWindowSize();

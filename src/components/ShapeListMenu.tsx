@@ -1,14 +1,15 @@
 import React, { useCallback, useState } from 'react';
-import { locale } from '../locales';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { getShape, ShapeType, shapeTypes } from '../ShapeNodes';
 import styles from '../styles/ShapeListMenu.module.scss';
+import { useLocale } from './ShapesGenerator';
 
 interface ShapeListMenuProps {
     shapesDispatch: ShapesDispatch
 }
 
 const ShapeListMenu = ({ shapesDispatch }: ShapeListMenuProps): JSX.Element => {
+    const locale = useLocale();
     const [shapePulldown, setShapePulldown] = useState<ShapeType>('line');
     const [addCount, setAddCount] = useState<{ [k in ShapeType]?: number }>({});
 
@@ -16,7 +17,7 @@ const ShapeListMenu = ({ shapesDispatch }: ShapeListMenuProps): JSX.Element => {
         const cnt = (addCount[shapePulldown] ??= 0) + 1;
         setAddCount({ ...addCount, [shapePulldown]: cnt });
         shapesDispatch({ type: 'add', shape: getShape(`${locale(`shape.${shapePulldown}`)} ${cnt}`, shapePulldown) });
-    }, [addCount, shapePulldown, shapesDispatch]);
+    }, [addCount, locale, shapePulldown, shapesDispatch]);
 
     const onChangeTargetShape = useCallback((e: { target: { value: string } }) => setShapePulldown(e.target.value as ShapeType), []);
 

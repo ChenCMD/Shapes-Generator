@@ -2,12 +2,12 @@ import React, { useCallback, useRef, useState } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
-import { locale } from '../../locales';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
 import { Shape, ShapeType } from '../../ShapeNodes';
 import styles from '../../styles/ParameterBox/Target.module.scss';
 import { Parameter, TargetParameter, validateParam } from '../../types/Parameter';
 import { UUID } from '../../types/UUID';
+import { useLocale } from '../ShapesGenerator';
 
 interface TargetParameterBoxProps {
     type: ShapeType
@@ -19,6 +19,7 @@ interface TargetParameterBoxProps {
 }
 
 const TargetParameterBox = ({ type, arg, data, index, shapes, shapesDispatch }: TargetParameterBoxProps): JSX.Element => {
+    const locale = useLocale();
     const windowRef = useRef<HTMLDivElement>(null);
     const [targetShape, setTargetShape] = useState<UUID | ''>(data.value.target);
     const [targetArg, setTargetArg] = useState<string>(data.value.target ? data.value.arg : '');

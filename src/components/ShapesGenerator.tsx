@@ -1,11 +1,13 @@
-import React, { useCallback, useMemo, useReducer, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useReducer, useState } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import { toast, ToastContainer } from 'react-toastify';
+import useLocalize from '../hooks/useLocalize';
 import useWindowCloseWarning from '../hooks/useWindowCloseWarning';
+import { locale as rawLocale } from '../locales';
 import createReducer from '../reducers/shapesReducer';
-import { Shape } from '../ShapeNodes';
+import { importShape, Shape } from '../ShapeNodes';
 import styles from '../styles/ShapesGenerator.module.scss';
 import { GridMode } from '../types/GridMode';
 import { deleteDuplicatedPoints, Point } from '../types/Point';
@@ -28,13 +30,22 @@ export const showNotification = (type: 'info' | 'success' | 'warning' | 'error' 
     });
 };
 
+const LocaleContext = createContext<typeof rawLocale>((key, ...params) => rawLocale(key, ...params));
+
+export const useLocale: () => typeof rawLocale = () => useContext(LocaleContext);
+
 interface ShapesGeneratorProps {
-    defaultShapes?: Shape[]
+    importKey?: string
+    initialLanguage?: string
 }
 
-const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element => {
+const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): JSX.Element => {
     const isNotSaved = useWindowCloseWarning();
-    const [[shapes, latestSelect], shapesDispatch] = useReducer(createReducer(() => isNotSaved.current = true), [defaultShapes ?? [], []]);
+    const { locale, language, setLanguage } = useLocalize(initialLanguage);
+    const [[shapes, latestSelect], shapesDispatch] = useReducer(
+        createReducer(() => isNotSaved.current = true),
+        useMemo<[Shape[], number[]]>(() => [importKey ? importShape(importKey) : [], []], [importKey])
+    );
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
     const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
@@ -58,7 +69,7 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [duplicatedPointRange, dependString]);
     return (
-        <>
+        <LocaleContext.Provider value={locale}>
             <Container fluid className={styles['container']} onKeyDown={onKeyDown} tabIndex={-1}>
                 <Row noGutters>
                     <Col xl={6} lg={6} md={12} sm={12} xs={12}>
@@ -76,6 +87,8 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
                             setGridMode={setGridMode}
                             duplicatedPointRange={duplicatedPointRange}
                             setDuplicatedPointRange={setDuplicatedPointRange}
+                            language={language}
+                            setLanguage={setLanguage}
                             setContextTarget={setContextTarget}
                             openImportModal={setIsOpenImportModal}
                             openExportModal={setIsOpenExportModal}
@@ -116,7 +129,7 @@ const ShapesGenerator = ({ defaultShapes }: ShapesGeneratorProps): JSX.Element =
                 pauseOnHover
                 limit={5}
             />
-        </>
+        </LocaleContext.Provider>
     );
 };
 

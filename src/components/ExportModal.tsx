@@ -7,7 +7,6 @@ import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
 import ReactModal from 'react-modal';
 import useTextToClipboard from '../hooks/useTextToClipboard';
-import { locale } from '../locales';
 import { generateExportKey } from '../ShapeNodes';
 import styles from '../styles/ExportModal.module.scss';
 import { ExportObject } from '../types/ExportObject';
@@ -16,7 +15,7 @@ import { toFracString as toStr } from '../utils/common';
 import { stopPropagation } from '../utils/element';
 import { round } from '../utils/math';
 import RangeSlider from './RangeSlider';
-import { showNotification } from './ShapesGenerator';
+import { showNotification, useLocale } from './ShapesGenerator';
 
 ReactModal.setAppElement('#root');
 
@@ -31,6 +30,7 @@ interface ExportModalProps {
 }
 
 const ExportModal = ({ openExportModal, importStrings: exportObjects, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }: ExportModalProps): JSX.Element => {
+    const locale = useLocale();
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [hasNameComment, setHasNameComment] = useState<boolean>(true);
     const [isCustomCommandMode, setCustomCommandMode] = useState<boolean>(false);

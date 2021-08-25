@@ -2,12 +2,15 @@ import React, { useCallback } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
+import Form from 'react-bootstrap/esm/Form';
 import Row from 'react-bootstrap/esm/Row';
 import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
-import { locale } from '../locales';
+import { languageMap, locale, setupLanguage } from '../locales';
 import styles from '../styles/Menu.module.scss';
 import { GridMode } from '../types/GridMode';
+import { isValidateLanguage, SpecificatedLanguage } from '../types/Language';
+import { objEntries } from '../utils/common';
 import RangeSlider from './RangeSlider';
 
 // useEffect(() => {
@@ -36,18 +39,36 @@ interface MenuProps {
     setGridMode: (mode: GridMode) => void
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
-    openImportModal: (isOpen: boolean) => void;
-    openExportModal: (isOpen: boolean) => void;
+    language: SpecificatedLanguage
+    setLanguage: (value: SpecificatedLanguage) => void
+    openImportModal: (isOpen: boolean) => void
+    openExportModal: (isOpen: boolean) => void
 }
 
-const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, openImportModal, openExportModal }: MenuProps): JSX.Element => {
+const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, language, setLanguage, openImportModal, openExportModal }: MenuProps): JSX.Element => {
     const onImport = useCallback(() => openImportModal(true), [openImportModal]);
     const onExport = useCallback(() => openExportModal(true), [openExportModal]);
+    const onLanguageChange = useCallback(({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => {
+        if (!isValidateLanguage(value)) return;
+        setupLanguage(value, language, true);
+        setLanguage(value);
+    }, [language, setLanguage]);
     const onGridModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value)), [setGridMode]);
 
     return (
         <div className={styles['window']}>
             <Container fluid className={styles['container']}>
+                <Row className={styles['row']}>
+                    <Col>
+                        <div className={styles['text']}>{locale('menu.language')}</div>
+                        <Form.Control className={styles['selection']} as="select" value={language} onChange={onLanguageChange}>
+                            {objEntries(languageMap).map(([code, name]) => (
+                                <option key={code} value={code}>{name}</option>
+                            ))}
+                        </Form.Control>
+                    </Col>
+                </Row>
+                <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row className={styles['row']}>
                     <Col>
                         <div className={styles['text']}>{locale('menu.grid')}</div>

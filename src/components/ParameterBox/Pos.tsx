@@ -2,13 +2,13 @@ import React, { useCallback, useRef, useState } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
-import { locale } from '../../locales';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
 import { ShapeType } from '../../ShapeNodes';
 import styles from '../../styles/ParameterBox/Pos.module.scss';
 import { getPosParameterValue, Parameter, PosParameter, validateParam } from '../../types/Parameter';
 import { UUID } from '../../types/UUID';
 import { stopPropagation } from '../../utils/element';
+import { useLocale } from '../ShapesGenerator';
 
 interface PosParameterBoxProps {
     type: ShapeType
@@ -20,6 +20,7 @@ interface PosParameterBoxProps {
 }
 
 const PosParameterBox = ({ type, arg, data, index, indexMap, shapesDispatch }: PosParameterBoxProps): JSX.Element => {
+    const locale = useLocale();
     const windowRef = useRef<HTMLDivElement>(null);
     const { x: valueX, y: valueY } = getPosParameterValue(data);
     const [argValueX, setArgValueX] = useState<string>(valueX);

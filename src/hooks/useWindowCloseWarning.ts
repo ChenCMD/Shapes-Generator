@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { locale } from '../locales';
+import { useLocale } from '../components/ShapesGenerator';
 
 const useWindowCloseWarning = (): React.MutableRefObject<boolean> => {
+    const locale = useLocale();
     const isShowWarning = useRef<boolean>(false);
 
     useEffect(() => {

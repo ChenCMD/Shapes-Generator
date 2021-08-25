@@ -6,6 +6,7 @@ import { ShapesDispatch } from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/UserInterface.module.scss';
 import { GridMode } from '../types/GridMode';
+import { SpecificatedLanguage } from '../types/Language';
 import Inspector from './Inspector';
 import Menu from './Menu';
 import ShapeList from './ShapeList';
@@ -18,12 +19,14 @@ interface UserInterfaceProps {
     setGridMode: (mode: GridMode) => void
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
+    language: SpecificatedLanguage
+    setLanguage: (value: SpecificatedLanguage) => void
     setContextTarget: (context: { x: number, y: number, index: number }) => void
     openImportModal: (isOpen: boolean) => void
     openExportModal: (isOpen: boolean) => void
 }
 
-const UserInterface = ({ shapes, latestSelect, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, setContextTarget, openImportModal, openExportModal }: UserInterfaceProps): JSX.Element => (
+const UserInterface = ({ shapes, latestSelect, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, language, setLanguage, setContextTarget, openImportModal, openExportModal }: UserInterfaceProps): JSX.Element => (
     <Container fluid className={styles['user-interface']}>
         <Row noGutters>
             <Col className={styles['col-inspector']}>
@@ -49,6 +52,8 @@ const UserInterface = ({ shapes, latestSelect, shapesDispatch, gridMode, setGrid
                     setGridMode={setGridMode}
                     duplicatedPointRange={duplicatedPointRange}
                     setDuplicatedPointRange={setDuplicatedPointRange}
+                    language={language}
+                    setLanguage={setLanguage}
                     openImportModal={openImportModal}
                     openExportModal={openExportModal}
                 />

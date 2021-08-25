@@ -2,12 +2,12 @@ import React, { useCallback, useState, useRef } from 'react';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
-import { locale } from '../../locales';
 import { ShapesDispatch } from '../../reducers/shapesReducer';
 import { ShapeType } from '../../ShapeNodes';
 import styles from '../../styles/ParameterBox/Normal.module.scss';
 import { NormalParameter, Parameter, validateParam } from '../../types/Parameter';
 import { stopPropagation } from '../../utils/element';
+import { useLocale } from '../ShapesGenerator';
 
 interface NormalParameterBoxProps {
     type: ShapeType
@@ -18,6 +18,7 @@ interface NormalParameterBoxProps {
 }
 
 const NormalParameterBox = ({ type, arg, data, index, shapesDispatch }: NormalParameterBoxProps): JSX.Element => {
+    const locale = useLocale();
     const windowRef = useRef<HTMLDivElement>(null);
     const [argValue, setArgValue] = useState<string>(data.value.toString());
     const onChange = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,11 +36,13 @@ const NormalParameterBox = ({ type, arg, data, index, shapesDispatch }: NormalPa
             <div className={styles['name']}>{locale(`shape.${type}.${arg}.name`)}</div>
             <Container fluid className={styles['container']}>
                 <Row noGutters>
-                    <Col xs={12 - (data.unit ? 2 : 0)}>
+                    <Col xs={12 - (data.unit && locale(data.unit) !== '' ? 2 : 0)}>
                         <input className={styles['input']} type='number' onChange={onChange} value={argValue} onKeyDown={stopPropagation} />
-                    </Col>
-                    {data.unit ? (<Col xs={2}><div className={styles['unit']}>{locale(data.unit)}</div></Col>) : <></>}
-                </Row>
+                    </Col>{
+                        data.unit && locale(data.unit) !== ''
+                            ? (<Col xs={2}><div className={styles['unit']}>{locale(data.unit)}</div></Col>)
+                            : <></>
+                    }</Row>
             </Container>
         </div>
     );

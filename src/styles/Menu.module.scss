@@ -22,6 +22,25 @@
     margin: 5px 0 5px 0;
 }
 
+.selection {
+    background-color: var(--window-gb-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    &:hover {
+        background-color: var(--hover-highlight);
+        border-color: var(--border-color);
+        color: var(--text-color);
+    }
+    &:active,
+    &.active,
+    &:focus {
+        background-color: var(--window-bg-color);
+        border-color: var(--border-color);
+        color: var(--text-color);
+        box-shadow: none;
+    }
+}
+
 .text {
     color: var(--text-color);
     font-size: 1.15rem;

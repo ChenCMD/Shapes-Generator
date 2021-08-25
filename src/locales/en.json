@@ -13,6 +13,7 @@
     "import.import-key": "Import key",
     "import.from-mcfunction": "from mcfunction",
     "import.from-key": "from key",
+    "menu.language": "Display language",
     "menu.grid": "Grid",
     "menu.grid.off": "Off",
     "menu.grid.block": "Block",
