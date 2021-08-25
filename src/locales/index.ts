@@ -1,8 +1,9 @@
+import { showNotification } from '../components/ShapesGenerator';
 import { camelCaseToSnakeCase } from '../utils/common';
-import jaLocale from './ja.json';
+import enLocale from './en.json';
 
-const locales: Record<string, Record<string, string>> = { '': jaLocale, 'ja': jaLocale };
-let language = 'ja';
+const locales: Record<string, Record<string, string>> = { '': enLocale, 'en': enLocale };
+let language = 'en';
 
 async function loadLocale(lang: string): Promise<void> {
     const data: Record<string, string> = await import(`./${lang}.json`);
@@ -10,11 +11,16 @@ async function loadLocale(lang: string): Promise<void> {
     locales[lang] = data;
 }
 
-export async function setupLanguage(lang: string | undefined, defaultLang: string): Promise<void> {
+export async function setupLanguage(lang: string | undefined, defaultLang: string, ignoreError = false): Promise<void> {
     const targetLanguage = lang ? lang : defaultLang;
     if (targetLanguage !== language) {
-        if (locales[targetLanguage] === undefined) await loadLocale(targetLanguage);
-        language = targetLanguage;
+        try {
+            if (locales[targetLanguage] === undefined) await loadLocale(targetLanguage);
+            language = targetLanguage;
+        } catch (e) {
+            if (ignoreError) return;
+            showNotification('error', locale('error.invalid-language'));
+        }
     }
 }
 

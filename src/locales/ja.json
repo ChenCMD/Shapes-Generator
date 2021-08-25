@@ -23,6 +23,7 @@
     "error.import-key-does-not-exists": "ImportKeyが存在しません",
     "error.invalid.import-key": "無効なImportKeyです",
     "error.import-unknown-problem": "importで想定しない問題が発生しました",
+    "error.invalid-language": "無効な言語が指定されました",
     "shape.line": "線",
     "shape.line.count.name": "生成数",
     "shape.line.count.description": "いくつの点で生成するか",

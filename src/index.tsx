@@ -13,7 +13,10 @@ const params = window.location.search.substring(1).split('&').reduce<Record<stri
 }, {});
 if (params.theme) document.documentElement.setAttribute('theme', params.theme);
 
-setupLanguage(params['lang'], 'ja').then(() => {
+setupLanguage(
+    params['lang'] ?? navigator.languages !== undefined ? navigator.languages[0] : navigator.language,
+    'ja', !('lang' in params)
+).then(() => {
     ReactDOM.render(
         <React.StrictMode>
             <ShapesGenerator defaultShapes={params['key'] ? importShape(params.key) : undefined} />
