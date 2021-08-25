@@ -4,6 +4,15 @@
     border-radius: 0.25rem;
     min-height: calc(50vh - 10px - 8px * 2);
     max-height: calc(50vh - 10px - 8px * 2);
+    overflow: auto;
+    scrollbar-width: thin;
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-color);
+        border-radius: 0.25rem;
+    }
 }
 
 .container {
