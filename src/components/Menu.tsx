@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/esm/Form';
 import Row from 'react-bootstrap/esm/Row';
 import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
-import { languageMap, locale, setupLanguage } from '../locales';
+import { languageMap, locale } from '../locales';
 import styles from '../styles/Menu.module.scss';
 import { GridMode } from '../types/GridMode';
 import { isValidateLanguage, SpecificatedLanguage } from '../types/Language';
@@ -48,11 +48,7 @@ interface MenuProps {
 const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, language, setLanguage, openImportModal, openExportModal }: MenuProps): JSX.Element => {
     const onImport = useCallback(() => openImportModal(true), [openImportModal]);
     const onExport = useCallback(() => openExportModal(true), [openExportModal]);
-    const onLanguageChange = useCallback(({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => {
-        if (!isValidateLanguage(value)) return;
-        setupLanguage(value, language, true);
-        setLanguage(value);
-    }, [language, setLanguage]);
+    const onLanguageChange = useCallback(({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => isValidateLanguage(value) && setLanguage(value), [setLanguage]);
     const onGridModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value)), [setGridMode]);
 
     return (

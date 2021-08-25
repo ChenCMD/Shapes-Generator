@@ -12,11 +12,15 @@ const params = window.location.search.substring(1).split('&').reduce<Record<stri
 }, {});
 if (params.theme) document.documentElement.setAttribute('theme', params.theme);
 
-const initialLanguage = params['lang'] ?? navigator.languages !== undefined ? navigator.languages[0] : navigator.language;
-setupLanguage(initialLanguage, 'ja', !('lang' in params)).then(() => {
+const initialLanguages = [];
+params['lang'] && initialLanguages.push(params['lang']);
+navigator.languages !== undefined && initialLanguages.push(...navigator.languages);
+initialLanguages.push(navigator.language);
+
+setupLanguage(initialLanguages, !('lang' in params)).then(lang => {
     ReactDOM.render(
         <React.StrictMode>
-            <ShapesGenerator importKey={params['key'] ? params.key : undefined} initialLanguage={initialLanguage} />
+            <ShapesGenerator importKey={params['key'] ? params.key : undefined} initialLanguage={lang} />
         </React.StrictMode>,
         document.getElementById('root')
     );

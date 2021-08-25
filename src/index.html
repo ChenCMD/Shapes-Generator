@@ -8,19 +8,71 @@
     <meta name="description" content="Make shape, generate function" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
     <title>Shapes Generator</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-204874126-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'UA-204874126-1');
-    </script>
 </head>
 
 <body>
     <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+    <script>
+        const rawStyle = window.getComputedStyle(document.documentElement);
+        const locale = {
+            en: {
+                message: 'This website uses cookies to ensure you get the best experience on our website.',
+                link: 'Learn more',
+                deny: 'Decline',
+                allow: 'Allow cookies'
+            },
+            ja: {
+                message: '本ウェブサイトでは、お客様に最適なサービスを提供するためにクッキーを使用しています。',
+                link: '詳細',
+                deny: '無効化',
+                allow: '許可'
+            }
+        }
+        const targetLanguage = window.location.search.substring(1)
+            .split('&')
+            .reduce((str, param) => {
+                const [key, val] = param.split('=');
+                return key === 'lang' ? val : str
+            }, '')
+            ?? (navigator.languages !== undefined ? navigator.languages[0] : navigator.language);
+        window.cookieconsent.initialise({
+            palette: {
+                popup: {
+                    background: rawStyle.getPropertyValue('--window-bg-color') + '; border: 1px solid ' + rawStyle.getPropertyValue('--border-color'),
+                    text: rawStyle.getPropertyValue('--text-color')
+                },
+                button: {
+                    background: rawStyle.getPropertyValue('--window-bg-color'),
+                    border: rawStyle.getPropertyValue('--border-color') + '; border-width: 1px',
+                    text: rawStyle.getPropertyValue('--text-color')
+                }
+            },
+            theme: 'classic',
+            position: 'bottom-left',
+            type: 'opt-out',
+            dismissOnWindowClick: true,
+            content: {
+                ...(locale[targetLanguage] ?? locale['en']),
+                href: 'https://github.com/ChenCMD/Shapes-Generator/wiki/CookiePolicy'
+            },
+            onStatusChange: function (status) {
+                if (this.hasConsented()) {
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() { dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'UA-204874126-1');
+                } else {
+                    window['ga-disable-UA-204874126-1'] = true;
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

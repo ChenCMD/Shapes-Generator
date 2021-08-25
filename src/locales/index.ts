@@ -21,17 +21,19 @@ async function loadLocale(lang: SpecificatedLanguage): Promise<void> {
     locales[lang] = data;
 }
 
-export async function setupLanguage(lang: string | undefined, defaultLang: SpecificatedLanguage, ignoreError = false): Promise<void> {
-    const targetLanguage = lang ? lang : defaultLang;
-    if (targetLanguage !== language && isValidateLanguage(targetLanguage)) {
-        try {
+export async function setupLanguage(langs: string[], ignoreError = false): Promise<string> {
+    for (const [i, targetLanguage] of langs.entries()) {
+        if (targetLanguage === language) break;
+        if (isValidateLanguage(targetLanguage)) {
             if (locales[targetLanguage] === undefined) await loadLocale(targetLanguage);
             language = targetLanguage;
-        } catch (e) {
-            if (ignoreError) return;
+            break;
+        } else {
+            if (ignoreError || i !== 0) continue;
             showNotification('error', locale('error.invalid-language'));
         }
     }
+    return language;
 }
 
 export function locale<P extends { toString(): string }>(key: string, ...params: P[]): string {
