@@ -7,7 +7,7 @@ const locales: Partial<Record<SpecificatedLanguage, Record<string, string>>> = {
 let language: SpecificatedLanguage = 'en';
 
 export const languageMap: Readonly<Record<SpecificatedLanguage, string>> = {
-    en: 'english',
+    en: 'English',
     ja: '日本語'
 } as const;
 
