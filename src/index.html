@@ -39,8 +39,8 @@
             .reduce((str, param) => {
                 const [key, val] = param.split('=');
                 return key === 'lang' ? val : str
-            }, '')
-            ?? (navigator.languages !== undefined ? navigator.languages[0] : navigator.language);
+            }, undefined)
+            ?? (navigator.languages !== undefined ? navigator.languages.filter(v => v.length == 2)[0] : navigator.language);
         window.cookieconsent.initialise({
             palette: {
                 popup: {
