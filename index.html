@@ -13,7 +13,7 @@
     <title>Shapes Generator</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-204874126-1"></script>
-<link href="app-1629921310831.css" rel="stylesheet"></head>
+<link href="app-1629922428816.css" rel="stylesheet"></head>
 
 <body>
     <div id="root"></div>
@@ -39,8 +39,8 @@
             .reduce((str, param) => {
                 const [key, val] = param.split('=');
                 return key === 'lang' ? val : str
-            }, '')
-            ?? (navigator.languages !== undefined ? navigator.languages[0] : navigator.language);
+            }, undefined)
+            ?? (navigator.languages !== undefined ? navigator.languages.filter(v => v.length == 2)[0] : navigator.language);
         window.cookieconsent.initialise({
             palette: {
                 popup: {
@@ -73,6 +73,6 @@
             }
         });
     </script>
-<script type="text/javascript" src="bundle-1629921310748.js"></script></body>
+<script type="text/javascript" src="bundle-1629922428724.js"></script></body>
 
 </html>
