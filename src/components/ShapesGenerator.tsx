@@ -75,23 +75,17 @@ const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): 
                     <Col xl={6} lg={6} md={12} sm={12} xs={12}>
                         <Previewer
                             shapes={points}
-                            gridMode={gridMode}
+                            {...{ gridMode }}
                         />
                     </Col>
                     <Col xl={6} lg={6} md={12} sm={12} xs={12}>
                         <UserInterface
-                            shapes={shapes}
-                            latestSelect={latestSelect}
-                            shapesDispatch={shapesDispatch}
-                            gridMode={gridMode}
-                            setGridMode={setGridMode}
-                            duplicatedPointRange={duplicatedPointRange}
-                            setDuplicatedPointRange={setDuplicatedPointRange}
-                            language={language}
-                            setLanguage={setLanguage}
-                            setContextTarget={setContextTarget}
                             openImportModal={setIsOpenImportModal}
                             openExportModal={setIsOpenExportModal}
+                            {...{
+                                shapes, latestSelect, shapesDispatch, gridMode, setGridMode, duplicatedPointRange,
+                                setDuplicatedPointRange, language, setLanguage, setContextTarget
+                            }}
                         />
                     </Col>
                 </ Row>
@@ -106,16 +100,11 @@ const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): 
                 points={pointsWithoutManipulate}
                 isOpen={isOpenExportModal}
                 openExportModal={setIsOpenExportModal}
-                duplicatedPointRange={duplicatedPointRange}
-                setDuplicatedPointRange={setDuplicatedPointRange}
-                isNotSaved={isNotSaved}
+                {...{ duplicatedPointRange, setDuplicatedPointRange, isNotSaved }}
             />
             <ContextMenu
-                x={contextTarget?.x}
-                y={contextTarget?.y}
-                index={contextTarget?.index}
                 onCloseRequest={onContextCloseRequest}
-                shapesDispatch={shapesDispatch}
+                {...{ ...contextTarget, shapesDispatch }}
             />
             <ToastContainer
                 position="bottom-left"

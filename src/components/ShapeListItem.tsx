@@ -69,8 +69,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onMoveSelect, onDupl
         <div
             className={styles['text']}
             id={`shape-list-item-${index}`}
-            onClick={onClick}
-            onDoubleClick={onDoubleClick}
+            {...{ onClick, onDoubleClick }}
             tabIndex={index === 0 ? 0 : -1}
         >
             {name}
@@ -82,9 +81,7 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onMoveSelect, onDupl
             className={styles['item']}
             action
             active={isSelected}
-            onContextMenu={onContextMenu}
-            onKeyDown={onKeyDown}
-            onKeyUp={onKeyUp}
+            {...{ onContextMenu, onKeyDown, onKeyUp }}
         >
             {renameMode ? renameElem : textElem}
         </ListGroup.Item >

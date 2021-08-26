@@ -30,10 +30,7 @@ const UserInterface = ({ shapes, latestSelect, shapesDispatch, gridMode, setGrid
     <Container fluid className={styles['user-interface']}>
         <Row noGutters>
             <Col className={styles['col-inspector']}>
-                <Inspector
-                    shapes={shapes}
-                    shapesDispatch={shapesDispatch}
-                />
+                <Inspector {...{ shapes, shapesDispatch }} />
             </Col>
         </ Row>
         <Row noGutters>
@@ -41,21 +38,15 @@ const UserInterface = ({ shapes, latestSelect, shapesDispatch, gridMode, setGrid
                 <ShapeList
                     shapes={shapes.map(shape => ({ name: shape.name, uuid: shape.uuid, isSelected: shape.isSelected }))}
                     shapesLength={shapes.length}
-                    latestSelect={latestSelect}
-                    shapesDispatch={shapesDispatch}
-                    setContextTarget={setContextTarget}
+                    {...{ latestSelect, shapesDispatch, setContextTarget }}
                 />
             </ Col>
             <Col xl={7} lg={7} md={12} sm={7} xs={12} className={styles['col-menu']}>
                 <Menu
-                    gridMode={gridMode}
-                    setGridMode={setGridMode}
-                    duplicatedPointRange={duplicatedPointRange}
-                    setDuplicatedPointRange={setDuplicatedPointRange}
-                    language={language}
-                    setLanguage={setLanguage}
-                    openImportModal={openImportModal}
-                    openExportModal={openExportModal}
+                    {...{
+                        gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange,
+                        language, setLanguage, openImportModal, openExportModal
+                    }}
                 />
             </ Col>
         </ Row>

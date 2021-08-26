@@ -31,17 +31,13 @@ const ShapeList = ({ shapes, shapesLength, latestSelect, shapesDispatch, setCont
         setContextTarget({ x: e.clientX, y: e.clientY, index });
     }, [setContextTarget, shapesDispatch]);
 
-    const items = shapes.map((shape, i) => (
+    const items = shapes.map(({ uuid: key, name, isSelected }, index) => (
+        // eslint-disable-next-line react/jsx-key
         <ShapeListItem
-            index={i}
-            key={shape.uuid}
-            name={shape.name}
-            isSelected={shape.isSelected}
-            onSelect={onSelect}
-            onMoveSelect={onMoveSelect}
-            onDuplicate={onDuplicate}
-            showContextMenu={showContextMenu}
-            shapesDispatch={shapesDispatch}
+            {...{
+                index, key, name, isSelected, onSelect,
+                onMoveSelect, onDuplicate, showContextMenu, shapesDispatch
+            }}
         />
     ));
 
