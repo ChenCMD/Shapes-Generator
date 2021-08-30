@@ -32,12 +32,12 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
 
     const onFileUpload = useCallback((files: FileList) => {
         files[0].text().then(text => {
-            const key = text.match(/(?<=\[ImportKey\]: ).*(?=\r?\n)/);
+            const key = text.match(/\[ImportKey\]: ([A-Za-z0-9+\-_$]*)\r?\n/);
             if (!key) {
                 showNotification('error', locale('error.import-key-does-not-exists'));
                 return;
             }
-            shapesDispatch({ type: 'addMany', shapes: importShape(key[0]) });
+            shapesDispatch({ type: 'addMany', shapes: importShape(key[1]) });
             onRequestClose();
         });
     }, [onRequestClose, shapesDispatch]);
