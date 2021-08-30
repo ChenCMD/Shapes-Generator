@@ -42,9 +42,11 @@ export const migrations: Migration[] = [
                 ...v,
                 params: {
                     ...params,
-                    ...['circle', 'circle-anchor'].includes(v.type)
-                        ? { isEllipseEquallySpaced: isBezierEquallySpaced }
-                        : { isBezierEquallySpaced }
+                    ...isBezierEquallySpaced === undefined
+                        ? {}
+                        : ['circle', 'circle-anchor'].includes(v.type)
+                            ? { isEllipseEquallySpaced: isBezierEquallySpaced }
+                            : { isBezierEquallySpaced }
                 }
             };
 
