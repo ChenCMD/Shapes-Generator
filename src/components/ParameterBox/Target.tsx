@@ -24,8 +24,8 @@ const TargetParameterBox = ({ type, arg, data, index, shapes, shapesDispatch }: 
     const [targetShape, setTargetShape] = useState<UUID | ''>(data.value.target);
     const [targetArg, setTargetArg] = useState<string>(data.value.target ? data.value.arg : '');
     const onChangeTargetShape = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLSelectElement>) => {
-        setTargetShape(newParam as UUID);
-        shapesDispatch({ type: 'update', index, arg, newParam: { target: newParam as UUID, arg: targetArg } });
+        setTargetShape(newParam as UUID | '');
+        shapesDispatch({ type: 'update', index, arg, newParam: { target: newParam as UUID | '', arg: targetArg } });
     }, [arg, index, shapesDispatch, targetArg]);
     const onChangeTargetArg = useCallback(({ target: { value: newParam } }: React.ChangeEvent<HTMLSelectElement>) => {
         setTargetArg(newParam);
