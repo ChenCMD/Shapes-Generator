@@ -36,24 +36,40 @@ export function createIdentifiedPoint(parentID: string, pos: Point): IdentifiedP
 }
 
 export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): ProcessedPoints[] {
+    type P = IdentifiedPoint & { parentIdx: number, isDuplicated?: boolean };
+    type ChunkMap = Record<number, Record<number, P[]>>;
+
     const processedPoints = shapes
         .filter(v => !v.isManipulateShape)
         .sort((a, b) => a.isSelected === b.isSelected ? 0 : (a.isSelected ? -1 : 1));
-    const points: (IdentifiedPoint & { parentIdx: number, isDuplicated?: boolean })[] = processedPoints
-        .flatMap((v, parentIdx) => v.points.map(p => ({ ...p, parentIdx })));
+    const points: P[] = processedPoints.flatMap((v, parentIdx) => v.points.map(p => ({ ...p, parentIdx })));
+    const chunkMap = points.reduce<ChunkMap>((map, p) => {
+        const x = Math.floor(p.pos.x);
+        const y = Math.floor(p.pos.y);
+        map[x] ??= {};
+        map[x][y] ??= [];
+        map[x][y].push(p);
+        return map;
+    }, {});
+
     if (threshold !== 0) {
-        for (const [i, { pos: { x: x1, y: y1 }, isDuplicated }] of points.entries()) {
+        for (const { id, pos: { x: x1, y: y1 }, isDuplicated } of points) {
             if (isDuplicated) continue;
-            for (const [j, { pos: { x: x2, y: y2 } }] of points.entries()) {
-                if (i === j || points[j].isDuplicated) continue;
-                points[j].isDuplicated = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) < threshold * threshold;
+            const duplicatablePoints = [Math.floor(x1 - threshold), Math.floor(x1 + threshold)]
+                .flatMap(x => [Math.floor(y1 - threshold), Math.floor(y1 + threshold)].flatMap(y => (chunkMap[x] ?? {})[y]))
+                .filter(p => p && p.id !== id && !p.isDuplicated);
+            for (const p of duplicatablePoints) {
+                const { pos: { x: x2, y: y2 } } = p;
+                p.isDuplicated = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) < threshold * threshold;
             }
         }
     }
-    const ans = points.reduce<ProcessedPoints[]>(
-        (arr, v) => (arr[v.parentIdx].points.push(...v.isDuplicated ? [] : [{ id: v.id, pos: v.pos }]), arr),
-        processedPoints.map(({ name, isSelected, isManipulateShape }) => ({ name, isSelected, isManipulateShape, points: [] }))
-    );
-    ans.push(...shapes.filter(v => v.isManipulateShape && v.isSelected));
-    return ans;
+
+    return [
+        ...points.reduce<ProcessedPoints[]>(
+            (arr, v) => (arr[v.parentIdx].points.push(...v.isDuplicated ? [] : [{ id: v.id, pos: v.pos }]), arr),
+            processedPoints.map(({ name, isSelected, isManipulateShape }) => ({ name, isSelected, isManipulateShape, points: [] }))
+        ),
+        ...shapes.filter(v => v.isManipulateShape && v.isSelected)
+    ];
 }
