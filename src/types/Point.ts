@@ -56,8 +56,8 @@ export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): Proc
         for (const { id, pos: { x: x1, y: y1 }, isDuplicated } of points) {
             if (isDuplicated) continue;
             const duplicatablePoints = [Math.floor(x1 - threshold), Math.floor(x1 + threshold)]
-                .flatMap(x => [Math.floor(y1 - threshold), Math.floor(y1 + threshold)].flatMap(y => (chunkMap[x] ?? {})[y]))
-                .filter(p => p && p.id !== id && !p.isDuplicated);
+                .flatMap(x => [Math.floor(y1 - threshold), Math.floor(y1 + threshold)].flatMap(y => chunkMap[x]?.[y] ?? []))
+                .filter(p => p.id !== id && !p.isDuplicated);
             for (const p of duplicatablePoints) {
                 const { pos: { x: x2, y: y2 } } = p;
                 p.isDuplicated = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) < threshold * threshold;
