@@ -1,5 +1,5 @@
-import uuid from 'uuidjs';
 import { Shape } from '../ShapeNodes';
+import { generateUUID, UUID } from './UUID';
 
 export interface Point {
     x: number
@@ -7,7 +7,7 @@ export interface Point {
 }
 
 export type IdentifiedPoint = {
-    id: string
+    id: `${string}-${UUID}`
     pos: Point
 };
 
@@ -32,7 +32,7 @@ export function calcPoint(a: Point, b: Point | ((ap: number) => number), c?: Poi
 }
 
 export function createIdentifiedPoint(parentID: string, pos: Point): IdentifiedPoint {
-    return { id: `${parentID}-${uuid.generate()}`, pos };
+    return { id: `${parentID}-${generateUUID()}`, pos };
 }
 
 export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): ProcessedPoints[] {
