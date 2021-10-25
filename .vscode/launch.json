@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-chrome",
+            "type": "chrome",
             "request": "launch",
             "preLaunchTask": "yarn: start",
             "name": "Debug - Dev",
@@ -14,7 +14,7 @@
             }
         },
         {
-            "type": "pwa-chrome",
+            "type": "chrome",
             "request": "launch",
             "preLaunchTask": "yarn: start-profiling",
             "name": "Debug - Profiling",
