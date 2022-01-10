@@ -4,7 +4,9 @@ const keyPushState: { [k: string]: boolean } = {};
 
 type Callback = (e: React.KeyboardEvent<HTMLElement>) => void;
 const useOnceKeydown = (key: string, callback: Callback): [keydownCallback: Callback, keyupCallback: () => void] => {
-    if (keyPushState[key] === undefined) keyPushState[key] = false;
+    if (keyPushState[key] === undefined) {
+        keyPushState[key] = false;
+    }
 
     const keydownCallback = useCallback<Callback>(e => {
         if (!keyPushState[key]) {

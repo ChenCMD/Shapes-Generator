@@ -35,7 +35,9 @@ const RangeSlider = ({ className, min, step, value, setValue, max, unit, special
     const onChange = useCallback((e: { target: { value: string } }) => setValue(parseFloat(e.target.value)), [setValue]);
 
     const size = React.useMemo(() => {
-        if (typeof layoutOffset !== 'object') return { xs: layoutOffset ?? 0 };
+        if (typeof layoutOffset !== 'object') {
+            return { xs: layoutOffset ?? 0 };
+        }
         return { ...layoutOffset, xs: layoutOffset.xs ?? 0 };
     }, [layoutOffset]);
 

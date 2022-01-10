@@ -17,19 +17,27 @@ export function getLanguage(): SpecificatedLanguage {
 
 async function loadLocale(lang: SpecificatedLanguage): Promise<void> {
     const data: Record<string, string> = await import(`./${lang}.json`);
-    if (!data) return;
+    if (!data) {
+        return;
+    }
     locales[lang] = data;
 }
 
 export async function setupLanguage(langs: string[], ignoreError = false): Promise<string> {
     for (const [i, targetLanguage] of langs.entries()) {
-        if (targetLanguage === language) break;
+        if (targetLanguage === language) {
+            break;
+        }
         if (isValidateLanguage(targetLanguage)) {
-            if (locales[targetLanguage] === undefined) await loadLocale(targetLanguage);
+            if (locales[targetLanguage] === undefined) {
+                await loadLocale(targetLanguage);
+            }
             language = targetLanguage;
             break;
         } else {
-            if (ignoreError || i !== 0) continue;
+            if (ignoreError || i !== 0) {
+                continue;
+            }
             showNotification('error', locale('error.invalid-language'));
         }
     }

@@ -41,7 +41,9 @@ export class LineShape extends AbstractShapeNode<LineParams> {
         const points: IdentifiedPoint[] = [];
         const addPoint = (...pos: Point[]) => points.push(...pos.map(p => createIdentifiedPoint(this.uuid, p)));
         const calcBezierPoint = (t: number, ...p: Point[]): Point => {
-            if (p.length === 1) return p[0];
+            if (p.length === 1) {
+                return p[0];
+            }
             const l = calcBezierPoint(t, ...p.slice(0, p.length - 1));
             const r = calcBezierPoint(t, ...p.slice(1, p.length));
             return calcPoint(l, r, (a, b) => (1 - t) * a + t * b);
@@ -49,12 +51,14 @@ export class LineShape extends AbstractShapeNode<LineParams> {
 
         const pointPairs: [from: Point, to: Point][] = [];
         if (params.from.manipulate && params.to.manipulate) {
-            for (const [i, from] of params.from.value.entries())
+            for (const [i, from] of params.from.value.entries()) {
                 pointPairs.push([from, params.to.value[i]]);
+            }
         } else if (params.from.manipulate !== params.to.manipulate) {
             for (const from of params.from.manipulate ? params.from.value : [params.from.value]) {
-                for (const to of params.to.manipulate ? params.to.value : [params.to.value])
+                for (const to of params.to.manipulate ? params.to.value : [params.to.value]) {
                     pointPairs.push([from, to]);
+                }
             }
         } else if (!params.from.manipulate && !params.to.manipulate) {
             pointPairs.push([params.from.value, params.to.value]);
@@ -76,7 +80,9 @@ export class LineShape extends AbstractShapeNode<LineParams> {
                 for (let i = 0; i < params.count; i++) {
                     const div = params.count - 1 || 1;
                     const t = i / div + 1 / div * (mod(params.offset, 100) / 100);
-                    if (t > 1) continue;
+                    if (t > 1) {
+                        continue;
+                    }
                     addPoint(calcBezierPoint(t, from, controlPoint, to));
                 }
             }

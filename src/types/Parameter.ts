@@ -56,25 +56,31 @@ export type Parameter<T extends RawParam = RawParam> = (T & ParamMetaDataBase) |
     : never);
 
 export function getPosParameterValue(param: Parameter<PosParameter>): { x: string, y: string } {
-    if (!param.manipulatable)
+    if (!param.manipulatable) {
         return { x: param.value.x.toString(), y: param.value.y.toString() };
+    }
     return param.value.manipulate
         ? { x: 'manipulated', y: 'manipulated' }
         : { x: param.value.value.x.toString(), y: param.value.value.y.toString() };
 }
 
 export function validateParam(value: string | number, validation: ParamMetaDataBase['validation']): boolean {
-    if (!validation) return true;
+    if (!validation) {
+        return true;
+    }
     if (typeof value === 'string') {
-        if (!(/^[+,-]?(?:[1-9]\d*|0)(?:\.\d+)?$/.test(value)))
+        if (!(/^[+,-]?(?:[1-9]\d*|0)(?:\.\d+)?$/.test(value))) {
             return false;
+        }
         value = parseFloat(value);
     }
 
-    if (validation.min && value < validation.min)
+    if (validation.min && value < validation.min) {
         return false;
-    if (validation.max && validation.max < value)
+    }
+    if (validation.max && validation.max < value) {
         return false;
+    }
 
     return true;
 }

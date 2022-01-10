@@ -27,11 +27,17 @@ const PosParameterBox = ({ type, arg, data, index, indexMap, shapesDispatch }: P
     const [argValueY, setArgValueY] = useState<string>(valueY);
 
     const onClickManipulateNotice = useCallback(() => {
-        if (!data.manipulatable || !data.value.manipulate) return;
+        if (!data.manipulatable || !data.value.manipulate) {
+            return;
+        }
         const val = data.value;
-        if (!val.manipulate) return;
+        if (!val.manipulate) {
+            return;
+        }
         const targetIdx = indexMap.indexOf(val.from);
-        if (targetIdx === -1) return;
+        if (targetIdx === -1) {
+            return;
+        }
         shapesDispatch({ type: 'select', index: targetIdx, isRetentionOld: false });
     }, [data, indexMap, shapesDispatch]);
 

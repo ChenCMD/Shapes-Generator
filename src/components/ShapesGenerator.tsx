@@ -53,7 +53,9 @@ const ShapesGenerator = ({ initialShapeKey, initialLanguage }: ShapesGeneratorPr
     const [contextTarget, setContextTarget] = useState<Point & { index: number } | undefined>();
 
     const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
-        if (contextTarget && e.key === 'Escape') return setContextTarget(undefined);
+        if (contextTarget && e.key === 'Escape') {
+            return setContextTarget(undefined);
+        }
         // こっちでは処理できないキー
         const elem = document.getElementById(`shape-list-item-${latestSelect.slice(-1)[0]}`);
         elem?.dispatchEvent(createKeyboardEvent('keydown', e.key, e.altKey, e.ctrlKey, e.shiftKey));
@@ -95,7 +97,7 @@ const ShapesGenerator = ({ initialShapeKey, initialLanguage }: ShapesGeneratorPr
             </Container>
             <ImportModal
                 isOpen={isImportModalOpened}
-                {...{ setImportModalOpened, shapesDispatch}}
+                {...{ setImportModalOpened, shapesDispatch }}
             />
             <ExportModal
                 points={processedPointsWithoutManipulate}

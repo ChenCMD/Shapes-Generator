@@ -119,8 +119,9 @@ export function spreadSamplesOver(samples: SampledPoint[], interpolatedPoints: n
     for (let i = 0; i < interpolatedPoints; i++) {
         const targetDistance = distancePerSample * i;
 
-        while (sampleIndexLowerBound < samplesWithDistances.length - 2 && samplesWithDistances[sampleIndexLowerBound + 1].distance < targetDistance)
+        while (sampleIndexLowerBound < samplesWithDistances.length - 2 && samplesWithDistances[sampleIndexLowerBound + 1].distance < targetDistance) {
             sampleIndexLowerBound++;
+        }
 
         const p1 = samplesWithDistances[sampleIndexLowerBound];
         const p2 = samplesWithDistances[sampleIndexLowerBound + 1];

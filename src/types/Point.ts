@@ -22,12 +22,15 @@ export function calcPoint(point: Point, calc: (p: number) => number): Point;
 export function calcPoint(a: Point, b: Point, calc: (ap: number, bp: number) => number): Point;
 export function calcPoint(a: Point, b: Point, c: Point, calc: (ap: number, bp: number, cp: number) => number): Point;
 export function calcPoint(a: Point, b: Point | ((ap: number) => number), c?: Point | ((ap: number, bp: number) => number), calc?: (ap: number, bp: number, cp: number) => number): Point {
-    if (typeof b === 'function')
+    if (typeof b === 'function') {
         return { x: b(a.x), y: b(a.y) };
-    if (typeof c === 'function')
+    }
+    if (typeof c === 'function') {
         return { x: c(a.x, b.x), y: c(a.y, b.y) };
-    if (c && typeof calc === 'function')
+    }
+    if (c && typeof calc === 'function') {
         return { x: calc(a.x, b.x, c.x), y: calc(a.y, b.y, c.y) };
+    }
     return { x: 0, y: 0 };
 }
 
@@ -54,7 +57,9 @@ export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): Proc
 
     if (threshold !== 0) {
         for (const { id, pos: { x: x1, y: y1 }, isDuplicated } of points) {
-            if (isDuplicated) continue;
+            if (isDuplicated) {
+                continue;
+            }
             const duplicatablePoints = [Math.floor(x1 - threshold), Math.floor(x1 + threshold)]
                 .flatMap(x => [Math.floor(y1 - threshold), Math.floor(y1 + threshold)].flatMap(y => chunkMap[x]?.[y] ?? []))
                 .filter(p => p.id !== id && !p.isDuplicated);

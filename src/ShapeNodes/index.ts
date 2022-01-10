@@ -38,8 +38,12 @@ export function getShape(id: string, type: ShapeType): Shape {
 }
 
 function uuidReplacer(uuid: UUID | undefined, uuidMap: Map<UUID, UUID>): UUID | undefined {
-    if (!uuid) return uuid;
-    if (uuidMap.has(uuid)) return uuidMap.get(uuid)!;
+    if (!uuid) {
+        return uuid;
+    }
+    if (uuidMap.has(uuid)) {
+        return uuidMap.get(uuid)!;
+    }
     const newUUID = generateUUID();
     uuidMap.set(uuid, newUUID);
     return newUUID;
@@ -47,15 +51,19 @@ function uuidReplacer(uuid: UUID | undefined, uuidMap: Map<UUID, UUID>): UUID | 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function uuidFixer(data: unknown, uuidMap: Map<UUID, UUID>): any {
-    if (Array.isArray(data)) return data.map(v => uuidFixer(v, uuidMap));
+    if (Array.isArray(data)) {
+        return data.map(v => uuidFixer(v, uuidMap));
+    }
     if (((v: unknown): v is { [k: string]: unknown } => typeof v === 'object' && !!v)(data)) {
         const res: { [k: string]: unknown } = {};
-        for (const k of Object.getOwnPropertyNames(data))
+        for (const k of Object.getOwnPropertyNames(data)) {
             res[k] = uuidFixer(data[k], uuidMap);
+        }
         return res;
     }
-    if (typeof data === 'string' && isUUID(data))
+    if (typeof data === 'string' && isUUID(data)) {
         return uuidReplacer(data, uuidMap);
+    }
     return data;
 }
 
@@ -82,10 +90,11 @@ export function importShape(importKey: string): Shape[] {
         );
     } catch (e) {
         console.error(e.stack);
-        if (e instanceof SyntaxError)
+        if (e instanceof SyntaxError) {
             showNotification('error', locale('error.invalid.import-key'));
-        else
+        } else {
             showNotification('error', locale('error.import-unknown-problem'));
+        }
         return [];
     }
 }

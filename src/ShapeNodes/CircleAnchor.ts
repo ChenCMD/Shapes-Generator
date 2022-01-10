@@ -66,8 +66,9 @@ export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams> {
                 ];
                 addPoint(...spreadSamplesOver(samples, params.count, true));
             } else {
-                for (let i = 0; i < params.count; i++)
+                for (let i = 0; i < params.count; i++) {
                     addPoint(pointAt(i / params.count));
+                }
             }
         }
 

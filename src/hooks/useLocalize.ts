@@ -9,8 +9,9 @@ const useLocalize = (initialLanguage?: string): {
 } => {
     const [language, setLanguage] = useState<SpecificatedLanguage>(initialLanguage && isValidateLanguage(initialLanguage) ? initialLanguage : 'en');
     const setLanguageWrap = useCallback((value: string) => {
-        if (isValidateLanguage(value))
+        if (isValidateLanguage(value)) {
             setupLanguage([value]).then(() => setLanguage(value));
+        }
     }, []);
     return {
         // localeは更新時に利用するすべてのコンポーネントを再描画する必要があるためuseCallbackでwrapしない

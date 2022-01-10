@@ -40,8 +40,9 @@ const ContextMenu = ({ x, y, index, onCloseRequest, shapesDispatch }: ContextMen
         if (overlayRef.current) {
             onCloseRequest();
             const elem = document.elementsFromPoint(e.clientX, e.clientY)[1] as HTMLElement;
-            if (getParentsId(elem).includes('context-menu'))
+            if (getParentsId(elem).includes('context-menu')) {
                 return;
+            }
             const event = document.createEvent('MouseEvents');
             event.initMouseEvent('contextmenu', e.bubbles, e.cancelable, elem.ownerDocument.defaultView ?? window, 1,
                 e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, null);

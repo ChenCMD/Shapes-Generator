@@ -73,8 +73,7 @@
         ],
         "curly": [
             "warn",
-            "multi-or-nest",
-            "consistent"
+            "all"
         ],
         "eqeqeq": "warn",
         "no-floating-decimal": "warn",

@@ -52,7 +52,9 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams> {
 
         const drawLine = (from: Point, to: Point) => {
             const calcBezierPoint = (t: number, ...p: Point[]): Point => {
-                if (p.length === 1) return p[0];
+                if (p.length === 1) {
+                    return p[0];
+                }
                 const l = calcBezierPoint(t, ...p.slice(0, p.length - 1));
                 const r = calcBezierPoint(t, ...p.slice(1, p.length));
                 return calcPoint(l, r, (a, b) => (1 - t) * a + t * b);
@@ -97,10 +99,13 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams> {
                 ];
                 corners.push(...spreadSamplesOver(samples, params.corner, true));
             } else {
-                for (let i = 0; i < params.corner; i++)
+                for (let i = 0; i < params.corner; i++) {
                     corners.push(pointAt(i / params.corner));
+                }
             }
-            for (const [i, corner] of corners.entries()) drawLine(corner, corners[mod(i + params.jump, corners.length)]);
+            for (const [i, corner] of corners.entries()) {
+                drawLine(corner, corners[mod(i + params.jump, corners.length)]);
+            }
         }
         return points;
     }

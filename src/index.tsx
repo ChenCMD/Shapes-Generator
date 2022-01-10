@@ -10,7 +10,9 @@ const params = window.location.search.substring(1).split('&').reduce<Record<stri
     obj[key] = val;
     return obj;
 }, {});
-if (params.theme) document.documentElement.setAttribute('theme', params.theme);
+if (params.theme) {
+    document.documentElement.setAttribute('theme', params.theme);
+}
 
 const initialLanguages = [];
 params['lang'] && initialLanguages.push(params['lang']);

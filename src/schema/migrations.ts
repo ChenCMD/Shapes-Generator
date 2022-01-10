@@ -15,7 +15,9 @@ export const migrations: Migration[] = [
     {
         version: 1,
         migrator: (schema: { [k: string]: unknown }[]): { [k: string]: unknown }[] => schema.map(v => {
-            if (typeof v.type !== 'string' || !isObject(v.params)) nonCalledError();
+            if (typeof v.type !== 'string' || !isObject(v.params)) {
+                nonCalledError();
+            }
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { vezier, ...params } = v.params;
             const wrapValue = (value: unknown) => (typeof value === 'object' && !!value && !('value' in value)) ? { value } : value;
@@ -36,7 +38,9 @@ export const migrations: Migration[] = [
     {
         version: 2,
         migrator: (schema: { [k: string]: unknown }[]): { [k: string]: unknown }[] => schema.map(v => {
-            if (typeof v.type !== 'string' || !isObject(v.params)) nonCalledError();
+            if (typeof v.type !== 'string' || !isObject(v.params)) {
+                nonCalledError();
+            }
             const { isBezierEquallySpaced, ...params } = v.params;
             return {
                 ...v,

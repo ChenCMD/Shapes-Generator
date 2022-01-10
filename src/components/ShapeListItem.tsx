@@ -24,8 +24,9 @@ const ShapeListItem = ({ index, name, isSelected, onSelect, onMoveSelect, onDupl
     const onDoubleClick = useCallback(() => setRenameMode(true), []);
 
     const onExitRenameMode = useCallback(() => {
-        if (inputElemRef.current?.value)
+        if (inputElemRef.current?.value) {
             shapesDispatch({ type: 'rename', index, newName: inputElemRef.current.value });
+        }
         setRenameMode(false);
     }, [index, shapesDispatch]);
 

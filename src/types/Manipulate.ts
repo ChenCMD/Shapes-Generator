@@ -38,10 +38,18 @@ export function isManipulateParam(metaData: MetaData, v: unknown): v is Manipula
     const type = metaData.type ?? 'normal';
     if (metaData.manipulatable && isManipulatable(v) && v.manipulate) {
         const checkElem = (arr: unknown[]): boolean => {
-            if (type === 'normal' || type === 'range') return arr.every((v2: unknown) => typeof v2 === 'number');
-            if (type === 'pos') return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'x' in v2 && 'y' in v2);
-            if (type === 'boolean') return arr.every((v2: unknown) => typeof v2 === 'boolean');
-            if (type === 'target') return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'target' in v2 && 'arg' in v2);
+            if (type === 'normal' || type === 'range') {
+                return arr.every((v2: unknown) => typeof v2 === 'number');
+            }
+            if (type === 'pos') {
+                return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'x' in v2 && 'y' in v2);
+            }
+            if (type === 'boolean') {
+                return arr.every((v2: unknown) => typeof v2 === 'boolean');
+            }
+            if (type === 'target') {
+                return arr.every((v2: unknown) => typeof v2 === 'object' && !!v2 && 'target' in v2 && 'arg' in v2);
+            }
             return false;
         };
         return checkElem(v.value);
