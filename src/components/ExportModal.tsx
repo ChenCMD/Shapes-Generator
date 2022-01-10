@@ -13,6 +13,7 @@ import { calcPoint, Point, ProcessedPoints } from '../types/Point';
 import { toFracString as toStr } from '../utils/common';
 import { stopPropagation } from '../utils/element';
 import { round } from '../utils/math';
+import OptimizeParticleSetting from './OptimizeParticleSetting';
 import RangeSlider from './RangeSlider';
 import { showNotification, useLocale } from './ShapesGenerator';
 
@@ -164,14 +165,7 @@ const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointR
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
-                        <div className={styles['text']}>{locale('delete-duplicate-points')}</div>
-                        <RangeSlider
-                            min={0} step={0.05} max={0.5}
-                            value={duplicatedPointRange}
-                            setValue={setDuplicatedPointRange}
-                            unit="m"
-                            specialZeroVal={locale('off')}
-                        />
+                        <OptimizeParticleSetting {...{ duplicatedPointRange, setDuplicatedPointRange }} />
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>

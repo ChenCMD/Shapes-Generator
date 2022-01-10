@@ -11,7 +11,7 @@ import styles from '../styles/Menu.module.scss';
 import { GridMode } from '../types/GridMode';
 import { isValidateLanguage, SpecificatedLanguage } from '../types/Language';
 import { objEntries } from '../utils/common';
-import RangeSlider from './RangeSlider';
+import OptimizeParticleSetting from './OptimizeParticleSetting';
 import { useLocale } from './ShapesGenerator';
 
 // useEffect(() => {
@@ -86,14 +86,7 @@ const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointR
                 <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row className={styles['row']}>
                     <Col>
-                        <div className={styles['text']}>{locale('delete-duplicate-points')}</div>
-                        <RangeSlider
-                            min={0} step={0.05} max={0.5}
-                            value={duplicatedPointRange}
-                            setValue={setDuplicatedPointRange}
-                            unit="m"
-                            specialZeroVal={locale('off')}
-                        />
+                        <OptimizeParticleSetting {...{ duplicatedPointRange, setDuplicatedPointRange }} />
                     </Col>
                 </Row>
                 <Row><Col><hr className={styles['line']} /></Col></Row>
