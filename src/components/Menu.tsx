@@ -6,12 +6,13 @@ import Form from 'react-bootstrap/esm/Form';
 import Row from 'react-bootstrap/esm/Row';
 import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
-import { languageMap, locale } from '../locales';
+import { languageMap } from '../locales';
 import styles from '../styles/Menu.module.scss';
 import { GridMode } from '../types/GridMode';
 import { isValidateLanguage, SpecificatedLanguage } from '../types/Language';
 import { objEntries } from '../utils/common';
 import RangeSlider from './RangeSlider';
+import { useLocale } from './ShapesGenerator';
 
 // useEffect(() => {
 //     const picker = Pickr.create({
@@ -46,6 +47,7 @@ interface MenuProps {
 }
 
 const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, language, setLanguage, openImportModal, openExportModal }: MenuProps): JSX.Element => {
+    const locale = useLocale();
     const onImport = useCallback(() => openImportModal(true), [openImportModal]);
     const onExport = useCallback(() => openExportModal(true), [openExportModal]);
     const onLanguageChange = useCallback(({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => isValidateLanguage(value) && setLanguage(value), [setLanguage]);

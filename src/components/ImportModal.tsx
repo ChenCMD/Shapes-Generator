@@ -4,13 +4,12 @@ import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import ReactModal from 'react-modal';
-import { locale } from '../locales';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { importShape } from '../ShapeNodes';
 import styles from '../styles/ImportModal.module.scss';
 import { stopPropagation } from '../utils/element';
 import FileUploader from './FileUploader';
-import { showNotification } from './ShapesGenerator';
+import { showNotification, useLocale } from './ShapesGenerator';
 
 ReactModal.setAppElement('#root');
 
@@ -21,6 +20,8 @@ interface ImportModalProps {
 }
 
 const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalProps): JSX.Element => {
+    const locale = useLocale();
+
     const [importKey, setImportKey] = useState<string>('');
 
     const onRequestClose = useCallback(() => openImportModal(false), [openImportModal]);
