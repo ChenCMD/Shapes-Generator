@@ -40,10 +40,10 @@ interface ShapesGeneratorProps {
 }
 
 const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): JSX.Element => {
-    const isNotSaved = useWindowCloseWarning();
+    const isSaved = useWindowCloseWarning();
     const { locale, language, setLanguage } = useLocalize(initialLanguage);
     const [[shapes, latestSelect], shapesDispatch] = useReducer(
-        createReducer(() => isNotSaved.current = true),
+        createReducer(() => isSaved.current = false),
         useMemo<[Shape[], number[]]>(() => [importKey ? importShape(importKey) : [], []], [importKey])
     );
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
@@ -99,7 +99,7 @@ const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): 
                 points={pointsWithoutManipulate}
                 isOpen={isOpenExportModal}
                 openExportModal={setIsOpenExportModal}
-                {...{ shapes, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }}
+                {...{ shapes, duplicatedPointRange, setDuplicatedPointRange, isSaved }}
             />
             <ContextMenu
                 onCloseRequest={onContextCloseRequest}

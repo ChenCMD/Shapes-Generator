@@ -26,10 +26,10 @@ interface ExportModalProps {
     isOpen: boolean
     duplicatedPointRange: number
     setDuplicatedPointRange: (value: number) => void
-    isNotSaved: React.MutableRefObject<boolean>
+    isSaved: React.MutableRefObject<boolean>
 }
 
-const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }: ExportModalProps): JSX.Element => {
+const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isSaved }: ExportModalProps): JSX.Element => {
     const locale = useLocale();
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [hasNameComment, setHasNameComment] = useState<boolean>(true);
@@ -52,20 +52,20 @@ const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointR
     }, [customCommand, exportAcc, shapes, hasNameComment, isCustomCommandMode, particle, particleSpeed, points]);
 
     const onExportToMcf = useCallback(() => {
-        isNotSaved.current = false;
+        isSaved.current = true;
         const blob = new File([generateExportData()], 'particle.mcfunction', { type: 'text/plain' });
         const a = document.createElement('a');
         a.href = window.URL.createObjectURL(blob);
         a.download = 'particle.mcfunction';
         a.click();
-    }, [isNotSaved, generateExportData]);
+    }, [isSaved, generateExportData]);
 
     const textToClipboard = useTextToClipboard();
     const onExportToClipboard = useCallback(() => {
-        isNotSaved.current = false;
+        isSaved.current = true;
         textToClipboard(generateExportData());
         showNotification('success', 'copy success!');
-    }, [isNotSaved, generateExportData, textToClipboard]);
+    }, [isSaved, generateExportData, textToClipboard]);
 
     const onRequestClose = useCallback(() => openExportModal(false), [openExportModal]);
     const onChangeCommandMode = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setCustomCommandMode(e.target.value === 'true'), []);

@@ -3,11 +3,11 @@ import { useLocale } from '../components/ShapesGenerator';
 
 const useWindowCloseWarning = (): React.MutableRefObject<boolean> => {
     const locale = useLocale();
-    const isShowWarning = useRef<boolean>(false);
+    const isSaved = useRef<boolean>(true);
 
     useEffect(() => {
         const onBeforeUnload = (e: BeforeUnloadEvent) => {
-            if (isShowWarning.current) {
+            if (!isSaved.current) {
                 e.preventDefault();
                 e.returnValue = locale('close-warning');
             }
@@ -16,7 +16,7 @@ const useWindowCloseWarning = (): React.MutableRefObject<boolean> => {
         return () => window.removeEventListener('beforeunload', onBeforeUnload);
     });
 
-    return isShowWarning;
+    return isSaved;
 };
 
 export default useWindowCloseWarning;
