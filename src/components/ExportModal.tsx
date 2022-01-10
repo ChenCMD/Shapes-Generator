@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
@@ -36,6 +36,8 @@ const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointR
     const [customCommand, setCustomCommand] = useState<string>('setblock ^${x} ^ ^${y} glass');
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);
+
+    const particleAmount = useMemo(() => points.reduce((s, v) => s + v.points.length, 0), [points]);
 
     const generateExportData = useCallback(() => {
         const importStr = `# [ImportKey]: ${generateExportKey(shapes)}`;
@@ -176,7 +178,7 @@ const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointR
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>
-                            {locale('export.export-particle-amount')}: {points.reduce((s, v) => s + v.points.length, 0)}
+                            {locale('export.export-particle-amount')}: {particleAmount}
                         </div>
                     </Col>
                 </Row>
