@@ -96,11 +96,10 @@ const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): 
                 shapesDispatch={shapesDispatch}
             />
             <ExportModal
-                importStrings={shapes.map(v => v.toExportObject())}
                 points={pointsWithoutManipulate}
                 isOpen={isOpenExportModal}
                 openExportModal={setIsOpenExportModal}
-                {...{ duplicatedPointRange, setDuplicatedPointRange, isNotSaved }}
+                {...{ shapes, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }}
             />
             <ContextMenu
                 onCloseRequest={onContextCloseRequest}

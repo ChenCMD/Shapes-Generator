@@ -7,9 +7,8 @@ import ToggleButton from 'react-bootstrap/esm/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/esm/ToggleButtonGroup';
 import ReactModal from 'react-modal';
 import useTextToClipboard from '../hooks/useTextToClipboard';
-import { generateExportKey } from '../ShapeNodes';
+import { generateExportKey, Shape } from '../ShapeNodes';
 import styles from '../styles/ExportModal.module.scss';
-import { ExportObject } from '../types/ExportObject';
 import { calcPoint, Point, ProcessedPoints } from '../types/Point';
 import { toFracString as toStr } from '../utils/common';
 import { stopPropagation } from '../utils/element';
@@ -21,7 +20,7 @@ ReactModal.setAppElement('#root');
 
 interface ExportModalProps {
     openExportModal: (isOpen: boolean) => void
-    importStrings: ExportObject[]
+    shapes: Shape[]
     points: ProcessedPoints[]
     isOpen: boolean
     duplicatedPointRange: number
@@ -29,7 +28,7 @@ interface ExportModalProps {
     isNotSaved: React.MutableRefObject<boolean>
 }
 
-const ExportModal = ({ openExportModal, importStrings: exportObjects, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }: ExportModalProps): JSX.Element => {
+const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isNotSaved }: ExportModalProps): JSX.Element => {
     const locale = useLocale();
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [hasNameComment, setHasNameComment] = useState<boolean>(true);
@@ -39,7 +38,7 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
     const [particleSpeed, setParticleSpeed] = useState<number>(0);
 
     const generateExportData = useCallback(() => {
-        const importStr = `# [ImportKey]: ${generateExportKey(exportObjects)}`;
+        const importStr = `# [ImportKey]: ${generateExportKey(shapes)}`;
         const mkCmd = (pos: Point) => isCustomCommandMode
             ? customCommand.replace(/\$\{x\}/g, toStr(pos.x)).replace(/\$\{y\}/g, toStr(pos.y))
             : `particle ${particle.trim()} ^${toStr(pos.x)} ^ ^${toStr(pos.y)} 0 0 0 ${toStr(particleSpeed)} 1`;
@@ -47,7 +46,7 @@ const ExportModal = ({ openExportModal, importStrings: exportObjects, points, is
             ...(hasNameComment ? [`# ${v.name}`] : []),
             ...v.points.map(({ pos }) => mkCmd(calcPoint(pos, p => round(p, exportAcc))))
         ])].join('\n');
-    }, [customCommand, exportAcc, exportObjects, hasNameComment, isCustomCommandMode, particle, particleSpeed, points]);
+    }, [customCommand, exportAcc, shapes, hasNameComment, isCustomCommandMode, particle, particleSpeed, points]);
 
     const onExportToMcf = useCallback(() => {
         isNotSaved.current = false;
