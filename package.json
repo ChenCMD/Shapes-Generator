@@ -30,7 +30,7 @@
     "start-profiling": "webpack-dev-server --mode production",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "lint": "eslint src/** --fix"
+    "lint": "eslint src/** --ext .ts,.tsx --no-error-on-unmatched-pattern --ignore-pattern *.html --ignore-pattern *.d.ts"
   },
   "eslintConfig": {
     "extends": [

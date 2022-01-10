@@ -72,7 +72,10 @@ export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): Proc
 
     return [
         ...points.reduce<ProcessedPoints[]>(
-            (arr, v) => (arr[v.parentIdx].points.push(...v.isDuplicated ? [] : [{ id: v.id, pos: v.pos }]), arr),
+            (arr, v) => {
+                arr[v.parentIdx].points.push(...v.isDuplicated ? [] : [{ id: v.id, pos: v.pos }]);
+                return arr;
+            },
             processedPoints.map(({ name, isSelected, isManipulateShape }) => ({ name, isSelected, isManipulateShape, points: [] }))
         ),
         ...shapes.filter(v => v.isManipulateShape && v.isSelected)

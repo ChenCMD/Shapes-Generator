@@ -34,6 +34,7 @@ const ExportModal = ({ setExportModalOpened, shapes, points, isOpen, duplicatedP
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [hasNameComment, setHasNameComment] = useState<boolean>(true);
     const [isCustomCommandMode, setCustomCommandMode] = useState<boolean>(false);
+    // eslint-disable-next-line no-template-curly-in-string
     const [customCommand, setCustomCommand] = useState<string>('setblock ^${x} ^ ^${y} glass');
     const [particle, setParticle] = useState<string>('end_rod');
     const [particleSpeed, setParticleSpeed] = useState<number>(0);

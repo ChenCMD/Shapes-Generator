@@ -61,8 +61,8 @@ export class CircleAnchorShape extends AbstractShapeNode<CircleAnchorParams> {
             };
             if (params.isEllipseEquallySpaced) {
                 const samples = [
-                    ...sampleDensely(t => pointAt(t / 2)).map(v => (v.t / 0.5, v)),
-                    ...sampleDensely(t => pointAt(t / 2 + 0.5)).map(v => (v.t / 0.5 + 0.5, v))
+                    ...sampleDensely(t => pointAt(t / 2)),
+                    ...sampleDensely(t => pointAt(t / 2 + 0.5))
                 ];
                 addPoint(...spreadSamplesOver(samples, params.count, true));
             } else {

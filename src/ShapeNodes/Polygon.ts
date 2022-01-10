@@ -94,8 +94,8 @@ export class PolygonShape extends AbstractShapeNode<PolygonParams> {
             const corners: Point[] = [];
             if (params.isEllipseEquallySpaced) {
                 const samples = [
-                    ...sampleDensely(t => pointAt(t / 2)).map(v => (v.t / 0.5, v)),
-                    ...sampleDensely(t => pointAt(t / 2 + 0.5)).map(v => (v.t / 0.5 + 0.5, v))
+                    ...sampleDensely(t => pointAt(t / 2)),
+                    ...sampleDensely(t => pointAt(t / 2 + 0.5))
                 ];
                 corners.push(...spreadSamplesOver(samples, params.corner, true));
             } else {
