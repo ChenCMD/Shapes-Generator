@@ -37,7 +37,6 @@ const UserInterface = ({ shapes, latestSelect, shapesDispatch, gridMode, setGrid
             <Col xl={5} lg={5} md={12} sm={5} xs={12} className={styles['col-shape-list']}>
                 <ShapeList
                     shapes={shapes.map(shape => ({ name: shape.name, uuid: shape.uuid, isSelected: shape.isSelected }))}
-                    shapesLength={shapes.length}
                     {...{ latestSelect, shapesDispatch, setContextTarget }}
                 />
             </ Col>

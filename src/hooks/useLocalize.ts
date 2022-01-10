@@ -7,7 +7,7 @@ const useLocalize = (initialLanguage?: string): {
     language: SpecificatedLanguage,
     setLanguage: (value: string) => void
 } => {
-    const [language, setLanguage] = useState<SpecificatedLanguage>((initialLanguage && isValidateLanguage(initialLanguage) && initialLanguage) || 'en');
+    const [language, setLanguage] = useState<SpecificatedLanguage>(initialLanguage && isValidateLanguage(initialLanguage) ? initialLanguage : 'en');
     const setLanguageWrap = useCallback((value: string) => {
         if (isValidateLanguage(value))
             setupLanguage([value]).then(() => setLanguage(value));

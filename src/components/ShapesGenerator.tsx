@@ -35,21 +35,21 @@ const LocaleContext = createContext<typeof rawLocale>((key, ...params) => rawLoc
 export const useLocale: () => typeof rawLocale = () => useContext(LocaleContext);
 
 interface ShapesGeneratorProps {
-    importKey?: string
+    initialShapeKey?: string
     initialLanguage?: string
 }
 
-const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): JSX.Element => {
+const ShapesGenerator = ({ initialShapeKey, initialLanguage }: ShapesGeneratorProps): JSX.Element => {
     const isSaved = useWindowCloseWarning();
     const { locale, language, setLanguage } = useLocalize(initialLanguage);
     const [[shapes, latestSelect], shapesDispatch] = useReducer(
         createReducer(() => isSaved.current = false),
-        useMemo<[Shape[], number[]]>(() => [importKey ? importShape(importKey) : [], []], [importKey])
+        useMemo<[Shape[], number[]]>(() => [initialShapeKey ? importShape(initialShapeKey) : [], []], [initialShapeKey])
     );
     const [gridMode, setGridMode] = useState<GridMode>(GridMode.block);
     const [duplicatedPointRange, setDuplicatedPointRange] = useState<number>(0);
-    const [isOpenExportModal, setIsOpenExportModal] = useState<boolean>(false);
-    const [isOpenImportModal, setIsOpenImportModal] = useState<boolean>(false);
+    const [isExportModalOpened, setExportModalOpened] = useState<boolean>(false);
+    const [isImportModalOpened, setImportModalOpened] = useState<boolean>(false);
     const [contextTarget, setContextTarget] = useState<Point & { index: number } | undefined>();
 
     const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
@@ -62,26 +62,29 @@ const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): 
     const onContextCloseRequest = useCallback(() => setContextTarget(undefined), []);
 
     const dependString = useMemo(() => shapes.map(v => `${v.isSelected ? 1 : 0}${v.points.map(v2 => v2.id).join('+')}`).join('+'), [shapes]);
-    const [points, pointsWithoutManipulate] = useMemo(() => {
-        const p = deleteDuplicatedPoints(shapes, duplicatedPointRange);
-        return [p, p.filter(v => !v.isManipulateShape)];
-    },
+    const [processedPoints, processedPointsWithoutManipulate] = useMemo(
+        () => {
+            const p = deleteDuplicatedPoints(shapes, duplicatedPointRange);
+            return [p, p.filter(v => !v.isManipulateShape)];
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [duplicatedPointRange, dependString]);
+        [duplicatedPointRange, dependString]
+    );
+
     return (
         <LocaleContext.Provider value={locale}>
             <Container fluid className={styles['container']} onKeyDown={onKeyDown} tabIndex={-1}>
                 <Row noGutters>
                     <Col xl={6} lg={6} md={12} sm={12} xs={12}>
                         <Previewer
-                            shapes={points}
+                            shapes={processedPoints}
                             {...{ gridMode }}
                         />
                     </Col>
                     <Col xl={6} lg={6} md={12} sm={12} xs={12}>
                         <UserInterface
-                            openImportModal={setIsOpenImportModal}
-                            openExportModal={setIsOpenExportModal}
+                            openImportModal={setImportModalOpened}
+                            openExportModal={setExportModalOpened}
                             {...{
                                 shapes, latestSelect, shapesDispatch, gridMode, setGridMode, duplicatedPointRange,
                                 setDuplicatedPointRange, language, setLanguage, setContextTarget
@@ -91,14 +94,13 @@ const ShapesGenerator = ({ importKey, initialLanguage }: ShapesGeneratorProps): 
                 </ Row>
             </Container>
             <ImportModal
-                isOpen={isOpenImportModal}
-                openImportModal={setIsOpenImportModal}
-                shapesDispatch={shapesDispatch}
+                isOpen={isImportModalOpened}
+                {...{ setImportModalOpened, shapesDispatch}}
             />
             <ExportModal
-                points={pointsWithoutManipulate}
-                isOpen={isOpenExportModal}
-                openExportModal={setIsOpenExportModal}
+                points={processedPointsWithoutManipulate}
+                isOpen={isExportModalOpened}
+                setExportModalOpened={setExportModalOpened}
                 {...{ shapes, duplicatedPointRange, setDuplicatedPointRange, isSaved }}
             />
             <ContextMenu

@@ -9,15 +9,14 @@ import ShapeListMenu from './ShapeListMenu';
 
 interface ShapeListProps {
     shapes: Pick<Shape, 'uuid' | 'name' | 'isSelected'>[]
-    shapesLength: number
     latestSelect: number[]
     shapesDispatch: ShapesDispatch
     setContextTarget: (context: { x: number, y: number, index: number }) => void
 }
 
-const ShapeList = ({ shapes, shapesLength, latestSelect, shapesDispatch, setContextTarget }: ShapeListProps): JSX.Element => {
+const ShapeList = ({ shapes, latestSelect, shapesDispatch, setContextTarget }: ShapeListProps): JSX.Element => {
     useEffect(() => document.getElementById(`shape-list-item-${latestSelect[0]}`)?.focus(), [latestSelect]);
-    useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapesLength]);
+    useEffect(() => document.getElementById('scroll-bar')?.scrollTo(0, 2147483647), [shapes.length]);
 
     const onSelect = useCallback((index: number, isRetentionOld: boolean) => shapesDispatch({ type: 'select', index, isRetentionOld }), [shapesDispatch]);
 

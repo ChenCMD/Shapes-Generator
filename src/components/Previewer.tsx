@@ -16,7 +16,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     const rawStyle = window.getComputedStyle(document.documentElement);
 
     const padding = size[minSize] / 6;
-    const centerModifier = useMemo(() => calcPoint(size, p => p / 2,), [size]);
+    const centerCorrection = useMemo(() => calcPoint(size, p => p / 2), [size]);
     const maxBounds = Math.ceil(Math.max(...shapes.flatMap(v => v.points.flatMap(v2 => [v2.pos.x, v2.pos.y])).map(Math.abs)));
     const getMultiple = useCallback((axis: 'x' | 'y') => Math.min((size[axis] - padding * 2) / 2 / maxBounds, size[axis] / 12), [maxBounds, padding, size]);
     const posMultiple = getMultiple(minSize);
@@ -32,7 +32,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
             })
             .flatMap(({ isSelected, isManipulateShape, points: p }) => p.map(({ pos, id }) => (
                 <Circle
-                    {...calcPoint(pos, centerModifier, (a, b) => a * posMultiple + b)}
+                    {...calcPoint(pos, centerCorrection, (a, b) => a * posMultiple + b)}
                     radius={(isManipulateShape ? 0.1 : 0.15) * posMultiple}
                     fill={isManipulateShape ? 'rgb(212, 212, 0)' : 'rgb(212, 212, 212)'}
                     strokeWidth={2}
@@ -53,7 +53,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
         if (!posMultiple || maxBounds >= 250 || gridMode === GridMode.off) return [];
         const ans: JSX.Element[] = [];
         const drawGridLine = (offset: number, axis: 'x' | 'y', strokeColor: string, width = 1.25) => {
-            const anchor = offset * posMultiple + centerModifier[axis === 'x' ? 'y' : 'x'];
+            const anchor = offset * posMultiple + centerCorrection[axis === 'x' ? 'y' : 'x'];
             const p = [0, anchor, size[axis], anchor];
             ans.push(<Line
                 key={`${axis}-${offset}`} stroke={strokeColor} strokeWidth={width}
@@ -79,7 +79,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
         drawGridLine(0, 'y', rawStyle.getPropertyValue('--grid-center-color'), 1.5);
 
         return ans;
-    }, [centerModifier, getMultiple, gridMode, maxBounds, posMultiple, rawStyle, size]);
+    }, [centerCorrection, getMultiple, gridMode, maxBounds, posMultiple, rawStyle, size]);
 
     // yの-2はborder分、本来ならclientから取得できるのだけどうまくいかなかったので
     const onResize = useCallback(({ bounds }: { bounds?: { width?: number, height?: number } }) =>

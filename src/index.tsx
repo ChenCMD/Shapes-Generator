@@ -20,7 +20,7 @@ initialLanguages.push(navigator.language);
 setupLanguage(initialLanguages, !('lang' in params)).then(lang => {
     ReactDOM.render(
         <React.StrictMode>
-            <ShapesGenerator importKey={params['key'] ? params.key : undefined} initialLanguage={lang} />
+            <ShapesGenerator initialShapeKey={params['key'] ? params.key : undefined} initialLanguage={lang} />
         </React.StrictMode>,
         document.getElementById('root')
     );

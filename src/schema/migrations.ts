@@ -49,7 +49,6 @@ export const migrations: Migration[] = [
                             : { isBezierEquallySpaced }
                 }
             };
-
         })
     }
 ];

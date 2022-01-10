@@ -24,7 +24,7 @@ export type ShapeType = typeof shapeTypes[number];
 export type Shape = LineShape | CircleShape | PolygonShape | LineAnchorShape | CircleAnchorShape | PolygonAnchorShape;
 type ShapeConstructor = typeof LineShape | typeof CircleShape | typeof PolygonShape | typeof LineAnchorShape | typeof CircleAnchorShape | typeof PolygonAnchorShape;
 
-const shapes: Record<ShapeType, ShapeConstructor> = {
+const shapeConstructors: Record<ShapeType, ShapeConstructor> = {
     line: LineShape,
     circle: CircleShape,
     polygon: PolygonShape,
@@ -34,7 +34,7 @@ const shapes: Record<ShapeType, ShapeConstructor> = {
 };
 
 export function getShape(id: string, type: ShapeType): Shape {
-    return new shapes[type](id);
+    return new shapeConstructors[type](id);
 }
 
 function uuidReplacer(uuid: UUID | undefined, uuidMap: Map<UUID, UUID>): UUID | undefined {
@@ -67,18 +67,18 @@ export function importShape(importKey: string): Shape[] {
         showNotification('error', locale('error.invalid.import-key'));
         return [];
     }
-    const rawExportObjects = LZString.decompressFromEncodedURIComponent(encodedObject);
-    if (!rawExportObjects) {
+    const decodedObjects = LZString.decompressFromEncodedURIComponent(encodedObject);
+    if (!decodedObjects) {
         showNotification('error', locale('error.invalid.import-key'));
         return [];
     }
     try {
-        const parsedExportObjects: ExportObject[] = uuidFixer(
-            migrate(JSON.parse(rawExportObjects), parseInt(version || '1'), currentDataVersion),
+        const parsedObjects: ExportObject[] = uuidFixer(
+            migrate(JSON.parse(decodedObjects), parseInt(version || '1'), currentDataVersion),
             new Map<UUID, UUID>()
         );
-        return parsedExportObjects.map(
-            v => new shapes[v.type](v.name, v.params as ParamValue<{ [k: string]: Param }>, v.uuid)
+        return parsedObjects.map(
+            v => new shapeConstructors[v.type](v.name, v.params as ParamValue<{ [k: string]: Param }>, v.uuid)
         );
     } catch (e) {
         console.error(e.stack);
@@ -90,6 +90,6 @@ export function importShape(importKey: string): Shape[] {
     }
 }
 
-export function generateExportKey(exportObjects: ExportObject[]): string {
-    return `${LZString.compressToEncodedURIComponent(JSON.stringify(exportObjects))}_${currentDataVersion}`;
+export function generateExportKey(shapes: Shape[]): string {
+    return `${LZString.compressToEncodedURIComponent(JSON.stringify(shapes.map(v => v.toExportObject())))}_${currentDataVersion}`;
 }

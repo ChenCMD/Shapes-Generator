@@ -14,17 +14,17 @@ import { showNotification, useLocale } from './ShapesGenerator';
 ReactModal.setAppElement('#root');
 
 interface ImportModalProps {
-    openImportModal: (isOpen: boolean) => void
+    setImportModalOpened: (isOpen: boolean) => void
     isOpen: boolean
     shapesDispatch: ShapesDispatch
 }
 
-const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalProps): JSX.Element => {
+const ImportModal = ({ setImportModalOpened, isOpen, shapesDispatch }: ImportModalProps): JSX.Element => {
     const locale = useLocale();
 
     const [importKey, setImportKey] = useState<string>('');
 
-    const onRequestClose = useCallback(() => openImportModal(false), [openImportModal]);
+    const onRequestClose = useCallback(() => setImportModalOpened(false), [setImportModalOpened]);
 
     const onImport = useCallback(() => {
         shapesDispatch({ type: 'addMany', shapes: importShape(importKey) });
@@ -41,13 +41,11 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
             shapesDispatch({ type: 'addMany', shapes: importShape(key[1]) });
             onRequestClose();
         });
-    }, [onRequestClose, shapesDispatch]);
+    }, [locale, onRequestClose, shapesDispatch]);
 
     const onChangeKeyInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setImportKey(e.target.value.trim()), []);
     return (
         <ReactModal
-            isOpen={isOpen}
-            onRequestClose={onRequestClose}
             overlayClassName={{
                 base: styles['overlay'],
                 afterOpen: styles['after'],
@@ -58,8 +56,9 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
                 afterOpen: styles['after'],
                 beforeClose: styles['before']
             }}
+            {...{ isOpen, onRequestClose }}
         >
-            <FileUploader accept=".mcfunction" onFileUpload={onFileUpload}>{openUploader => (
+            <FileUploader accept=".mcfunction" onFileUpload={onFileUpload}>{openDialog => (
                 <Container fluid className={styles['container']}>
                     <Row noGutters>
                         <Col className={styles['col']}>
@@ -73,7 +72,7 @@ const ImportModal = ({ openImportModal, isOpen, shapesDispatch }: ImportModalPro
                             <Button onClick={onRequestClose}>{locale('cancel')}</Button>
                         </Col>
                         <Col className={styles['col']} xl={6} lg={6} md={6} sm={12} xs={12}>
-                            <Button onClick={importKey === '' ? openUploader : onImport}>
+                            <Button onClick={importKey === '' ? openDialog : onImport}>
                                 {locale(importKey === '' ? 'import.from-mcfunction' : 'import.from-key')}
                             </Button>
                         </Col>

@@ -17,10 +17,9 @@ interface InspectorProps {
 }
 
 const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
-    const paramBoxes = shapes.flatMap((shape: Shape, index: number) => {
-        if (!shape.isSelected) return;
-        // TODO 複数選択時の挙動
-        return shape.getParameterMap().map(([arg, param]) => {
+    // TODO 複数選択時の挙動
+    const paramBoxes = shapes.filter(s => s.isSelected).flatMap((shape: Shape, index: number) =>
+        shape.getParameterMap().map(([arg, param]) => {
             const colWrap = (elem: JSX.Element) => (<Col key={`${shape.uuid}-${arg}`} className={styles['xxl']} xl={6} lg={12} md={4} sm={6} xs={12}>{elem}</Col>);
             const props = { type: shape.type, arg, index, shapesDispatch };
             switch (param.type) {
@@ -36,8 +35,8 @@ const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
                 default:
                     return colWrap(<NormalParameterBox {...props} data={param} />);
             }
-        });
-    }).filter(v => v !== undefined) as JSX.Element[];
+        })
+    );
 
     return (
         <div className={styles['window']}>

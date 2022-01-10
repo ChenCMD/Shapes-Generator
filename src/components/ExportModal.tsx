@@ -20,7 +20,7 @@ import { showNotification, useLocale } from './ShapesGenerator';
 ReactModal.setAppElement('#root');
 
 interface ExportModalProps {
-    openExportModal: (isOpen: boolean) => void
+    setExportModalOpened: (isOpen: boolean) => void
     shapes: Shape[]
     points: ProcessedPoints[]
     isOpen: boolean
@@ -29,7 +29,7 @@ interface ExportModalProps {
     isSaved: React.MutableRefObject<boolean>
 }
 
-const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isSaved }: ExportModalProps): JSX.Element => {
+const ExportModal = ({ setExportModalOpened, shapes, points, isOpen, duplicatedPointRange, setDuplicatedPointRange, isSaved }: ExportModalProps): JSX.Element => {
     const locale = useLocale();
     const [exportAcc, setExportAcc] = useState<number>(5);
     const [hasNameComment, setHasNameComment] = useState<boolean>(true);
@@ -41,21 +41,22 @@ const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointR
     const particleAmount = useMemo(() => points.reduce((s, v) => s + v.points.length, 0), [points]);
 
     const generateExportData = useCallback(() => {
-        const importStr = `# [ImportKey]: ${generateExportKey(shapes)}`;
         const mkCmd = (pos: Point) => isCustomCommandMode
             ? customCommand.replace(/\$\{x\}/g, toStr(pos.x)).replace(/\$\{y\}/g, toStr(pos.y))
             : `particle ${particle.trim()} ^${toStr(pos.x)} ^ ^${toStr(pos.y)} 0 0 0 ${toStr(particleSpeed)} 1`;
-        return [importStr, ...points.flatMap(v => [
-            ...(hasNameComment ? [`# ${v.name}`] : []),
-            ...v.points.map(({ pos }) => mkCmd(calcPoint(pos, p => round(p, exportAcc))))
-        ])].join('\n');
+        return [
+            `# [ImportKey]: ${generateExportKey(shapes)}`,
+            ...points.flatMap(v => [
+                ...(hasNameComment ? [`# ${v.name}`] : []),
+                ...v.points.map(({ pos }) => mkCmd(calcPoint(pos, p => round(p, exportAcc))))
+            ])
+        ].join('\n');
     }, [customCommand, exportAcc, shapes, hasNameComment, isCustomCommandMode, particle, particleSpeed, points]);
 
     const onExportToMcf = useCallback(() => {
         isSaved.current = true;
-        const blob = new File([generateExportData()], 'particle.mcfunction', { type: 'text/plain' });
         const a = document.createElement('a');
-        a.href = window.URL.createObjectURL(blob);
+        a.href = window.URL.createObjectURL(new File([generateExportData()], 'particle.mcfunction', { type: 'text/plain' }));
         a.download = 'particle.mcfunction';
         a.click();
     }, [isSaved, generateExportData]);
@@ -67,16 +68,47 @@ const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointR
         showNotification('success', 'copy success!');
     }, [isSaved, generateExportData, textToClipboard]);
 
-    const onRequestClose = useCallback(() => openExportModal(false), [openExportModal]);
+    const onRequestClose = useCallback(() => setExportModalOpened(false), [setExportModalOpened]);
     const onChangeCommandMode = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setCustomCommandMode(e.target.value === 'true'), []);
     const onChangeCustomCommand = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setCustomCommand(e.target.value), []);
     const onChangeParticle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setParticle(e.target.value), []);
     const onChangeHasNameComment = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setHasNameComment(e.target.value === 'true'), []);
 
+    const customCommandElement = (
+        <Row noGutters>
+            <Col className={styles['col']}>
+                <input className={styles['input']}
+                    onChange={onChangeCustomCommand}
+                    value={customCommand} onKeyDown={stopPropagation}
+                />
+            </Col>
+        </Row>
+    );
+    const particleSettingElement = <>
+        <Row><Col><hr className={styles['line']} /></Col></Row>
+        <Row noGutters>
+            <Col className={styles['col']}>
+                <div className={styles['text']}>{locale('export.particle')}</div>
+                <input className={styles['input']}
+                    onChange={onChangeParticle}
+                    value={particle} onKeyDown={stopPropagation}
+                />
+            </Col>
+        </Row>
+        <Row><Col><hr className={styles['line']} /></Col></Row>
+        <Row noGutters>
+            <Col className={styles['col']}>
+                <div className={styles['text']}>{locale('export.particle-speed')}</div>
+                <RangeSlider
+                    min={0} step={0.01} max={1}
+                    value={particleSpeed}
+                    setValue={setParticleSpeed}
+                />
+            </Col>
+        </Row>
+    </>;
     return (
         <ReactModal
-            isOpen={isOpen}
-            onRequestClose={onRequestClose}
             overlayClassName={{
                 base: styles['overlay'],
                 afterOpen: styles['after'],
@@ -87,6 +119,7 @@ const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointR
                 afterOpen: styles['after'],
                 beforeClose: styles['before']
             }}
+            {...{ isOpen, onRequestClose }}
         >
             <Container fluid className={styles['container']}>
                 <Row noGutters>
@@ -101,42 +134,9 @@ const ExportModal = ({ openExportModal, shapes, points, isOpen, duplicatedPointR
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Col>
-                </Row>{
-                    isCustomCommandMode
-                        ? (
-                            <Row noGutters>
-                                <Col className={styles['col']}>
-                                    <input className={styles['input']}
-                                        onChange={onChangeCustomCommand}
-                                        value={customCommand} onKeyDown={stopPropagation}
-                                    />
-                                </Col>
-                            </Row>
-                        )
-                        : (<>
-                            <Row><Col><hr className={styles['line']} /></Col></Row>
-                            <Row noGutters>
-                                <Col className={styles['col']}>
-                                    <div className={styles['text']}>{locale('export.particle')}</div>
-                                    <input className={styles['input']}
-                                        onChange={onChangeParticle}
-                                        value={particle} onKeyDown={stopPropagation}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row><Col><hr className={styles['line']} /></Col></Row>
-                            <Row noGutters>
-                                <Col className={styles['col']}>
-                                    <div className={styles['text']}>{locale('export.particle-speed')}</div>
-                                    <RangeSlider
-                                        min={0} step={0.01} max={1}
-                                        value={particleSpeed}
-                                        setValue={setParticleSpeed}
-                                    />
-                                </Col>
-                            </Row>
-                        </>)
-                }<Row><Col><hr className={styles['line']} /></Col></Row>
+                </Row>
+                {isCustomCommandMode ? customCommandElement : particleSettingElement}
+                <Row><Col><hr className={styles['line']} /></Col></Row>
                 <Row noGutters>
                     <Col className={styles['col']}>
                         <div className={styles['text']}>{locale('export.separate-export-data')}</div>

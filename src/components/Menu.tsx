@@ -50,7 +50,10 @@ const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointR
     const locale = useLocale();
     const onImport = useCallback(() => openImportModal(true), [openImportModal]);
     const onExport = useCallback(() => openExportModal(true), [openExportModal]);
-    const onLanguageChange = useCallback(({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => isValidateLanguage(value) && setLanguage(value), [setLanguage]);
+    const onLanguageChange = useCallback(
+        ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => isValidateLanguage(value) && setLanguage(value),
+        [setLanguage]
+    );
     const onGridModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setGridMode(parseInt(e.target.value)), [setGridMode]);
 
     return (
