@@ -18,25 +18,27 @@ interface InspectorProps {
 
 const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
     // TODO 複数選択時の挙動
-    const paramBoxes = shapes.filter(s => s.isSelected).flatMap((shape: Shape, index: number) =>
-        shape.getParameterMap().map(([arg, param]) => {
-            const colWrap = (elem: JSX.Element) => (<Col key={`${shape.uuid}-${arg}`} className={styles['xxl']} xl={6} lg={12} md={4} sm={6} xs={12}>{elem}</Col>);
-            const props = { type: shape.type, arg, index, shapesDispatch };
-            switch (param.type) {
-                case 'pos':
-                    return colWrap(<PosParameterBox {...props} data={param} indexMap={shapes.map(v => v.uuid)} />);
-                case 'range':
-                    return colWrap(<RangeParameterBox {...props} data={param} />);
-                case 'target':
-                    return colWrap(<TargetParameterBox {...props} data={param} shapes={shapes} />);
-                case 'boolean':
-                    return colWrap(<BoolParameterBox {...props} data={param} />);
-                case 'normal':
-                default:
-                    return colWrap(<NormalParameterBox {...props} data={param} />);
-            }
-        })
-    );
+    const paramBoxes = shapes.map((s, i) => ({ s, i }))
+        .filter(v => v.s.isSelected)
+        .flatMap(({ s: shape, i: index }) =>
+            shape.getParameterMap().map(([arg, param]) => {
+                const colWrap = (elem: JSX.Element) => (<Col key={`${shape.uuid}-${arg}`} className={styles['xxl']} xl={6} lg={12} md={4} sm={6} xs={12}>{elem}</Col>);
+                const props = { type: shape.type, arg, index, shapesDispatch };
+                switch (param.type) {
+                    case 'pos':
+                        return colWrap(<PosParameterBox {...props} data={param} indexMap={shapes.map(v => v.uuid)} />);
+                    case 'range':
+                        return colWrap(<RangeParameterBox {...props} data={param} />);
+                    case 'target':
+                        return colWrap(<TargetParameterBox {...props} data={param} shapes={shapes} />);
+                    case 'boolean':
+                        return colWrap(<BoolParameterBox {...props} data={param} />);
+                    case 'normal':
+                    default:
+                        return colWrap(<NormalParameterBox {...props} data={param} />);
+                }
+            })
+        );
 
     return (
         <div className={styles['window']}>
