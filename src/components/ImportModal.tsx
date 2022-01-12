@@ -7,6 +7,7 @@ import ReactModal from 'react-modal';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { importShape } from '../ShapeNodes';
 import styles from '../styles/ImportModal.module.scss';
+import { StateDispatcher } from '../types/StateDispatcher';
 import { stopPropagation } from '../utils/element';
 import FileUploader from './FileUploader';
 import { showNotification, useLocale } from './ShapesGenerator';
@@ -14,7 +15,7 @@ import { showNotification, useLocale } from './ShapesGenerator';
 ReactModal.setAppElement('#root');
 
 interface ImportModalProps {
-    setImportModalOpened: (isOpen: boolean) => void
+    setImportModalOpened: StateDispatcher<boolean>
     isOpen: boolean
     shapesDispatch: ShapesDispatch
 }

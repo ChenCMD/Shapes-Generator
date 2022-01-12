@@ -10,6 +10,7 @@ import useTextToClipboard from '../hooks/useTextToClipboard';
 import { generateExportKey, Shape } from '../ShapeNodes';
 import styles from '../styles/ExportModal.module.scss';
 import { calcPoint, Point, ProcessedPoints } from '../types/Point';
+import { StateDispatcher } from '../types/StateDispatcher';
 import { toFracString as toStr } from '../utils/common';
 import { stopPropagation } from '../utils/element';
 import { round } from '../utils/math';
@@ -20,12 +21,12 @@ import { showNotification, useLocale } from './ShapesGenerator';
 ReactModal.setAppElement('#root');
 
 interface ExportModalProps {
-    setExportModalOpened: (isOpen: boolean) => void
+    setExportModalOpened: StateDispatcher<boolean>
     shapes: Shape[]
     points: ProcessedPoints[]
     isOpen: boolean
     duplicatedPointRange: number
-    setDuplicatedPointRange: (value: number) => void
+    setDuplicatedPointRange: StateDispatcher<number>
     isSaved: React.MutableRefObject<boolean>
 }
 

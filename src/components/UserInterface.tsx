@@ -7,6 +7,8 @@ import { Shape } from '../ShapeNodes';
 import styles from '../styles/UserInterface.module.scss';
 import { GridMode } from '../types/GridMode';
 import { SpecificatedLanguage } from '../types/Language';
+import { IndexedPoint } from '../types/Point';
+import { StateDispatcher } from '../types/StateDispatcher';
 import Inspector from './Inspector';
 import Menu from './Menu';
 import ShapeList from './ShapeList';
@@ -16,14 +18,14 @@ interface UserInterfaceProps {
     latestSelect: number[]
     shapesDispatch: ShapesDispatch
     gridMode: GridMode
-    setGridMode: (mode: GridMode) => void
+    setGridMode: StateDispatcher<GridMode>
     duplicatedPointRange: number
-    setDuplicatedPointRange: (value: number) => void
+    setDuplicatedPointRange: StateDispatcher<number>
     language: SpecificatedLanguage
-    setLanguage: (value: SpecificatedLanguage) => void
-    setContextTarget: (context: { x: number, y: number, index: number }) => void
-    openImportModal: (isOpen: boolean) => void
-    openExportModal: (isOpen: boolean) => void
+    setLanguage: StateDispatcher<string>
+    setContextTarget: StateDispatcher<IndexedPoint | undefined>
+    openImportModal: StateDispatcher<boolean>
+    openExportModal: StateDispatcher<boolean>
 }
 
 const UserInterface = ({ shapes, latestSelect, shapesDispatch, gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, language, setLanguage, setContextTarget, openImportModal, openExportModal }: UserInterfaceProps): JSX.Element => (

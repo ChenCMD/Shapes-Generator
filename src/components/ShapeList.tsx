@@ -4,6 +4,8 @@ import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { ShapesDispatch } from '../reducers/shapesReducer';
 import { Shape } from '../ShapeNodes';
 import styles from '../styles/ShapeList.module.scss';
+import { IndexedPoint } from '../types/Point';
+import { StateDispatcher } from '../types/StateDispatcher';
 import ShapeListItem from './ShapeListItem';
 import ShapeListMenu from './ShapeListMenu';
 
@@ -11,7 +13,7 @@ interface ShapeListProps {
     shapes: Pick<Shape, 'uuid' | 'name' | 'isSelected'>[]
     latestSelect: number[]
     shapesDispatch: ShapesDispatch
-    setContextTarget: (context: { x: number, y: number, index: number }) => void
+    setContextTarget: StateDispatcher<IndexedPoint | undefined>
 }
 
 const ShapeList = ({ shapes, latestSelect, shapesDispatch, setContextTarget }: ShapeListProps): JSX.Element => {

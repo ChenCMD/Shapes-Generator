@@ -10,6 +10,7 @@ import { languageMap } from '../locales';
 import styles from '../styles/Menu.module.scss';
 import { GridMode } from '../types/GridMode';
 import { isValidateLanguage, SpecificatedLanguage } from '../types/Language';
+import { StateDispatcher } from '../types/StateDispatcher';
 import { objEntries } from '../utils/common';
 import OptimizeParticleSetting from './OptimizeParticleSetting';
 import { useLocale } from './ShapesGenerator';
@@ -37,13 +38,13 @@ import { useLocale } from './ShapesGenerator';
 
 interface MenuProps {
     gridMode: GridMode
-    setGridMode: (mode: GridMode) => void
+    setGridMode: StateDispatcher<GridMode>
     duplicatedPointRange: number
-    setDuplicatedPointRange: (value: number) => void
+    setDuplicatedPointRange: StateDispatcher<number>
     language: SpecificatedLanguage
-    setLanguage: (value: SpecificatedLanguage) => void
-    openImportModal: (isOpen: boolean) => void
-    openExportModal: (isOpen: boolean) => void
+    setLanguage: StateDispatcher<string>
+    openImportModal: StateDispatcher<boolean>
+    openExportModal: StateDispatcher<boolean>
 }
 
 const Menu = ({ gridMode, setGridMode, duplicatedPointRange, setDuplicatedPointRange, language, setLanguage, openImportModal, openExportModal }: MenuProps): JSX.Element => {

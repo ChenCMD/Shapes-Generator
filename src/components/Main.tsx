@@ -12,14 +12,15 @@ import { deleteDuplicatedPoints, IndexedPoint } from '../types/Point';
 import { Shape } from '../ShapeNodes';
 import { SpecificatedLanguage } from '../types/Language';
 import { ShapesDispatch } from '../reducers/shapesReducer';
+import { StateDispatcher } from '../types/StateDispatcher';
 
 interface MainProps {
     shapes: Shape[]
     latestSelect: number[]
     shapesDispatch: ShapesDispatch
     language: SpecificatedLanguage
-    setLanguage: (value: SpecificatedLanguage) => void
-    setContextTarget: (value: IndexedPoint | undefined) => void
+    setLanguage: StateDispatcher<string>
+    setContextTarget: StateDispatcher<IndexedPoint | undefined>
     isSaved: React.MutableRefObject<boolean>
 }
 
