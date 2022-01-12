@@ -10,9 +10,8 @@ export interface IndexedPoint extends Point {
     index: number
 }
 
-export interface IdentifiedPoint {
+export interface IdentifiedPoint extends Point {
     id: `${string}-${UUID}`
-    pos: Point
 }
 
 export interface ProcessedPoints {
@@ -39,7 +38,7 @@ export function calcPoint(a: Point, b: Point | ((ap: number) => number), c?: Poi
 }
 
 export function createIdentifiedPoint(parentID: string, pos: Point): IdentifiedPoint {
-    return { id: `${parentID}-${generateUUID()}`, pos };
+    return { id: `${parentID}-${generateUUID()}`, ...pos };
 }
 
 export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): ProcessedPoints[] {
@@ -51,8 +50,8 @@ export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): Proc
         .sort((a, b) => a.isSelected === b.isSelected ? 0 : (a.isSelected ? -1 : 1));
     const points: P[] = processedPoints.flatMap((v, parentIdx) => v.points.map(p => ({ ...p, parentIdx })));
     const chunkMap = points.reduce<ChunkMap>((map, p) => {
-        const x = Math.floor(p.pos.x);
-        const y = Math.floor(p.pos.y);
+        const x = Math.floor(p.x);
+        const y = Math.floor(p.y);
         map[x] ??= {};
         map[x][y] ??= [];
         map[x][y].push(p);
@@ -60,7 +59,7 @@ export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): Proc
     }, {});
 
     if (threshold !== 0) {
-        for (const { id, pos: { x: x1, y: y1 }, isDuplicated } of points) {
+        for (const { id, x: x1, y: y1, isDuplicated } of points) {
             if (isDuplicated) {
                 continue;
             }
@@ -68,7 +67,7 @@ export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): Proc
                 .flatMap(x => [Math.floor(y1 - threshold), Math.floor(y1 + threshold)].flatMap(y => chunkMap[x]?.[y] ?? []))
                 .filter(p => p.id !== id && !p.isDuplicated);
             for (const p of duplicatablePoints) {
-                const { pos: { x: x2, y: y2 } } = p;
+                const { x: x2, y: y2 } = p;
                 p.isDuplicated = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) < threshold * threshold;
             }
         }
@@ -77,7 +76,7 @@ export function deleteDuplicatedPoints(shapes: Shape[], threshold: number): Proc
     return [
         ...points.reduce<ProcessedPoints[]>(
             (arr, v) => {
-                arr[v.parentIdx].points.push(...v.isDuplicated ? [] : [{ id: v.id, pos: v.pos }]);
+                arr[v.parentIdx].points.push(...v.isDuplicated ? [] : [{ ...v, id: v.id }]);
                 return arr;
             },
             processedPoints.map(({ name, isSelected, isManipulateShape }) => ({ name, isSelected, isManipulateShape, points: [] }))

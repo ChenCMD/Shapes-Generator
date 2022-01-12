@@ -50,7 +50,7 @@ const ExportModal = ({ setExportModalOpened, shapes, points, isOpen, duplicatedP
             `# [ImportKey]: ${generateExportKey(shapes)}`,
             ...points.flatMap(v => [
                 ...(hasNameComment ? [`# ${v.name}`] : []),
-                ...v.points.map(({ pos }) => mkCmd(calcPoint(pos, p => round(p, exportAcc))))
+                ...v.points.map(point => mkCmd(calcPoint(point, p => round(p, exportAcc))))
             ])
         ].join('\n');
     }, [customCommand, exportAcc, shapes, hasNameComment, isCustomCommandMode, particle, particleSpeed, points]);

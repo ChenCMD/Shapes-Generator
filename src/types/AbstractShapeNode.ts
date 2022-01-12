@@ -115,7 +115,7 @@ export abstract class AbstractShapeNode<T extends { [key in keyof T]: Param }> {
         this._params[argName] = value;
         this.updatePointSet();
         if (this.isManipulate(this._params)) {
-            manipulateAction(this._points.map(v => v.pos), this._uuid,
+            manipulateAction(this._points.map(v => v), this._uuid,
                 (prevTarget?.target && prevTarget?.arg) ? prevTarget : undefined,
                 (this._params['target'].target && this._params['target'].arg) ? this._params['target'] : undefined
             );

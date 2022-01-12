@@ -17,7 +17,7 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
 
     const padding = size[minSize] / 6;
     const centerCorrection = useMemo(() => calcPoint(size, p => p / 2), [size]);
-    const maxBounds = Math.ceil(Math.max(...shapes.flatMap(v => v.points.flatMap(v2 => [v2.pos.x, v2.pos.y])).map(Math.abs)));
+    const maxBounds = Math.ceil(Math.max(...shapes.flatMap(v => v.points.flatMap(v2 => [v2.x, v2.y])).map(Math.abs)));
     const getMultiple = useCallback((axis: 'x' | 'y') => Math.min((size[axis] - padding * 2) / 2 / maxBounds, size[axis] / 12), [maxBounds, padding, size]);
     const posMultiple = getMultiple(minSize);
 
@@ -36,9 +36,9 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
                 }
                 return 0;
             })
-            .flatMap(({ isSelected, isManipulateShape, points: p }) => p.map(({ pos, id }) => (
+            .flatMap(({ isSelected, isManipulateShape, points: p }) => p.map(({ x, y, id }) => (
                 <Circle
-                    {...calcPoint(pos, centerCorrection, (a, b) => a * posMultiple + b)}
+                    {...calcPoint({ x, y }, centerCorrection, (a, b) => a * posMultiple + b)}
                     radius={(isManipulateShape ? 0.1 : 0.15) * posMultiple}
                     fill={isManipulateShape ? 'rgb(212, 212, 0)' : 'rgb(212, 212, 212)'}
                     strokeWidth={2}
