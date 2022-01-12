@@ -6,10 +6,14 @@ export interface Point {
     y: number
 }
 
-export type IdentifiedPoint = {
+export interface IndexedPoint extends Point {
+    index: number
+}
+
+export interface IdentifiedPoint {
     id: `${string}-${UUID}`
     pos: Point
-};
+}
 
 export interface ProcessedPoints {
     name: string
