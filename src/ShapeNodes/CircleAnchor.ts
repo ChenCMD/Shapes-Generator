@@ -16,9 +16,9 @@ export interface CircleAnchorParams extends ManipulateShape {
 }
 
 const paramMetaData: ParamMetaData<CircleAnchorParams> = {
-    count: { unit: 'unit.points', validation: { min: 1 } },
+    count: { unit: 'unit.points', step: 1, validation: { min: 1 } },
     center: { type: 'pos', unit: '', manipulatable: true },
-    radius: { unit: 'unit.meter', validation: { min: 0.0001 } },
+    radius: { unit: 'unit.meter', step: 0.1, validation: { min: 0.0001 } },
     start: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },
     ellipse: { type: 'range', unit: 'unit.per', min: 0, max: 100, step: 1 },
     rotate: { type: 'range', unit: 'unit.degree', min: 0, max: 360, step: 1 },

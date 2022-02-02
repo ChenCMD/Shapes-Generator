@@ -15,11 +15,11 @@ export interface LineParams {
 }
 
 const paramMetaData: ParamMetaData<LineParams> = {
-    count: { unit: 'unit.points', validation: { min: 1 } },
+    count: { unit: 'unit.points', step: 1, validation: { min: 1 } },
     from: { type: 'pos', unit: '', manipulatable: true },
     to: { type: 'pos', unit: '', manipulatable: true },
     offset: { type: 'range', unit: 'unit.per', min: 0, step: 1, max: 100 },
-    bezier: {},
+    bezier: { step: 0.1 },
     isBezierEquallySpaced: { type: 'boolean' }
 };
 

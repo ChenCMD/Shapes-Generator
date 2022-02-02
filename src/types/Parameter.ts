@@ -4,6 +4,7 @@ import { UUID } from './UUID';
 export interface NormalParameter {
     type?: 'normal'
     value: number
+    step: number
 }
 
 export interface PosParameter {
