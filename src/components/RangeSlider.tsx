@@ -45,7 +45,7 @@ const RangeSlider = ({ className, min, step, value, setValue, max, unit, special
         ? (<Container fluid className={styles['container']}>
             <Row noGutters>
                 <Col xs={12 - (unit ? 4 : 0)}>
-                    <input className={styles['input']} type='number' onChange={onChange} value={value} onKeyDown={stopPropagation} />
+                    <input className={styles['input']} type='number' step={step} onChange={onChange} value={value} onKeyDown={stopPropagation} />
                 </Col>
                 {unit ? (<Col xs={4}><div className={styles['unit']}>{unit}</div></Col>) : <></>}
             </Row>

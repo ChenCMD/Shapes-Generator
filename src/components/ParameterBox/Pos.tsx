@@ -66,7 +66,8 @@ const PosParameterBox = ({ type, arg, data, index, indexMap, shapesDispatch }: P
         onClick: whenManipulated(onClickManipulateNotice, undefined),
         onKeyDown: stopPropagation,
         readOnly: isManipulated,
-        type: whenManipulated(undefined, 'number')
+        type: whenManipulated(undefined, 'number'),
+        step: 0.1
     };
     return (
         <div ref={windowRef} className={styles['window']} title={locale(`shape.${type}.${arg}.description`)}>

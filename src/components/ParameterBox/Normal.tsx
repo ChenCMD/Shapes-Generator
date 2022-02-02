@@ -13,11 +13,12 @@ interface NormalParameterBoxProps {
     type: ShapeType
     arg: string
     data: Parameter<NormalParameter>
+    step: number
     index: number
     shapesDispatch: ShapesDispatch
 }
 
-const NormalParameterBox = ({ type, arg, data, index, shapesDispatch }: NormalParameterBoxProps): JSX.Element => {
+const NormalParameterBox = ({ type, arg, data, step, index, shapesDispatch }: NormalParameterBoxProps): JSX.Element => {
     const locale = useLocale();
     const windowRef = useRef<HTMLDivElement>(null);
     const [argValue, setArgValue] = useState<string>(data.value.toString());
@@ -37,7 +38,7 @@ const NormalParameterBox = ({ type, arg, data, index, shapesDispatch }: NormalPa
             <Container fluid className={styles['container']}>
                 <Row noGutters>
                     <Col xs={12 - (data.unit && locale(data.unit) !== '' ? 2 : 0)}>
-                        <input className={styles['input']} type='number' onChange={onChange} value={argValue} onKeyDown={stopPropagation} />
+                        <input className={styles['input']} type='number' step={step} onChange={onChange} value={argValue} onKeyDown={stopPropagation} />
                     </Col>{
                         data.unit && locale(data.unit) !== ''
                             ? (<Col xs={2}><div className={styles['unit']}>{locale(data.unit)}</div></Col>)

@@ -35,7 +35,7 @@ const Inspector = ({ shapes, shapesDispatch }: InspectorProps): JSX.Element => {
                         return colWrap(<BoolParameterBox {...props} data={param} />);
                     case 'normal':
                     default:
-                        return colWrap(<NormalParameterBox {...props} data={param} />);
+                        return colWrap(<NormalParameterBox {...props} data={param} step={arg === 'count' ? 1 : 0.1} />);
                 }
             })
         );
