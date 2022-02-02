@@ -24,11 +24,11 @@ const Previewer = ({ shapes, gridMode }: PreviewerProps): JSX.Element => {
     const points: JSX.Element[] = [];
     if (posMultiple && maxBounds < 250) {
         const radiusMul = (() => {
-            if (maxBounds < 1) {
-                return posMultiple * maxBounds / 3.5;
+            if (maxBounds <= 1.5) {
+                return posMultiple * maxBounds / 5;
             }
-            if (maxBounds < 2.5) {
-                return posMultiple * maxBounds / 2.5;
+            if (maxBounds <= 4) {
+                return posMultiple * maxBounds / 4;
             }
             return posMultiple;
         })();
