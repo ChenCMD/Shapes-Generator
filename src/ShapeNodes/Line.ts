@@ -51,6 +51,9 @@ export class LineShape extends AbstractShapeNode<LineParams> {
 
         const pointPairs: [from: Point, to: Point][] = [];
         if (params.from.manipulate && params.to.manipulate) {
+            if (params.from.value.length !== params.to.value.length) {
+                return [];
+            }
             for (const [i, from] of params.from.value.entries()) {
                 pointPairs.push([from, params.to.value[i]]);
             }
